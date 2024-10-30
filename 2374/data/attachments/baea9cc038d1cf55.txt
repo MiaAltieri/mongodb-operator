@@ -1,0 +1,63 @@
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.5.3    unsupported  03:11:48Z
+
+App                Version  Status       Scale  Charm          Channel      Rev  Exposed  Message
+application                 active           1  application                   0  no       
+application-host            active           1  application                   0  no       
+config-server-one           active           1  mongodb                       0  no       
+config-server-two           active           1  mongodb                       1  no       
+mongos                      active           1  mongos         6/edge        26  no       
+replication                 maintenance      1  mongodb                       3  no       installing MongoDB
+s3-integrator               blocked          1  s3-integrator  latest/edge   73  no       Missing parameters: ['access-key', 'secret-key']
+shard                       active           1  mongodb                       2  no       
+
+Unit                  Workload     Agent      Machine  Public address  Ports            Message
+application-host/0*   active       idle       4        10.145.164.137                   
+  mongos/0*           blocked      idle                10.145.164.137                   Missing relation to config-server.
+application/0*        active       idle       6        10.145.164.191                   
+config-server-one/0*  blocked      idle       0        10.145.164.231  27017-27018/tcp  missing relation to shard(s)
+config-server-two/0*  blocked      idle       1        10.145.164.21   27017-27018/tcp  missing relation to shard(s)
+replication/0*        maintenance  executing  5        10.145.164.194                   (install) installing MongoDB
+s3-integrator/0*      blocked      idle       3        10.145.164.192                   Missing parameters: ['access-key', 'secret-key']
+shard/0*              blocked      idle       2        10.145.164.67   27017/tcp        missing relation to config server
+
+Machine  State    Address         Inst id        Base          AZ  Message
+0        started  10.145.164.231  juju-075ac6-0  ubuntu@22.04      Running
+1        started  10.145.164.21   juju-075ac6-1  ubuntu@22.04      Running
+2        started  10.145.164.67   juju-075ac6-2  ubuntu@22.04      Running
+3        started  10.145.164.192  juju-075ac6-3  ubuntu@22.04      Running
+4        started  10.145.164.137  juju-075ac6-4  ubuntu@22.04      Running
+5        started  10.145.164.194  juju-075ac6-5  ubuntu@22.04      Running
+6        started  10.145.164.191  juju-075ac6-6  ubuntu@20.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-0: 02:36:17 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 02:36:17 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-one-0: 02:36:18 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-1: 02:36:53 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 02:36:53 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-two-0: 02:36:53 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-3: 02:37:42 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-3: 02:37:42 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-s3-integrator-0: 02:37:42 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-4: 02:37:52 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-4: 02:37:52 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-application-host-0: 02:37:52 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-2: 02:37:56 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 02:37:56 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-0: 02:37:56 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-config-server-one-0: 02:39:13 ERROR unit.config-server-one/0.juju-log _on_secret_remove: Secret secret:csgpof59p5phs7n20rk0 seems to have no observers, could be removed
+unit-shard-0: 02:39:26 ERROR unit.shard/0.juju-log _on_secret_remove: Secret secret:csgpoit9p5phs7n20rkg seems to have no observers, could be removed
+machine-5: 02:40:09 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-5: 02:40:09 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-replication-0: 02:40:09 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-config-server-two-0: 02:40:40 ERROR unit.config-server-two/0.juju-log _on_secret_remove: Secret secret:csgpp559p5phs7n20rl0 seems to have no observers, could be removed
+machine-6: 02:41:01 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-6: 02:41:01 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-application-0: 02:41:01 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongos-0: 02:41:04 ERROR juju.worker.meterstatus error running "meter-status-changed": exit status 1
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
