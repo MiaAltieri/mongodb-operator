@@ -1,0 +1,81 @@
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.5.3    unsupported  03:31:38Z
+
+App            Version  Status  Scale  Charm    Channel  Rev  Exposed  Message
+config-server           active      3  mongodb  6/edge   202  no       
+shard-one               active      3  mongodb  6/edge   202  no       
+shard-two               active      3  mongodb  6/edge   202  no       
+
+Unit              Workload     Agent      Machine  Public address  Ports  Message
+config-server/0   maintenance  executing  0        10.222.189.95          (install) installing MongoDB
+config-server/1   blocked      idle       1        10.222.189.172         couldn't start MongoDB
+config-server/2*  blocked      idle       2        10.222.189.65          couldn't start MongoDB
+shard-one/0       maintenance  executing  3        10.222.189.239         (install) installing MongoDB
+shard-one/1       blocked      idle       4        10.222.189.142         couldn't start MongoDB
+shard-one/2*      blocked      idle       5        10.222.189.98          couldn't start MongoDB
+shard-two/0       maintenance  executing  6        10.222.189.214         (install) installing MongoDB
+shard-two/1       blocked      idle       7        10.222.189.196         couldn't start MongoDB
+shard-two/2*      blocked      idle       8        10.222.189.194         couldn't start MongoDB
+
+Machine  State    Address         Inst id        Base          AZ  Message
+0        started  10.222.189.95   juju-a72980-0  ubuntu@22.04      Running
+1        started  10.222.189.172  juju-a72980-1  ubuntu@22.04      Running
+2        started  10.222.189.65   juju-a72980-2  ubuntu@22.04      Running
+3        started  10.222.189.239  juju-a72980-3  ubuntu@22.04      Running
+4        started  10.222.189.142  juju-a72980-4  ubuntu@22.04      Running
+5        started  10.222.189.98   juju-a72980-5  ubuntu@22.04      Running
+6        started  10.222.189.214  juju-a72980-6  ubuntu@22.04      Running
+7        started  10.222.189.196  juju-a72980-7  ubuntu@22.04      Running
+8        started  10.222.189.194  juju-a72980-8  ubuntu@22.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-5: 03:26:32 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-5: 03:26:32 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-2: 03:26:32 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-8: 03:26:55 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-8: 03:26:55 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-two-2: 03:26:55 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-2: 03:26:57 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 03:26:57 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-2: 03:26:57 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-7: 03:27:04 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-7: 03:27:04 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-two-1: 03:27:04 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-0: 03:27:21 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 03:27:21 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-0: 03:27:22 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-4: 03:27:23 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-4: 03:27:23 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-1: 03:27:23 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-shard-one-2: 03:28:04 ERROR unit.shard-one/2.juju-log An exception occurred when installing charmed-mongodb. Reason: Snap: 'charmed-mongodb'; command ['snap', 'install', 'charmed-mongodb', '--channel="6/edge"', '--revision="123"'] failed with output = ''
+machine-1: 03:28:08 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 03:28:08 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-1: 03:28:09 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-shard-one-2: 03:28:11 ERROR unit.shard-one/2.juju-log An exception occurred when starting mongod agent, error: Could not ['snap', 'start', '--enable', 'charmed-mongodb.mongod'] for snap [charmed-mongodb]: error: snap "charmed-mongodb" has no service "mongod"
+.
+unit-shard-two-2: 03:28:36 ERROR unit.shard-two/2.juju-log An exception occurred when installing charmed-mongodb. Reason: Snap: 'charmed-mongodb'; command ['snap', 'install', 'charmed-mongodb', '--channel="6/edge"', '--revision="123"'] failed with output = ''
+unit-config-server-2: 03:28:39 ERROR unit.config-server/2.juju-log An exception occurred when installing charmed-mongodb. Reason: Snap: 'charmed-mongodb'; command ['snap', 'install', 'charmed-mongodb', '--channel="6/edge"', '--revision="123"'] failed with output = ''
+unit-shard-two-2: 03:28:43 ERROR unit.shard-two/2.juju-log An exception occurred when starting mongod agent, error: Could not ['snap', 'start', '--enable', 'charmed-mongodb.mongod'] for snap [charmed-mongodb]: error: snap "charmed-mongodb" has no service "mongod"
+.
+unit-config-server-2: 03:28:46 ERROR unit.config-server/2.juju-log An exception occurred when starting mongod agent, error: Could not ['snap', 'start', '--enable', 'charmed-mongodb.mongod'] for snap [charmed-mongodb]: error: snap "charmed-mongodb" has no service "mongod"
+.
+unit-shard-two-1: 03:28:47 ERROR unit.shard-two/1.juju-log An exception occurred when installing charmed-mongodb. Reason: Snap: 'charmed-mongodb'; command ['snap', 'install', 'charmed-mongodb', '--channel="6/edge"', '--revision="123"'] failed with output = ''
+machine-3: 03:28:48 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-3: 03:28:48 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-0: 03:28:49 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-shard-two-1: 03:28:53 ERROR unit.shard-two/1.juju-log An exception occurred when starting mongod agent, error: Could not ['snap', 'start', '--enable', 'charmed-mongodb.mongod'] for snap [charmed-mongodb]: error: snap "charmed-mongodb" has no service "mongod"
+.
+unit-shard-one-1: 03:29:05 ERROR unit.shard-one/1.juju-log An exception occurred when installing charmed-mongodb. Reason: Snap: 'charmed-mongodb'; command ['snap', 'install', 'charmed-mongodb', '--channel="6/edge"', '--revision="123"'] failed with output = ''
+unit-shard-one-1: 03:29:11 ERROR unit.shard-one/1.juju-log An exception occurred when starting mongod agent, error: Could not ['snap', 'start', '--enable', 'charmed-mongodb.mongod'] for snap [charmed-mongodb]: error: snap "charmed-mongodb" has no service "mongod"
+.
+unit-config-server-1: 03:29:32 ERROR unit.config-server/1.juju-log An exception occurred when installing charmed-mongodb. Reason: Snap: 'charmed-mongodb'; command ['snap', 'install', 'charmed-mongodb', '--channel="6/edge"', '--revision="123"'] failed with output = ''
+unit-config-server-1: 03:29:38 ERROR unit.config-server/1.juju-log An exception occurred when starting mongod agent, error: Could not ['snap', 'start', '--enable', 'charmed-mongodb.mongod'] for snap [charmed-mongodb]: error: snap "charmed-mongodb" has no service "mongod"
+.
+machine-6: 03:30:37 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-6: 03:30:37 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-two-0: 03:30:37 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
