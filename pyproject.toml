@@ -1,12 +1,5 @@
 [tool.poetry]
-name = "mongodb"
-version = "0.0.1"
-description = ""
-license = "Apache-2.0"
-authors = []
-readme = "README.md"
-homepage = "https://charmhub.io/mongodb?channel=6/edge"
-repository = "https://github.com/canonical/mongodb-operator"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.10.12"
@@ -70,10 +63,10 @@ pytest = "^8.1.1"
 pytest-asyncio = "^0.21.1"
 pytest-mock = "^3.14.0"
 pytest-operator = "^0.36.0"
-pytest-operator-cache = {git = "https://github.com/canonical/data-platform-workflows", tag = "v21.0.0", subdirectory = "python/pytest_plugins/pytest_operator_cache"}
-pytest-operator-groups = {git = "https://github.com/canonical/data-platform-workflows", tag = "v21.0.0", subdirectory = "python/pytest_plugins/pytest_operator_groups"}
-pytest-github-secrets = {git = "https://github.com/canonical/data-platform-workflows", tag = "v21.0.0", subdirectory = "python/pytest_plugins/github_secrets"}
-allure-pytest-collection-report = {git = "https://github.com/canonical/data-platform-workflows", tag = "v21.0.0", subdirectory = "python/pytest_plugins/allure_pytest_collection_report"}
+pytest-operator-cache = {git = "https://github.com/canonical/data-platform-workflows", tag = "v23.0.4", subdirectory = "python/pytest_plugins/pytest_operator_cache"}
+pytest-operator-groups = {git = "https://github.com/canonical/data-platform-workflows", tag = "v23.0.4", subdirectory = "python/pytest_plugins/pytest_operator_groups"}
+pytest-github-secrets = {git = "https://github.com/canonical/data-platform-workflows", tag = "v23.0.4", subdirectory = "python/pytest_plugins/github_secrets"}
+allure-pytest-collection-report = {git = "https://github.com/canonical/data-platform-workflows", tag = "v23.0.4", subdirectory = "python/pytest_plugins/allure_pytest_collection_report"}
 
 [build-system]
 requires = ["poetry-core>=1.9.0"]
