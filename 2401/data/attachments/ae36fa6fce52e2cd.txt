@@ -1,0 +1,50 @@
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-one/0 [idle] active: 
+  mongos/0 [executing] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongos/0 [idle] active:
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.5.3    unsupported  02:29:42Z
+
+App                Version  Status  Scale  Charm        Channel  Rev  Exposed  Message
+application                 active      1  application             0  no       
+config-server-one           active      1  mongodb                 0  no       
+mongos                      active      1  mongos       6/edge     3  no       
+shard-one                   active      1  mongodb                 1  no       
+
+Unit                  Workload  Agent  Machine  Public address  Ports            Message
+application/0*        active    idle   2        10.133.220.33                    
+  mongos/0*           active    idle            10.133.220.33                    
+config-server-one/0*  active    idle   0        10.133.220.207  27017-27018/tcp  
+shard-one/0*          waiting   idle   1        10.133.220.104  27017/tcp        Waiting for secrets from config-server
+
+Machine  State    Address         Inst id        Base          AZ  Message
+0        started  10.133.220.207  juju-18a087-0  ubuntu@22.04      Running
+1        started  10.133.220.104  juju-18a087-1  ubuntu@22.04      Running
+2        started  10.133.220.33   juju-18a087-2  ubuntu@22.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-0: 02:25:32 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 02:25:32 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-one-0: 02:25:32 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-1: 02:25:59 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 02:25:59 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-0: 02:25:59 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-2: 02:26:08 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 02:26:08 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-application-0: 02:26:08 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-config-server-one-0: 02:26:56 ERROR unit.config-server-one/0.juju-log _on_secret_remove: Secret secret:cssl8msu7mehj98rgmpg seems to have no observers, could be removed
+unit-shard-one-0: 02:27:11 ERROR unit.shard-one/0.juju-log _on_secret_remove: Secret secret:cssl8qsu7mehj98rgmq0 seems to have no observers, could be removed
+unit-mongos-0: 02:27:37 ERROR juju.worker.meterstatus error running "meter-status-changed": exit status 127
+unit-config-server-one-0: 02:27:40 ERROR unit.config-server-one/0.juju-log config-server:5: Failed to add shard shard-one to the config server, error=OperationFailure("failed to run command { isMaster: 1 } when attempting to add shard shard-one/10.133.220.104:27017 :: caused by :: HostUnreachable: Connection reset by peer, full error: {'ok': 0.0, 'errmsg': 'failed to run command { isMaster: 1 } when attempting to add shard shard-one/10.133.220.104:27017 :: caused by :: HostUnreachable: Connection reset by peer', 'code': 96, 'codeName': 'OperationFailed', '$clusterTime': {'clusterTime': Timestamp(1731810460, 2), 'signature': {'hash': b'neo\\xb9\\xa3\\xb2\\xe9W\\xc8\\x16\\x8fd\\x0fL\\xc9Gd_q\\x88', 'keyId': 7438069043757580292}}, 'operationTime': Timestamp(1731810460, 2)}")
+unit-config-server-one-0: 02:27:40 ERROR unit.config-server-one/0.juju-log config-server:5: Failed to add shard-one to cluster
+unit-config-server-one-0: 02:27:40 ERROR unit.config-server-one/0.juju-log config-server:5: Deferring _on_relation_event for shards interface since: error=OperationFailure("failed to run command { isMaster: 1 } when attempting to add shard shard-one/10.133.220.104:27017 :: caused by :: HostUnreachable: Connection reset by peer, full error: {'ok': 0.0, 'errmsg': 'failed to run command { isMaster: 1 } when attempting to add shard shard-one/10.133.220.104:27017 :: caused by :: HostUnreachable: Connection reset by peer', 'code': 96, 'codeName': 'OperationFailed', '$clusterTime': {'clusterTime': Timestamp(1731810460, 2), 'signature': {'hash': b'neo\\xb9\\xa3\\xb2\\xe9W\\xc8\\x16\\x8fd\\x0fL\\xc9Gd_q\\x88', 'keyId': 7438069043757580292}}, 'operationTime': Timestamp(1731810460, 2)}")
+unit-shard-one-0: 02:27:48 ERROR unit.shard-one/0.juju-log _on_secret_remove: Secret secret:cssl8qsu7mehj98rgmq0 seems to have no observers, could be removed
+unit-shard-one-0: 02:27:49 ERROR unit.shard-one/0.juju-log _on_secret_remove: Secret secret:cssl8qsu7mehj98rgmq0 seems to have no observers, could be removed
+unit-shard-one-0: 02:27:55 ERROR unit.shard-one/0.juju-log _on_secret_remove: Secret secret:cssl8qsu7mehj98rgmq0 seems to have no observers, could be removed
+unit-shard-one-0: 02:27:59 ERROR unit.shard-one/0.juju-log _on_secret_remove: Secret secret:cssl8qsu7mehj98rgmq0 seems to have no observers, could be removed
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
