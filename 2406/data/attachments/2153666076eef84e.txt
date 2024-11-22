@@ -1,0 +1,338 @@
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  shard-one/0 [executing] active: Primary
+  shard-one/1 [executing] active: 
+  shard-two/0 [executing] active: Primary
+  config-server/0 [executing] active: Primary
+  config-server/1 [executing] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server/0 [idle] active: 
+  config-server/1 [idle] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server/0 [idle] maintenance: backup started/running, backup id:'2024-11-22T04:16:32Z'
+  config-server/1 [idle] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server/0 [idle] maintenance: backup started/running, backup id:'2024-11-22T04:16:32Z'
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server/0 [idle] maintenance: backup started/running, backup id:'2024-11-22T04:16:32Z'
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server/0 [idle] maintenance: backup started/running, backup id:'2024-11-22T04:16:32Z'
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server/0 [idle] maintenance: backup started/running, backup id:'2024-11-22T04:16:32Z'
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server/0 [idle] maintenance: backup started/running, backup id:'2024-11-22T04:16:32Z'
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server/0 [idle] maintenance: backup started/running, backup id:'2024-11-22T04:16:32Z'
+[32mINFO    [0m juju.model:model.py:2097 Deploying local:jammy/mongodb-3
+[32mINFO    [0m juju.model:model.py:2097 Deploying local:jammy/mongodb-4
+[32mINFO    [0m juju.model:model.py:2097 Deploying local:jammy/mongodb-5
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  s3-integrator/0 [idle] active: 
+  config-server-new/0 [allocating] waiting: waiting for machine
+  config-server-new/1 [allocating] waiting: waiting for machine
+  shard-one-new/0 [allocating] waiting: waiting for machine
+  shard-one-new/1 [allocating] waiting: waiting for machine
+  shard-two-new/0 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-new/0 [allocating] waiting: waiting for machine
+  config-server-new/1 [allocating] waiting: agent initialising
+  shard-one-new/0 [allocating] waiting: waiting for machine
+  shard-one-new/1 [allocating] waiting: waiting for machine
+  shard-two-new/0 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-new/0 [allocating] waiting: agent initialising
+  config-server-new/1 [executing] maintenance: installing charm software
+  shard-one-new/0 [allocating] waiting: agent initialising
+  shard-one-new/1 [allocating] waiting: agent initialising
+  shard-two-new/0 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-new/0 [executing] maintenance: installing MongoDB
+  config-server-new/1 [executing] active: 
+  shard-one-new/0 [executing] maintenance: installing MongoDB
+  shard-one-new/1 [executing] maintenance: installing MongoDB
+  shard-two-new/0 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-new/0 [idle] active: 
+  config-server-new/1 [idle] active: 
+  shard-one-new/0 [executing] maintenance: installing MongoDB
+  shard-one-new/1 [executing] active: 
+  shard-two-new/0 [executing] maintenance: installing MongoDB
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  shard-one-new/0 [executing] maintenance: installing MongoDB
+  shard-one-new/1 [executing] active: 
+  shard-two-new/0 [executing] maintenance: installing MongoDB
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  shard-one-new/0 [executing] active: 
+  shard-one-new/1 [executing] maintenance: starting MongoDB
+  shard-two-new/0 [executing] maintenance: installing MongoDB
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  shard-one-new/0 [idle] active: 
+  shard-one-new/1 [executing] active: 
+  shard-two-new/0 [executing] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  shard-two-new/0 [idle] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-new/0 [idle] active: 
+  config-server-new/1 [idle] active: 
+  shard-one-new/0 [idle] active: 
+  shard-one-new/1 [executing] active: 
+  shard-two-new/0 [executing] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-new/0 [executing] active: 
+  config-server-new/1 [executing] waiting: waiting to sync s3 configurations.
+  shard-one-new/0 [idle] waiting: Waiting for secrets from config-server
+  shard-one-new/1 [idle] waiting: Waiting for secrets from config-server
+  shard-two-new/0 [executing] waiting: Waiting for secrets from config-server
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-new/0 [idle] waiting: waiting to sync s3 configurations.
+  config-server-new/1 [executing] waiting: waiting to sync s3 configurations.
+  shard-one-new/0 [idle] waiting: Waiting for secrets from config-server
+  shard-one-new/1 [idle] waiting: Waiting for secrets from config-server
+  shard-two-new/0 [idle] waiting: Waiting for secrets from config-server
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-new/0 [idle] waiting: waiting to sync s3 configurations.
+  config-server-new/1 [executing] maintenance: Adding shard shard-one-new to config-server
+  shard-one-new/0 [executing] waiting: Waiting for secrets from config-server
+  shard-one-new/1 [executing] waiting: Waiting for secrets from config-server
+  shard-two-new/0 [idle] waiting: Waiting for secrets from config-server
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-new/0 [idle] waiting: waiting to sync s3 configurations.
+  config-server-new/1 [idle] active: 
+  shard-one-new/0 [executing] waiting: Waiting for secrets from config-server
+  shard-one-new/1 [executing] waiting: Waiting for secrets from config-server
+  shard-two-new/0 [idle] waiting: Waiting for secrets from config-server
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-new/0 [idle] waiting: waiting to sync s3 configurations.
+  shard-one-new/0 [idle] waiting: Waiting for secrets from config-server
+  shard-two-new/0 [idle] waiting: Waiting for secrets from config-server
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-new/0 [idle] active: 
+  config-server-new/1 [idle] active: 
+  shard-one-new/0 [idle] waiting: Waiting for secrets from config-server
+  shard-two-new/0 [idle] active: Primary
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  shard-one-new/0 [idle] waiting: Waiting for secrets from config-server
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  shard-one-new/0 [idle] waiting: Waiting for secrets from config-server
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  shard-one-new/0 [idle] waiting: Waiting for secrets from config-server
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  shard-one-new/0 [idle] waiting: Waiting for secrets from config-server
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  shard-one-new/0 [idle] waiting: Waiting for secrets from config-server
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-new/0 [executing] active: 
+  config-server-new/1 [executing] active: 
+  shard-one-new/0 [executing] active: Primary
+  shard-one-new/1 [executing] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  shard-one-new/0 [executing] active: Primary
+  shard-one-new/1 [executing] active: 
+  shard-two-new/0 [executing] active: Primary
+  config-server-new/0 [executing] active: 
+  config-server-new/1 [executing] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-new/0 [idle] active: 
+  config-server-new/1 [idle] maintenance: restore started/running, backup id:'2024-11-22T04:16:32Z'
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-new/1 [idle] maintenance: restore started/running, backup id:'2024-11-22T04:16:32Z'
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.5.3    unsupported  04:36:24Z
+
+App                Version  Status  Scale  Charm          Channel      Rev  Exposed  Message
+config-server-new           active      2  mongodb                       3  no       
+s3-integrator               active      1  s3-integrator  latest/edge   81  no       
+shard-one-new               active      2  mongodb                       4  no       
+shard-two-new               active      1  mongodb                       5  no       
+
+Unit                  Workload  Agent  Machine  Public address  Ports            Message
+config-server-new/0   active    idle   6        10.11.197.133   27017-27018/tcp  
+config-server-new/1*  active    idle   7        10.11.197.119   27017-27018/tcp  Primary
+s3-integrator/0*      active    idle   5        10.11.197.161                    
+shard-one-new/0*      active    idle   8        10.11.197.38    27017/tcp        Primary
+shard-one-new/1       active    idle   9        10.11.197.106   27017/tcp        
+shard-two-new/0*      active    idle   10       10.11.197.67    27017/tcp        Primary
+
+Machine  State    Address        Inst id         Base          AZ  Message
+5        started  10.11.197.161  juju-5c30ed-5   ubuntu@22.04      Running
+6        started  10.11.197.133  juju-5c30ed-6   ubuntu@22.04      Running
+7        started  10.11.197.119  juju-5c30ed-7   ubuntu@22.04      Running
+8        started  10.11.197.38   juju-5c30ed-8   ubuntu@22.04      Running
+9        started  10.11.197.106  juju-5c30ed-9   ubuntu@22.04      Running
+10       started  10.11.197.67   juju-5c30ed-10  ubuntu@22.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-0: 03:50:29 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 03:50:29 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-0: 03:50:29 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-1: 03:50:37 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 03:50:37 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-1: 03:50:37 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-3: 03:51:46 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-3: 03:51:46 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-1: 03:51:46 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-config-server-0: 03:52:07 ERROR unit.config-server/0.juju-log _on_secret_remove: Secret secret:csvvvkk9tamhjrbdt31g seems to have no observers, could be removed
+machine-2: 03:52:10 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 03:52:10 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-0: 03:52:10 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-4: 03:52:27 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-4: 03:52:27 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-two-0: 03:52:27 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-5: 03:52:38 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-5: 03:52:38 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-s3-integrator-0: 03:52:38 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-shard-one-1: 03:52:51 ERROR unit.shard-one/1.juju-log _on_secret_remove: Secret secret:csvvvvs9tamhjrbdt320 seems to have no observers, could be removed
+unit-shard-two-0: 03:54:05 ERROR unit.shard-two/0.juju-log _on_secret_remove: Secret secret:ct000ik9tamhjrbdt32g seems to have no observers, could be removed
+unit-config-server-0: 03:54:53 ERROR unit.config-server/0.juju-log config-server:8: Failed to get pbm status: Command 'charmed-mongodb.pbm status -o json' returned non-zero exit status 1.
+unit-config-server-0: 03:55:20 ERROR unit.config-server/0.juju-log config-server:8: Failed to add shard shard-one to the config server, error=OperationFailure('Could not find host matching read preference { mode: "primary" } for set shard-one, full error: {\'ok\': 0.0, \'errmsg\': \'Could not find host matching read preference { mode: "primary" } for set shard-one\', \'code\': 133, \'codeName\': \'FailedToSatisfyReadPreference\', \'$clusterTime\': {\'clusterTime\': Timestamp(1732247720, 1), \'signature\': {\'hash\': b\'Fc\\xfa\\xac\\xea\\xbb,\\xaf\\xdb\\xb5\\xf1\\xa7\\xec]I\\x0c\\x02\\xe8\\x9d\\xfa\', \'keyId\': 7439946416912334873}}, \'operationTime\': Timestamp(1732247720, 1)}')
+unit-config-server-0: 03:55:20 ERROR unit.config-server/0.juju-log config-server:8: Failed to add shard-one to cluster
+unit-config-server-0: 03:55:20 ERROR unit.config-server/0.juju-log config-server:8: Deferring _on_relation_event for shards interface since: error=OperationFailure('Could not find host matching read preference { mode: "primary" } for set shard-one, full error: {\'ok\': 0.0, \'errmsg\': \'Could not find host matching read preference { mode: "primary" } for set shard-one\', \'code\': 133, \'codeName\': \'FailedToSatisfyReadPreference\', \'$clusterTime\': {\'clusterTime\': Timestamp(1732247720, 1), \'signature\': {\'hash\': b\'Fc\\xfa\\xac\\xea\\xbb,\\xaf\\xdb\\xb5\\xf1\\xa7\\xec]I\\x0c\\x02\\xe8\\x9d\\xfa\', \'keyId\': 7439946416912334873}}, \'operationTime\': Timestamp(1732247720, 1)}')
+unit-config-server-0: 03:55:33 ERROR unit.config-server/0.juju-log config-server:9: Failed to get pbm status: Command 'charmed-mongodb.pbm status -o json' returned non-zero exit status 1.
+unit-config-server-1: 03:55:33 ERROR unit.config-server/1.juju-log Failed to get pbm status: Command 'charmed-mongodb.pbm status -o json' returned non-zero exit status 1.
+unit-config-server-0: 03:55:35 ERROR unit.config-server/0.juju-log config-server:9: Failed to get pbm status: Command 'charmed-mongodb.pbm status -o json' returned non-zero exit status 1.
+unit-shard-one-1: 03:55:45 ERROR unit.shard-one/1.juju-log _on_secret_remove: Secret secret:csvvvvs9tamhjrbdt320 seems to have no observers, could be removed
+unit-shard-one-1: 03:55:46 ERROR unit.shard-one/1.juju-log _on_secret_remove: Secret secret:csvvvvs9tamhjrbdt320 seems to have no observers, could be removed
+unit-shard-two-0: 03:55:48 ERROR unit.shard-two/0.juju-log _on_secret_remove: Secret secret:ct000ik9tamhjrbdt32g seems to have no observers, could be removed
+unit-shard-two-0: 03:55:49 ERROR unit.shard-two/0.juju-log _on_secret_remove: Secret secret:ct000ik9tamhjrbdt32g seems to have no observers, could be removed
+unit-shard-one-1: 04:01:20 ERROR unit.shard-one/1.juju-log Backup failed: Relation with s3-integrator charm missing, cannot restore from a backup.
+unit-shard-one-1: 04:01:21 ERROR unit.shard-one/1.juju-log List-backups failed: Relation with s3-integrator charm missing, cannot restore from a backup.
+unit-shard-one-1: 04:01:22 ERROR unit.shard-one/1.juju-log Restore failed: Relation with s3-integrator charm missing, cannot restore from a backup.
+unit-config-server-0: 04:06:46 ERROR unit.config-server/0.juju-log _on_secret_remove: Secret secret:csvvvkk9tamhjrbdt31g seems to have no observers, could be removed
+unit-shard-two-0: 04:06:48 ERROR unit.shard-two/0.juju-log _on_secret_remove: Secret secret:ct000ik9tamhjrbdt32g seems to have no observers, could be removed
+unit-shard-one-1: 04:06:48 ERROR unit.shard-one/1.juju-log _on_secret_remove: Secret secret:csvvvvs9tamhjrbdt320 seems to have no observers, could be removed
+unit-config-server-0: 04:15:42 ERROR unit.config-server/0.juju-log _on_secret_remove: Secret secret:ct001649tamhjrbdt330 seems to have no observers, could be removed
+unit-shard-two-0: 04:15:42 ERROR unit.shard-two/0.juju-log _on_secret_remove: Secret secret:ct000ik9tamhjrbdt32g seems to have no observers, could be removed
+unit-shard-one-1: 04:15:43 ERROR unit.shard-one/1.juju-log _on_secret_remove: Secret secret:csvvvvs9tamhjrbdt320 seems to have no observers, could be removed
+unit-config-server-0: 04:15:43 ERROR unit.config-server/0.juju-log _on_secret_remove: Secret secret:ct001ds9tamhjrbdt33g seems to have no observers, could be removed
+unit-config-server-0: 04:15:43 ERROR unit.config-server/0.juju-log _on_secret_remove: Secret secret:csvvvkk9tamhjrbdt31g seems to have no observers, could be removed
+unit-config-server-1: 04:20:13 ERROR unit.config-server/1.juju-log Cannot remove config-server, still related to shards shard-one, shard-two
+unit-config-server-1: 04:20:13 ERROR unit.config-server/1.juju-log Uncaught exception while in charm code:
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-config-server-1/charm/./src/charm.py", line 1598, in <module>
+    main(MongodbOperatorCharm)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 551, in main
+    manager.run()
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 530, in run
+    self._emit()
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 519, in _emit
+    _emit_charm_event(self.charm, self.dispatcher.event_name)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 147, in _emit_charm_event
+    event_to_emit.emit(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/framework.py", line 348, in emit
+    framework._emit(event)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/framework.py", line 860, in _emit
+    self._reemit(event_path)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/framework.py", line 950, in _reemit
+    custom_handler(event)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/./src/charm.py", line 618, in _on_storage_detaching
+    raise EarlyRemovalOfConfigServerError(early_removal_message)
+EarlyRemovalOfConfigServerError: Cannot remove config-server, still related to shards shard-one, shard-two
+unit-config-server-1: 04:20:14 ERROR juju.worker.uniter.operation hook "mongodb-storage-detaching" (via hook dispatching script: dispatch) failed: exit status 1
+machine-3: 04:20:19 ERROR juju.api.watcher error trying to stop watcher: websocket: close sent
+unit-config-server-1: 04:20:19 ERROR unit.config-server/1.juju-log Cannot remove config-server, still related to shards shard-one, shard-two
+unit-config-server-1: 04:20:19 ERROR unit.config-server/1.juju-log Uncaught exception while in charm code:
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-config-server-1/charm/./src/charm.py", line 1598, in <module>
+    main(MongodbOperatorCharm)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 551, in main
+    manager.run()
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 530, in run
+    self._emit()
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 519, in _emit
+    _emit_charm_event(self.charm, self.dispatcher.event_name)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 147, in _emit_charm_event
+    event_to_emit.emit(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/framework.py", line 348, in emit
+    framework._emit(event)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/framework.py", line 860, in _emit
+    self._reemit(event_path)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/framework.py", line 950, in _reemit
+    custom_handler(event)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/./src/charm.py", line 618, in _on_storage_detaching
+    raise EarlyRemovalOfConfigServerError(early_removal_message)
+EarlyRemovalOfConfigServerError: Cannot remove config-server, still related to shards shard-one, shard-two
+unit-config-server-1: 04:20:20 ERROR juju.worker.uniter.operation hook "mongodb-storage-detaching" (via hook dispatching script: dispatch) failed: exit status 1
+unit-config-server-1: 04:20:30 ERROR unit.config-server/1.juju-log Cannot remove config-server, still related to shards shard-one, shard-two
+unit-config-server-1: 04:20:30 ERROR unit.config-server/1.juju-log Uncaught exception while in charm code:
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-config-server-1/charm/./src/charm.py", line 1598, in <module>
+    main(MongodbOperatorCharm)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 551, in main
+    manager.run()
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 530, in run
+    self._emit()
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 519, in _emit
+    _emit_charm_event(self.charm, self.dispatcher.event_name)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 147, in _emit_charm_event
+    event_to_emit.emit(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/framework.py", line 348, in emit
+    framework._emit(event)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/framework.py", line 860, in _emit
+    self._reemit(event_path)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/framework.py", line 950, in _reemit
+    custom_handler(event)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/./src/charm.py", line 618, in _on_storage_detaching
+    raise EarlyRemovalOfConfigServerError(early_removal_message)
+EarlyRemovalOfConfigServerError: Cannot remove config-server, still related to shards shard-one, shard-two
+unit-config-server-1: 04:20:30 ERROR juju.worker.uniter.operation hook "mongodb-storage-detaching" (via hook dispatching script: dispatch) failed: exit status 1
+unit-config-server-1: 04:20:50 ERROR unit.config-server/1.juju-log Cannot remove config-server, still related to shards shard-one, shard-two
+unit-config-server-1: 04:20:50 ERROR unit.config-server/1.juju-log Uncaught exception while in charm code:
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-config-server-1/charm/./src/charm.py", line 1598, in <module>
+    main(MongodbOperatorCharm)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 551, in main
+    manager.run()
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 530, in run
+    self._emit()
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 519, in _emit
+    _emit_charm_event(self.charm, self.dispatcher.event_name)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/main.py", line 147, in _emit_charm_event
+    event_to_emit.emit(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/framework.py", line 348, in emit
+    framework._emit(event)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/framework.py", line 860, in _emit
+    self._reemit(event_path)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/venv/ops/framework.py", line 950, in _reemit
+    custom_handler(event)
+  File "/var/lib/juju/agents/unit-config-server-1/charm/./src/charm.py", line 618, in _on_storage_detaching
+    raise EarlyRemovalOfConfigServerError(early_removal_message)
+EarlyRemovalOfConfigServerError: Cannot remove config-server, still related to shards shard-one, shard-two
+unit-config-server-0: 04:20:50 ERROR unit.config-server/0.juju-log config-server:9: Failed to get pbm status: Command 'charmed-mongodb.pbm status -o json' returned non-zero exit status 1.
+unit-config-server-1: 04:20:50 ERROR juju.worker.uniter.operation hook "mongodb-storage-detaching" (via hook dispatching script: dispatch) failed: exit status 1
+machine-0: 04:21:20 ERROR juju.api.watcher error trying to stop watcher: websocket: close sent
+machine-7: 04:24:45 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-7: 04:24:45 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-new-1: 04:24:45 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-6: 04:24:55 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-6: 04:24:55 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-new-0: 04:24:56 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-8: 04:25:08 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-8: 04:25:08 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-new-0: 04:25:08 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-9: 04:25:09 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-9: 04:25:09 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-new-1: 04:25:09 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-10: 04:25:44 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-10: 04:25:44 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-two-new-0: 04:25:45 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-config-server-new-1: 04:25:56 ERROR unit.config-server-new/1.juju-log _on_secret_remove: Secret secret:ct00ffs9tamhjrbdt340 seems to have no observers, could be removed
+unit-shard-one-new-0: 04:27:46 ERROR unit.shard-one-new/0.juju-log _on_secret_remove: Secret secret:ct00g6c9tamhjrbdt34g seems to have no observers, could be removed
+unit-shard-two-new-0: 04:27:58 ERROR unit.shard-two-new/0.juju-log _on_secret_remove: Secret secret:ct00gek9tamhjrbdt350 seems to have no observers, could be removed
+unit-config-server-new-1: 04:28:26 ERROR unit.config-server-new/1.juju-log config-server:18: Failed to get pbm status: Command 'charmed-mongodb.pbm status -o json' returned non-zero exit status 1.
+unit-config-server-new-1: 04:28:28 ERROR unit.config-server-new/1.juju-log config-server:18: Failed to get pbm status: Command 'charmed-mongodb.pbm status -o json' returned non-zero exit status 1.
+unit-shard-two-new-0: 04:28:50 ERROR unit.shard-two-new/0.juju-log _on_secret_remove: Secret secret:ct00gek9tamhjrbdt350 seems to have no observers, could be removed
+unit-shard-two-new-0: 04:28:51 ERROR unit.shard-two-new/0.juju-log _on_secret_remove: Secret secret:ct00gek9tamhjrbdt350 seems to have no observers, could be removed
+unit-config-server-new-1: 04:30:03 ERROR unit.config-server-new/1.juju-log config-server:17: Failed to add shard shard-one-new to the config server, error=OperationFailure('Could not find host matching read preference { mode: "primary" } for set shard-one-new, full error: {\'ok\': 0.0, \'errmsg\': \'Could not find host matching read preference { mode: "primary" } for set shard-one-new\', \'code\': 133, \'codeName\': \'FailedToSatisfyReadPreference\', \'$clusterTime\': {\'clusterTime\': Timestamp(1732249803, 1), \'signature\': {\'hash\': b\'(\\xd5\\xb8\\xe5\\xec\\x1c\\xc0\\xf8\\xfd\\xc6\\xc7\\xd9d\\xc4\\rO\\xa9\\x92<\\xa5\', \'keyId\': 7439955135695945753}}, \'operationTime\': Timestamp(1732249803, 1)}')
+unit-config-server-new-1: 04:30:03 ERROR unit.config-server-new/1.juju-log config-server:17: Failed to add shard-one-new to cluster
+unit-config-server-new-1: 04:30:03 ERROR unit.config-server-new/1.juju-log config-server:17: Deferring _on_relation_event for shards interface since: error=OperationFailure('Could not find host matching read preference { mode: "primary" } for set shard-one-new, full error: {\'ok\': 0.0, \'errmsg\': \'Could not find host matching read preference { mode: "primary" } for set shard-one-new\', \'code\': 133, \'codeName\': \'FailedToSatisfyReadPreference\', \'$clusterTime\': {\'clusterTime\': Timestamp(1732249803, 1), \'signature\': {\'hash\': b\'(\\xd5\\xb8\\xe5\\xec\\x1c\\xc0\\xf8\\xfd\\xc6\\xc7\\xd9d\\xc4\\rO\\xa9\\x92<\\xa5\', \'keyId\': 7439955135695945753}}, \'operationTime\': Timestamp(1732249803, 1)}')
+unit-config-server-new-1: 04:30:17 ERROR unit.config-server-new/1.juju-log config-server:17: Failed to get pbm status: Command 'charmed-mongodb.pbm status -o json' returned non-zero exit status 1.
+unit-shard-one-new-0: 04:30:27 ERROR unit.shard-one-new/0.juju-log _on_secret_remove: Secret secret:ct00g6c9tamhjrbdt34g seems to have no observers, could be removed
+unit-shard-one-new-0: 04:30:27 ERROR unit.shard-one-new/0.juju-log _on_secret_remove: Secret secret:ct00g6c9tamhjrbdt34g seems to have no observers, could be removed
+unit-config-server-new-1: 04:34:52 ERROR unit.config-server-new/1.juju-log _on_secret_remove: Secret secret:ct00ffs9tamhjrbdt340 seems to have no observers, could be removed
+unit-shard-two-new-0: 04:34:53 ERROR unit.shard-two-new/0.juju-log _on_secret_remove: Secret secret:ct00gek9tamhjrbdt350 seems to have no observers, could be removed
+unit-shard-one-new-0: 04:34:53 ERROR unit.shard-one-new/0.juju-log _on_secret_remove: Secret secret:ct00g6c9tamhjrbdt34g seems to have no observers, could be removed
+unit-config-server-new-1: 04:35:17 ERROR unit.config-server-new/1.juju-log Restore failed: Cannot restore backup, 'remap-pattern' must be set.
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
