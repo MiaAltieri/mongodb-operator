@@ -1,0 +1,47 @@
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  config-server-one/0 [idle] active: Primary
+  mongos/0 [executing] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongos/0 [idle] active:
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.5.3    unsupported  03:15:22Z
+
+App                Version  Status  Scale  Charm        Channel  Rev  Exposed  Message
+application                 active      1  application             0  no       
+config-server-one           active      1  mongodb                 0  no       
+mongos                      active      1  mongos       6/edge     3  no       
+shard-one                   active      1  mongodb                 1  no       
+
+Unit                  Workload  Agent  Machine  Public address  Ports            Message
+application/0*        active    idle   2        10.5.16.209                      
+  mongos/0*           active    idle            10.5.16.209                      
+config-server-one/0*  active    idle   0        10.5.16.50      27017-27018/tcp  Primary
+shard-one/0*          active    idle   1        10.5.16.146     27017/tcp        Primary
+
+Machine  State    Address      Inst id        Base          AZ  Message
+0        started  10.5.16.50   juju-28101a-0  ubuntu@22.04      Running
+1        started  10.5.16.146  juju-28101a-1  ubuntu@22.04      Running
+2        started  10.5.16.209  juju-28101a-2  ubuntu@22.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-0: 03:07:37 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 03:07:37 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-one-0: 03:07:37 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-2: 03:08:16 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 03:08:16 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-application-0: 03:08:16 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-config-server-one-0: 03:08:58 ERROR unit.config-server-one/0.juju-log _on_secret_remove: Secret secret:ct0kedfhk8o1jp0mjjl0 seems to have no observers, could be removed
+machine-1: 03:09:17 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 03:09:17 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-0: 03:09:17 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-shard-one-0: 03:10:27 ERROR unit.shard-one/0.juju-log _on_secret_remove: Secret secret:ct0kf3vhk8o1jp0mjjlg seems to have no observers, could be removed
+unit-mongos-0: 03:10:53 ERROR juju.worker.meterstatus error running "meter-status-changed": exit status 127
+unit-shard-one-0: 03:11:08 ERROR unit.shard-one/0.juju-log _on_secret_remove: Secret secret:ct0kf3vhk8o1jp0mjjlg seems to have no observers, could be removed
+unit-shard-one-0: 03:11:09 ERROR unit.shard-one/0.juju-log _on_secret_remove: Secret secret:ct0kf3vhk8o1jp0mjjlg seems to have no observers, could be removed
+unit-shard-one-0: 03:11:16 ERROR unit.shard-one/0.juju-log _on_secret_remove: Secret secret:ct0kf3vhk8o1jp0mjjlg seems to have no observers, could be removed
+unit-shard-one-0: 03:11:22 ERROR unit.shard-one/0.juju-log _on_secret_remove: Secret secret:ct0kf3vhk8o1jp0mjjlg seems to have no observers, could be removed
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
