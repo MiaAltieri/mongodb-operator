@@ -1,0 +1,81 @@
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.5.3    unsupported  04:43:18Z
+
+App                Version  Status   Scale  Charm          Channel      Rev  Exposed  Message
+application                 active       1  application                   0  no       
+application-host            active       1  application                   0  no       
+config-server-one           active       1  mongodb                       0  no       
+config-server-two           active       1  mongodb                       1  no       
+mongos                      active       1  mongos         6/edge        30  no       
+replication                 active       1  mongodb                       3  no       
+s3-integrator               blocked      1  s3-integrator  latest/edge   85  no       Missing parameters: ['access-key', 'secret-key']
+shard                       active       1  mongodb                       2  no       
+
+Unit                  Workload  Agent      Machine  Public address  Ports            Message
+application-host/0*   active    idle       4        10.222.143.194                   
+  mongos/0*           waiting   idle                10.222.143.194                   Waiting for secrets from config-server
+application/0*        active    idle       6        10.222.143.113                   
+config-server-one/0*  active    idle       0        10.222.143.77   27017-27018/tcp  
+config-server-two/0*  active    idle       1        10.222.143.55   27017-27018/tcp  
+replication/0*        blocked   idle       5        10.222.143.150  27017/tcp        Relation to mongos not supported, config role must be config-server
+s3-integrator/0*      blocked   executing  3        10.222.143.227                   Missing parameters: ['access-key', 'secret-key']
+shard/0*              blocked   executing  2        10.222.143.13   27017/tcp        Relation to s3-integrator is not supported, config role must be config-server
+
+Machine  State    Address         Inst id        Base          AZ  Message
+0        started  10.222.143.77   juju-8bc010-0  ubuntu@22.04      Running
+1        started  10.222.143.55   juju-8bc010-1  ubuntu@22.04      Running
+2        started  10.222.143.13   juju-8bc010-2  ubuntu@22.04      Running
+3        started  10.222.143.227  juju-8bc010-3  ubuntu@22.04      Running
+4        started  10.222.143.194  juju-8bc010-4  ubuntu@22.04      Running
+5        started  10.222.143.150  juju-8bc010-5  ubuntu@22.04      Running
+6        started  10.222.143.113  juju-8bc010-6  ubuntu@20.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-0: 04:22:19 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 04:22:19 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-one-0: 04:22:19 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-3: 04:23:07 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-3: 04:23:07 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-s3-integrator-0: 04:23:07 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-2: 04:23:08 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 04:23:08 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-0: 04:23:08 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-6: 04:23:14 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-6: 04:23:14 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-application-0: 04:23:14 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-4: 04:23:39 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-4: 04:23:39 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-application-host-0: 04:23:39 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-5: 04:23:41 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-5: 04:23:41 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-replication-0: 04:23:41 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-shard-0: 04:24:14 ERROR unit.shard/0.juju-log _on_secret_remove: Secret secret:ct39tm0d4u9hjqqu2ppg seems to have no observers, could be removed
+unit-replication-0: 04:24:42 ERROR unit.replication/0.juju-log _on_secret_remove: Secret secret:ct39tt8d4u9hjqqu2pq0 seems to have no observers, could be removed
+machine-1: 04:33:22 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 04:33:22 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-two-0: 04:33:22 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-config-server-one-0: 04:37:46 ERROR unit.config-server-one/0.juju-log _on_secret_remove: Secret secret:ct3a40od4u9hjqqu2pqg seems to have no observers, could be removed
+unit-config-server-two-0: 04:39:58 ERROR unit.config-server-two/0.juju-log _on_secret_remove: Secret secret:ct3a520d4u9hjqqu2pr0 seems to have no observers, could be removed
+unit-mongos-0: 04:40:22 ERROR juju.worker.meterstatus error running "meter-status-changed": exit status 1
+unit-shard-0: 04:41:40 ERROR unit.shard/0.juju-log database:13: Charm is in sharding role: shard. Does not support database interface.
+unit-config-server-one-0: 04:41:40 ERROR unit.config-server-one/0.juju-log database:14: Charm is in sharding role: config-server. Does not support database interface.
+unit-shard-0: 04:41:40 ERROR unit.shard/0.juju-log database:13: Charm is in sharding role: shard. Does not support database interface.
+unit-config-server-one-0: 04:41:40 ERROR unit.config-server-one/0.juju-log database:14: Charm is in sharding role: config-server. Does not support database interface.
+unit-shard-0: 04:41:43 ERROR unit.shard/0.juju-log database:13: Charm is in sharding role: shard. Does not support database interface.
+unit-config-server-one-0: 04:41:43 ERROR unit.config-server-one/0.juju-log database:14: Charm is in sharding role: config-server. Does not support database interface.
+unit-config-server-one-0: 04:41:44 ERROR unit.config-server-one/0.juju-log database:14: Charm is in sharding role: config-server. Does not support database interface.
+unit-shard-0: 04:41:47 ERROR unit.shard/0.juju-log database:13: Charm is in sharding role: shard. Does not support database interface.
+unit-config-server-one-0: 04:41:47 ERROR unit.config-server-one/0.juju-log database:14: Charm is in sharding role: config-server. Does not support database interface.
+unit-replication-0: 04:42:11 ERROR unit.replication/0.juju-log sharding:15: Charm is in sharding role: replication. Does not support sharding interface.
+unit-replication-0: 04:42:12 ERROR unit.replication/0.juju-log sharding:15: Charm is in sharding role: replication. Does not support sharding interface.
+unit-config-server-one-0: 04:42:12 ERROR unit.config-server-one/0.juju-log config-server:15: Failed to add shard replication to the config server, error=OperationFailure("Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed', '$clusterTime': {'clusterTime': Timestamp(1732682531, 3), 'signature': {'hash': b'\\xf4p\\x86\\xba[\\xc0\\xe51C$\\xa3\\x0etj\\xb09\\x05\\xa6\\xa4\\xfa', 'keyId': 7441813606699630598}}, 'operationTime': Timestamp(1732682531, 3)}")
+unit-config-server-one-0: 04:42:12 ERROR unit.config-server-one/0.juju-log config-server:15: replication shard does not have the same auth as the config server.
+unit-replication-0: 04:42:16 ERROR unit.replication/0.juju-log sharding:15: Charm is in sharding role: replication. Does not support sharding interface.
+unit-replication-0: 04:42:18 ERROR unit.replication/0.juju-log sharding:15: Charm is in sharding role: replication. Does not support sharding interface.
+unit-mongos-0: 04:42:47 ERROR unit.mongos/0.juju-log cluster:17: Can't delete secret for relation 11
+unit-mongos-0: 04:43:13 ERROR unit.mongos/0.juju-log cluster:18: Can't delete secret for relation 11
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
