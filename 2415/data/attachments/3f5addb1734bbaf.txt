@@ -1,0 +1,138 @@
+[32mINFO    [0m integration.upgrade.test_upgrade:test_upgrade.py:126 Calling pre-refresh-check
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/0 [idle] active: Primary
+  mongodb/1 [idle] active: 
+  mongodb/2 [idle] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/0 [idle] active: Primary
+  mongodb/1 [idle] active: 
+  mongodb/2 [idle] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/0 [idle] active: Primary
+  mongodb/1 [idle] active: 
+  mongodb/2 [idle] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/0 [idle] active: Primary
+  mongodb/1 [idle] active: 
+  mongodb/2 [idle] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/0 [idle] active: Primary
+  mongodb/1 [idle] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/0 [idle] active: Primary
+  mongodb/1 [idle] active:
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.5.3    unsupported  04:33:12Z
+
+App      Version  Status  Scale  Charm    Channel  Rev  Exposed  Message
+mongodb           active    2/3  mongodb             0  no       
+
+Unit        Workload  Agent  Machine  Public address  Ports      Message
+mongodb/0   active    idle   0        10.20.120.63    27017/tcp  Primary
+mongodb/1*  active    idle   1        10.20.120.165   27017/tcp  
+mongodb/2   unknown   lost   2        10.20.120.200   27017/tcp  agent lost, see 'juju show-status-log mongodb/2'
+
+Machine  State    Address        Inst id        Base          AZ  Message
+0        started  10.20.120.63   juju-6e4d59-0  ubuntu@22.04      Running
+1        started  10.20.120.165  juju-6e4d59-1  ubuntu@22.04      Running
+2        down     10.20.120.200  juju-6e4d59-2  ubuntu@22.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-1: 04:16:23 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 04:16:23 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-1: 04:16:23 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-2: 04:16:25 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 04:16:25 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-2: 04:16:25 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-0: 04:17:43 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 04:17:43 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-0: 04:17:43 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-1: 04:17:50 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:ct593m9p3401jqelm920 seems to have no observers, could be removed
+unit-mongodb-1: 04:30:30 ERROR unit.mongodb/1.juju-log Uncaught exception while in charm code:
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/./src/charm.py", line 1598, in <module>
+    main(MongodbOperatorCharm)
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/ops/main.py", line 551, in main
+    manager.run()
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/ops/main.py", line 530, in run
+    self._emit()
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/ops/main.py", line 519, in _emit
+    _emit_charm_event(self.charm, self.dispatcher.event_name)
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/ops/main.py", line 147, in _emit_charm_event
+    event_to_emit.emit(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/ops/framework.py", line 348, in emit
+    framework._emit(event)
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/ops/framework.py", line 860, in _emit
+    self._reemit(event_path)
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/ops/framework.py", line 950, in _reemit
+    custom_handler(event)
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/src/upgrades/mongodb_upgrade.py", line 148, in _on_pre_upgrade_check_action
+    self._upgrade.pre_upgrade_check()
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/lib/charms/mongodb/v0/upgrade_helpers.py", line 336, in pre_upgrade_check
+    if not self._charm.upgrade.is_cluster_able_to_read_write():
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/lib/charms/mongodb/v0/upgrade_helpers.py", line 521, in is_cluster_able_to_read_write
+    return self.is_replica_set_able_read_write()
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/lib/charms/mongodb/v0/upgrade_helpers.py", line 572, in is_replica_set_able_read_write
+    write_replicated = self.is_write_on_secondaries(
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/lib/charms/mongodb/v0/upgrade_helpers.py", line 651, in is_write_on_secondaries
+    self.confirm_excepted_write_on_replica(
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/tenacity/__init__.py", line 336, in wrapped_f
+    return copy(f, *args, **kw)
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/tenacity/__init__.py", line 475, in __call__
+    do = self.iter(retry_state=retry_state)
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/tenacity/__init__.py", line 376, in iter
+    result = action(retry_state)
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/tenacity/__init__.py", line 418, in exc_check
+    raise retry_exc.reraise()
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/tenacity/__init__.py", line 185, in reraise
+    raise self.last_attempt.result()
+  File "/usr/lib/python3.10/concurrent/futures/_base.py", line 451, in result
+    return self.__get_result()
+  File "/usr/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/tenacity/__init__.py", line 478, in __call__
+    result = fn(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/lib/charms/mongodb/v0/upgrade_helpers.py", line 610, in confirm_excepted_write_on_replica
+    if query[0][WRITE_KEY] != expected_write_value:
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/cursor.py", line 638, in __getitem__
+    for doc in clone:  # type: ignore[attr-defined]
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/cursor.py", line 1281, in __next__
+    return self.next()
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/cursor.py", line 1257, in next
+    if len(self._data) or self._refresh():
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/cursor.py", line 1205, in _refresh
+    self._send_message(q)
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/cursor.py", line 1100, in _send_message
+    response = client._run_operation(
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/mongo_client.py", line 1754, in _run_operation
+    return self._retryable_read(
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/mongo_client.py", line 1863, in _retryable_read
+    return self._retry_internal(
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/mongo_client.py", line 1830, in _retry_internal
+    ).run()
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/mongo_client.py", line 2554, in run
+    return self._read() if self._is_read else self._write()
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/mongo_client.py", line 2689, in _read
+    self._server = self._get_server()
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/mongo_client.py", line 2645, in _get_server
+    return self._client._select_server(
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/mongo_client.py", line 1649, in _select_server
+    server = topology.select_server(
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/topology.py", line 398, in select_server
+    server = self._select_server(
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/topology.py", line 376, in _select_server
+    servers = self.select_servers(
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/topology.py", line 283, in select_servers
+    server_descriptions = self._select_servers_loop(
+  File "/var/lib/juju/agents/unit-mongodb-1/charm/venv/pymongo/synchronous/topology.py", line 333, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+pymongo.errors.ServerSelectionTimeoutError: No servers found yet, Timeout: 1.0s, Topology Description: <TopologyDescription id: 674a94e539d72fb3257710fe, topology_type: Single, servers: [<ServerDescription ('10.20.120.200', 27017) server_type: Unknown, rtt: None>]>
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...

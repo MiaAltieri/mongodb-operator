@@ -1,0 +1,87 @@
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/0 [idle] active: 
+  mongodb/1 [idle] active: 
+  mongodb/2 [idle] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/0 [idle] active: 
+  mongodb/1 [idle] active: 
+  mongodb/2 [idle] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/0 [idle] active: 
+  mongodb/1 [idle] active: 
+  mongodb/2 [idle] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/0 [idle] active: 
+  mongodb/1 [idle] active: Primary
+  mongodb/2 [idle] active:
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.5.3    unsupported  04:33:39Z
+
+App                       Version  Status  Scale  Charm                     Channel        Rev  Exposed  Message
+mongodb                            active      3  mongodb                                    0  no       
+self-signed-certificates           active      1  self-signed-certificates  latest/stable  155  no       
+
+Unit                         Workload  Agent  Machine  Public address  Ports      Message
+mongodb/0                    active    idle   0        10.242.239.136  27017/tcp  
+mongodb/1                    active    idle   1        10.242.239.112  27017/tcp  Primary
+mongodb/2*                   active    idle   2        10.242.239.196  27017/tcp  
+self-signed-certificates/0*  active    idle   3        10.242.239.140             
+
+Machine  State    Address         Inst id        Base          AZ  Message
+0        started  10.242.239.136  juju-9526b6-0  ubuntu@22.04      Running
+1        started  10.242.239.112  juju-9526b6-1  ubuntu@22.04      Running
+2        started  10.242.239.196  juju-9526b6-2  ubuntu@22.04      Running
+3        started  10.242.239.140  juju-9526b6-3  ubuntu@22.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-2: 04:17:47 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 04:17:47 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-2: 04:17:47 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-1: 04:18:03 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 04:18:03 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-1: 04:18:03 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-0: 04:18:04 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 04:18:04 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-0: 04:18:04 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-2: 04:20:07 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:ct594okragn1jocune70 seems to have no observers, could be removed
+machine-3: 04:23:32 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-3: 04:23:32 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-self-signed-certificates-0: 04:23:32 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-0: 04:24:00 ERROR unit.mongodb/0.juju-log certificates:2: Non-existing secret unit:int-cert-secret was attempted to be removed.
+unit-mongodb-2: 04:24:00 ERROR unit.mongodb/2.juju-log certificates:2: Non-existing secret unit:int-cert-secret was attempted to be removed.
+unit-mongodb-1: 04:24:00 ERROR unit.mongodb/1.juju-log certificates:2: Non-existing secret unit:int-cert-secret was attempted to be removed.
+unit-mongodb-0: 04:24:00 ERROR unit.mongodb/0.juju-log certificates:2: Non-existing secret unit:ext-cert-secret was attempted to be removed.
+unit-mongodb-2: 04:24:00 ERROR unit.mongodb/2.juju-log certificates:2: Non-existing secret unit:ext-cert-secret was attempted to be removed.
+unit-mongodb-1: 04:24:01 ERROR unit.mongodb/1.juju-log certificates:2: Non-existing secret unit:ext-cert-secret was attempted to be removed.
+unit-mongodb-2: 04:25:05 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune8g seems to have no observers, could be removed
+unit-mongodb-1: 04:25:07 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune90 seems to have no observers, could be removed
+unit-mongodb-0: 04:25:07 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune80 seems to have no observers, could be removed
+unit-mongodb-1: 04:25:08 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune90 seems to have no observers, could be removed
+unit-mongodb-0: 04:25:08 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune80 seems to have no observers, could be removed
+unit-mongodb-2: 04:25:08 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune8g seems to have no observers, could be removed
+unit-mongodb-2: 04:27:29 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune8g seems to have no observers, could be removed
+unit-mongodb-2: 04:27:30 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune8g seems to have no observers, could be removed
+unit-mongodb-0: 04:27:31 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune80 seems to have no observers, could be removed
+unit-mongodb-2: 04:27:31 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune8g seems to have no observers, could be removed
+unit-mongodb-0: 04:27:31 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune80 seems to have no observers, could be removed
+unit-mongodb-0: 04:27:32 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune80 seems to have no observers, could be removed
+unit-mongodb-1: 04:27:46 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune90 seems to have no observers, could be removed
+unit-mongodb-1: 04:27:47 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune90 seems to have no observers, could be removed
+unit-mongodb-1: 04:27:48 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune90 seems to have no observers, could be removed
+unit-mongodb-1: 04:30:12 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune90 seems to have no observers, could be removed
+unit-mongodb-2: 04:30:12 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune8g seems to have no observers, could be removed
+unit-mongodb-1: 04:30:12 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune90 seems to have no observers, could be removed
+unit-mongodb-0: 04:30:12 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune80 seems to have no observers, could be removed
+unit-mongodb-2: 04:30:13 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune8g seems to have no observers, could be removed
+unit-mongodb-1: 04:30:13 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune90 seems to have no observers, could be removed
+unit-mongodb-0: 04:30:13 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune80 seems to have no observers, could be removed
+unit-mongodb-2: 04:30:14 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune8g seems to have no observers, could be removed
+unit-mongodb-0: 04:30:14 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune80 seems to have no observers, could be removed
+unit-mongodb-0: 04:31:54 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune80 seems to have no observers, could be removed
+unit-mongodb-2: 04:31:54 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune8g seems to have no observers, could be removed
+unit-mongodb-1: 04:31:54 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:ct596o4ragn1jocune90 seems to have no observers, could be removed
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
