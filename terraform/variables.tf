@@ -1,26 +1,52 @@
-# Copyright 2024 Canonical Ltd.
-# See LICENSE file for licensing details.
-
-variable "model_name" {
-  description = "Name of Juju model to deploy application to"
+variable "juju_model_name" {
+  description = "Juju model name"
   type        = string
-  default     = ""
 }
 
 variable "app_name" {
-  description = "Name of the application in the Juju model"
+  description = "Name of the application in the Juju model."
   type        = string
   default     = "mongodb"
 }
 
 variable "channel" {
-  description = "The channel to use when deploying a charm"
+  description = "Charm channel to use when deploying"
   type        = string
-  default     = "6/beta"
+  default     = "6/stable"
+}
+
+variable "revision" {
+  description = "Revision number to deploy charm"
+  type        = number
+  default     = null
+}
+
+variable "base" {
+  description = "Application base"
+  type        = string
+  default     = "ubuntu@22.04"
+}
+
+variable "units" {
+  description = "Number of units to deploy"
+  type        = number
+  default     = 1
+}
+
+variable "constraints" {
+  description = "Juju constraints to apply for this application."
+  type        = string
+  default     = "arch=amd64"
+}
+
+variable "storage_size" {
+  description = "Storage size"
+  type        = string
+  default     = "10G"
 }
 
 variable "config" {
-  description = "Additional configuration for the MongoDB. Details about available options can be found at https://charmhub.io/mongodb/configure?channel=6/beta."
+  description = "Application configuration. Details at https://charmhub.io/mongodb/configurations"
   type        = map(string)
   default     = {}
 }

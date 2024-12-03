@@ -1,16 +1,19 @@
-# Copyright 2024 Canonical Ltd.
-# See LICENSE file for licensing details.
-
-resource "juju_application" "mongodb" {
+resource "juju_application" "machine_mongodb" {
   name  = var.app_name
-  model = var.model_name
+  model = var.juju_model_name
 
   charm {
-    name    = "mongodb"
-    channel = var.channel
-    base    = "ubuntu@22.04"
+    name     = "mongodb"
+    channel  = var.channel
+    revision = var.revision
+    base     = var.base
   }
-  config = var.config
-  units  = 1
-  trust  = true
+
+  storage_directives = {
+    mongodb = var.storage_size
+  }
+
+  units       = var.units
+  constraints = var.constraints
+  config      = var.config
 }
