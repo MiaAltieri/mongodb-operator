@@ -1,6 +1,7 @@
-resource "juju_application" "machine_mongodb" {
-  name  = var.app_name
-  model = var.juju_model_name
+# Copyright 2024 Canonical Ltd.
+# See LICENSE file for licensing details.
+
+resource "juju_application" "mongodb" {
 
   charm {
     name     = "mongodb"
@@ -8,12 +9,33 @@ resource "juju_application" "machine_mongodb" {
     revision = var.revision
     base     = var.base
   }
-
-  storage_directives = {
-    mongodb = var.storage_size
-  }
-
+  config      = var.config
+  model       = var.model
+  name        = var.app_name
   units       = var.units
   constraints = var.constraints
-  config      = var.config
+
+
+  # TODO: uncomment once final fixes have been added for:
+  # Error: juju/terraform-provider-juju#443, juju/terraform-provider-juju#182
+  # placement = join(",", var.machines)
+
+  endpoint_bindings = [
+    for k, v in var.endpoint_bindings : {
+      endpoint = k, space = v
+    }
+  ]
+
+  storage_directives = var.storage
+
+  lifecycle {
+    precondition {
+      condition     = length(var.machines) == 0 || length(var.machines) == var.units
+      error_message = "Machine count does not match unit count"
+    }
+    precondition {
+      condition     = length(var.storage) == 0 || lookup(var.storage, "count", 0) <= 1
+      error_message = "Only one storage is supported"
+    }
+  }
 }

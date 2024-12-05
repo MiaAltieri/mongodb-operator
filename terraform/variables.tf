@@ -1,52 +1,67 @@
-variable "juju_model_name" {
-  description = "Juju model name"
-  type        = string
-}
+# Copyright 2024 Canonical Ltd.
+# See LICENSE file for licensing details.
 
 variable "app_name" {
-  description = "Name of the application in the Juju model."
+  description = "Application name"
   type        = string
   default     = "mongodb"
 }
 
 variable "channel" {
-  description = "Charm channel to use when deploying"
+  description = "Charm channel"
   type        = string
   default     = "6/stable"
 }
 
-variable "revision" {
-  description = "Revision number to deploy charm"
-  type        = number
-  default     = null
-}
-
 variable "base" {
-  description = "Application base"
+  description = "Charm base (old name: series)"
   type        = string
   default     = "ubuntu@22.04"
 }
 
-variable "units" {
-  description = "Number of units to deploy"
+variable "config" {
+  description = "Map of charm configuration options"
+  type        = map(string)
+  default     = {}
+}
+
+variable "model" {
+  description = "Model name"
+  type        = string
+}
+
+variable "revision" {
+  description = "Charm revision"
   type        = number
-  default     = 1
+  default     = null
+}
+
+variable "units" {
+  description = "Charm units"
+  type        = number
+  default     = 3
 }
 
 variable "constraints" {
-  description = "Juju constraints to apply for this application."
+  description = "String listing constraints for this application"
   type        = string
   default     = "arch=amd64"
 }
 
-variable "storage_size" {
-  description = "Storage size"
-  type        = string
-  default     = "10G"
+variable "machines" {
+  description = "List of machines for placement"
+  type        = list(string)
+  default     = []
 }
 
-variable "config" {
-  description = "Application configuration. Details at https://charmhub.io/mongodb/configurations"
+variable "storage" {
+  description = "Map of storage used by the application"
+  type        = map(string)
+  default     = {}
+}
+
+variable "endpoint_bindings" {
+  description = "Map of endpoint bindings"
   type        = map(string)
   default     = {}
 }
