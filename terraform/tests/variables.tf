@@ -1,4 +1,4 @@
-variable "juju_model_name" {
+variable "model" {
   description = "Model name"
   type        = string
 }

@@ -77,7 +77,7 @@ jobs:
       - name: Terraform deploy
         run: |
           pushd ./terraform/tests/
-          TF_VAR_model_name="test" terraform apply -target null_resource.simple_deployment_juju_wait_deployment -auto-approve
+          terraform apply  -var "model=test" -target null_resource.simple_deployment_juju_wait_deployment -auto-approve
           popd
 
   lib-check:
