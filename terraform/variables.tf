@@ -13,11 +13,7 @@ variable "channel" {
   default     = "6/stable"
 }
 
-variable "base" {
-  description = "Charm base (old name: series)"
-  type        = string
-  default     = "ubuntu@22.04"
-}
+
 
 variable "config" {
   description = "Map of charm configuration options"
