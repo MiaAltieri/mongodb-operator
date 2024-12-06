@@ -1,4 +1,4 @@
-variable "model" {
+variable "model_name" {
   description = "Model name"
   type        = string
 }
