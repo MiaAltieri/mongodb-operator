@@ -75,10 +75,9 @@ jobs:
           juju model-defaults logging-config='<root>=INFO; unit=DEBUG'
           juju add-model test
       - name: Terraform deploy
+        working-directory: ./terraform/tests/
         run: |
-          pushd ./terraform/tests/
           terraform apply  -var "model=test" -target null_resource.simple_deployment_juju_wait_deployment -auto-approve
-          popd
 
   lib-check:
     name: Check libraries
