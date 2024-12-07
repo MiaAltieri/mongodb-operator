@@ -1,0 +1,26 @@
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.5.3    unsupported  03:29:19Z
+
+App      Version  Status  Scale  Charm    Channel  Rev  Exposed  Message
+mongodb           active    1/3  mongodb             0  no       
+
+Unit        Workload  Agent       Machine  Public address  Ports      Message
+mongodb/0   waiting   allocating  0        10.239.85.175              waiting for machine
+mongodb/1   waiting   allocating  1        10.239.85.147              waiting for machine
+mongodb/2*  active    idle        2        10.239.85.68    27017/tcp  Primary
+
+Machine  State    Address        Inst id        Base          AZ  Message
+0        pending  10.239.85.175  juju-004147-0  ubuntu@22.04      Running
+1        pending  10.239.85.147  juju-004147-1  ubuntu@22.04      Running
+2        started  10.239.85.68   juju-004147-2  ubuntu@22.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-2: 03:21:08 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 03:21:08 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-2: 03:21:08 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-2: 03:22:18 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:ct9rul9d305hjo6tlg80 seems to have no observers, could be removed
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
