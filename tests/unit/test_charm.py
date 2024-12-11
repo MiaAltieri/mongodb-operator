@@ -18,7 +18,6 @@ from tenacity import stop_after_attempt
 from charm import MongodbOperatorCharm, NotReadyError, subprocess
 from config import Config
 
-
 from .helpers import patch_network_get
 
 REPO_NAME = "deb-https://repo.mongodb.org/apt/ubuntu-focal/mongodb-org/5.0"

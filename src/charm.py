@@ -13,7 +13,6 @@ from typing import Dict, List, Optional, Set
 
 from charms.grafana_agent.v0.cos_agent import COSAgentProvider
 from charms.mongodb.v0.config_server_interface import ClusterProvider
-from charms.operator_libs_linux.v0 import sysctl
 from charms.mongodb.v0.mongo import MongoConfiguration
 from charms.mongodb.v0.mongodb_secrets import SecretCache, generate_secret_label
 from charms.mongodb.v0.set_status import MongoDBStatusHandler
@@ -41,6 +40,7 @@ from charms.mongodb.v1.users import (
     MonitorUser,
     OperatorUser,
 )
+from charms.operator_libs_linux.v0 import sysctl
 from charms.operator_libs_linux.v1.systemd import service_running
 from charms.operator_libs_linux.v2 import snap
 from data_platform_helpers.version_check import (
