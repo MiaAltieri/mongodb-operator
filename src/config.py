@@ -133,6 +133,13 @@ class Config:
         VM = "vm"
         K8S = "k8s"
 
+    class Sysctl:
+        """Constants for Sysctl."""
+
+        OS_REQUIREMENTS = {
+            "vm.max_map_count": "262144",
+        }
+
     class Upgrade:
         """Upgrade related constants."""
 

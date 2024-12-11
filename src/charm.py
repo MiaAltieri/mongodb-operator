@@ -13,6 +13,7 @@ from typing import Dict, List, Optional, Set
 
 from charms.grafana_agent.v0.cos_agent import COSAgentProvider
 from charms.mongodb.v0.config_server_interface import ClusterProvider
+from charms.operator_libs_linux.v0 import sysctl
 from charms.mongodb.v0.mongo import MongoConfiguration
 from charms.mongodb.v0.mongodb_secrets import SecretCache, generate_secret_label
 from charms.mongodb.v0.set_status import MongoDBStatusHandler
@@ -161,6 +162,9 @@ class MongodbOperatorCharm(CharmBase):
         )
 
         self.secrets = SecretCache(self)
+
+        self.sysctl_config = sysctl.Config(name=self.app.name)
+        self.framework.observe(getattr(self.on, "remove"), self._on_remove)
 
     # BEGIN: properties
     def _mongo_scrape_config(self) -> List[Dict]:
@@ -399,6 +403,8 @@ class MongodbOperatorCharm(CharmBase):
         setup_logrotate_and_cron()
         # add licenses
         copy_licenses_to_unit()
+
+        self._set_os_config()
 
     def _on_config_changed(self, event: ConfigChangedEvent) -> None:
         """Listen to changes in application configuration.
@@ -646,6 +652,10 @@ class MongodbOperatorCharm(CharmBase):
             )
         except PyMongoError as e:
             logger.error("Failed to remove %s from replica set, error=%r", self.unit.name, e)
+
+    def _on_remove(self, _) -> None:
+        """Handler for removal."""
+        self.sysctl_config.remove()
 
     def _on_update_status(self, event: UpdateStatusEvent):
         # user-made mistakes might result in other incorrect statues. Prioritise informing users of
@@ -1069,6 +1079,17 @@ class MongodbOperatorCharm(CharmBase):
                     "An exception occurred when installing %s. Reason: %s", snap_name, str(e)
                 )
                 raise
+
+    def _set_os_config(self) -> None:
+        """Sets sysctl config."""
+        try:
+            self.sysctl_config.configure(Config.Sysctl.OS_REQUIREMENTS)
+        except (sysctl.ApplyError, sysctl.ValidationError, sysctl.CommandError) as e:
+            # we allow events to continue in the case that we are not able to correctly configure
+            # sysctl config, since we can  still run the workload with wrong sysctl parameters
+            # even if it is not optimal.
+            logger.error(f"Error setting values on sysctl: {e.message}")
+            logger.warning("sysctl params cannot be set. Is the machine running on a container?")
 
     def _instatiate_keyfile(self, event: StartEvent) -> None:
         # wait for keyFile to be created by leader unit
