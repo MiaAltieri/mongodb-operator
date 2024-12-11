@@ -16,6 +16,8 @@ from pymongo.errors import ConfigurationError, ConnectionFailure, OperationFailu
 from tenacity import stop_after_attempt
 
 from charm import MongodbOperatorCharm, NotReadyError, subprocess
+from config import Config
+
 
 from .helpers import patch_network_get
 
@@ -187,6 +189,19 @@ class TestCharm(unittest.TestCase):
         snap_cache.side_effect = snap.SnapError
         self.harness.charm.on.install.emit()
         self.assertTrue(isinstance(self.harness.charm.unit.status, BlockedStatus))
+
+    @patch_network_get(private_address="1.1.1.1")
+    @patch("charm.update_mongod_service")
+    @patch("charm.snap.SnapCache")
+    @patch("charm.setup_logrotate_and_cron")
+    @patch("charm.copy_licenses_to_unit")
+    @patch("subprocess.check_call")
+    @patch("builtins.open")
+    @patch("charm.sysctl.Config.configure")
+    def test_install(self, patched_os_config, *unused):
+        """Test verifies the correct functions get called when installing apt packages."""
+        self.harness.charm.on.install.emit()
+        patched_os_config.assert_called_once_with(Config.Sysctl.OS_REQUIREMENTS)
 
     @patch_network_get(private_address="1.1.1.1")
     def test_app_hosts(self):
