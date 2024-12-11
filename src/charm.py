@@ -377,6 +377,7 @@ class MongodbOperatorCharm(CharmBase):
 
     def _on_install(self, event: InstallEvent) -> None:
         """Handle the install event (fired on startup)."""
+        self._set_os_config()
         self.status.set_and_share_status(MaintenanceStatus("installing MongoDB"))
         try:
             self.install_snap_packages(packages=Config.SNAP_PACKAGES)
@@ -403,7 +404,6 @@ class MongodbOperatorCharm(CharmBase):
         setup_logrotate_and_cron()
         # add licenses
         copy_licenses_to_unit()
-        self._set_os_config()
 
     def _on_config_changed(self, event: ConfigChangedEvent) -> None:
         """Listen to changes in application configuration.
