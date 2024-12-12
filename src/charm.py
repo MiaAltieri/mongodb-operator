@@ -1059,7 +1059,7 @@ class MongodbOperatorCharm(CharmBase):
                 snap_cache = snap.SnapCache()
                 snap_package = snap_cache[snap_name]
                 snap_package.ensure(
-                    snap.SnapState.Latest, channel=snap_channel, revision=snap_revision
+                    snap.SnapState.Latest, revision=snap_revision
                 )
                 # snaps will auto refresh so it is necessary to hold the current revision
                 snap_package.hold()
