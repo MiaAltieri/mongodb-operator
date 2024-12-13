@@ -40,6 +40,7 @@ from charms.mongodb.v1.users import (
     MonitorUser,
     OperatorUser,
 )
+from charms.operator_libs_linux.v0 import sysctl
 from charms.operator_libs_linux.v1.systemd import service_running
 from charms.operator_libs_linux.v2 import snap
 from data_platform_helpers.version_check import (
@@ -161,6 +162,9 @@ class MongodbOperatorCharm(CharmBase):
         )
 
         self.secrets = SecretCache(self)
+
+        self.sysctl_config = sysctl.Config(name=self.app.name)
+        self.framework.observe(getattr(self.on, "remove"), self._on_remove)
 
     # BEGIN: properties
     def _mongo_scrape_config(self) -> List[Dict]:
@@ -373,6 +377,7 @@ class MongodbOperatorCharm(CharmBase):
 
     def _on_install(self, event: InstallEvent) -> None:
         """Handle the install event (fired on startup)."""
+        self._set_os_config()
         self.status.set_and_share_status(MaintenanceStatus("installing MongoDB"))
         try:
             self.install_snap_packages(packages=Config.SNAP_PACKAGES)
@@ -646,6 +651,10 @@ class MongodbOperatorCharm(CharmBase):
             )
         except PyMongoError as e:
             logger.error("Failed to remove %s from replica set, error=%r", self.unit.name, e)
+
+    def _on_remove(self, _) -> None:
+        """Handler for removal."""
+        self.sysctl_config.remove()
 
     def _on_update_status(self, event: UpdateStatusEvent):
         # user-made mistakes might result in other incorrect statues. Prioritise informing users of
@@ -1069,6 +1078,19 @@ class MongodbOperatorCharm(CharmBase):
                     "An exception occurred when installing %s. Reason: %s", snap_name, str(e)
                 )
                 raise
+
+    def _set_os_config(self) -> None:
+        """Sets sysctl config."""
+        try:
+            self.sysctl_config.configure(Config.Sysctl.OS_REQUIREMENTS)
+        except (sysctl.ApplyError, sysctl.ValidationError, sysctl.CommandError) as e:
+            # we allow events to continue in the case that we are not able to correctly configure
+            # sysctl config, since we can  still run the workload with wrong sysctl parameters
+            # even if it is not optimal.
+            logger.error(f"Error setting values on sysctl: {e.message}")
+            # containers share the kernel with the host system, and some sysctl parameters are
+            # set at kernel level.
+            logger.warning("sysctl params cannot be set. Is the machine running on a container?")
 
     def _instatiate_keyfile(self, event: StartEvent) -> None:
         # wait for keyFile to be created by leader unit
