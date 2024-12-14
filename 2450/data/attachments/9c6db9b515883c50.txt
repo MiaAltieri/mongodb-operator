@@ -1,0 +1,84 @@
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.5.3    unsupported  04:56:00Z
+
+App            Version  Status  Scale  Charm    Channel  Rev  Exposed  Message
+config-server           active      3  mongodb  6/edge   206  no       
+shard-one               active      3  mongodb  6/edge   206  no       
+shard-two               active      3  mongodb  6/edge   206  no       
+
+Unit              Workload  Agent      Machine  Public address  Ports            Message
+config-server/0   active    idle       0        10.179.115.70   27017-27018/tcp  
+config-server/1   active    idle       1        10.179.115.223  27017-27018/tcp  
+config-server/2*  blocked   idle       2        10.179.115.89   27017-27018/tcp  missing relation to shard(s)
+shard-one/0       blocked   idle       3        10.179.115.230  27017/tcp        missing relation to config server
+shard-one/1       blocked   idle       4        10.179.115.153  27017/tcp        missing relation to config server
+shard-one/2*      blocked   idle       5        10.179.115.95   27017/tcp        missing relation to config server
+shard-two/0*      blocked   executing  6        10.179.115.189  27017/tcp        missing relation to config server
+shard-two/1       blocked   executing  7        10.179.115.62   27017/tcp        missing relation to config server
+shard-two/2       blocked   executing  8        10.179.115.21   27017/tcp        missing relation to config server
+
+Machine  State    Address         Inst id        Base          AZ  Message
+0        started  10.179.115.70   juju-fdc625-0  ubuntu@22.04      Running
+1        started  10.179.115.223  juju-fdc625-1  ubuntu@22.04      Running
+2        started  10.179.115.89   juju-fdc625-2  ubuntu@22.04      Running
+3        started  10.179.115.230  juju-fdc625-3  ubuntu@22.04      Running
+4        started  10.179.115.153  juju-fdc625-4  ubuntu@22.04      Running
+5        started  10.179.115.95   juju-fdc625-5  ubuntu@22.04      Running
+6        started  10.179.115.189  juju-fdc625-6  ubuntu@22.04      Running
+7        started  10.179.115.62   juju-fdc625-7  ubuntu@22.04      Running
+8        started  10.179.115.21   juju-fdc625-8  ubuntu@22.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-6: 04:45:03 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-6: 04:45:03 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-two-0: 04:45:04 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-7: 04:45:04 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-7: 04:45:04 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-two-1: 04:45:04 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-5: 04:45:08 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-5: 04:45:08 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-2: 04:45:09 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-shard-two-0: 04:45:31 ERROR unit.shard-two/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-shard-two-0: 04:45:31 ERROR unit.shard-two/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-shard-two-1: 04:45:32 ERROR unit.shard-two/1.juju-log Unable to set params: ['vm.max_map_count']
+unit-shard-two-1: 04:45:32 ERROR unit.shard-two/1.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-shard-one-2: 04:45:35 ERROR unit.shard-one/2.juju-log Unable to set params: ['vm.max_map_count']
+unit-shard-one-2: 04:45:35 ERROR unit.shard-one/2.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-2: 04:45:36 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 04:45:36 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-2: 04:45:36 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-1: 04:45:41 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 04:45:41 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-1: 04:45:41 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-config-server-2: 04:46:03 ERROR unit.config-server/2.juju-log Unable to set params: ['vm.max_map_count']
+unit-config-server-2: 04:46:03 ERROR unit.config-server/2.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-config-server-1: 04:46:08 ERROR unit.config-server/1.juju-log Unable to set params: ['vm.max_map_count']
+unit-config-server-1: 04:46:08 ERROR unit.config-server/1.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-4: 04:46:12 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-4: 04:46:12 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-1: 04:46:12 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-shard-two-0: 04:46:19 ERROR unit.shard-two/0.juju-log _on_secret_remove: Secret secret:ctegr0mqgebhibaoqjq0 seems to have no observers, could be removed
+machine-3: 04:46:23 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-3: 04:46:23 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-2: 04:46:23 ERROR unit.shard-one/2.juju-log _on_secret_remove: Secret secret:ctegr1mqgebhibaoqjqg seems to have no observers, could be removed
+unit-shard-one-0: 04:46:23 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-shard-one-1: 04:46:37 ERROR unit.shard-one/1.juju-log Unable to set params: ['vm.max_map_count']
+unit-shard-one-1: 04:46:37 ERROR unit.shard-one/1.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-shard-one-0: 04:46:47 ERROR unit.shard-one/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-shard-one-0: 04:46:47 ERROR unit.shard-one/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-8: 04:47:18 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-8: 04:47:18 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-two-2: 04:47:18 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-shard-two-2: 04:47:40 ERROR unit.shard-two/2.juju-log Unable to set params: ['vm.max_map_count']
+unit-shard-two-2: 04:47:40 ERROR unit.shard-two/2.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-0: 04:47:53 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 04:47:53 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-0: 04:47:53 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-config-server-0: 04:48:13 ERROR unit.config-server/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-config-server-0: 04:48:13 ERROR unit.config-server/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-config-server-2: 04:54:34 ERROR unit.config-server/2.juju-log _on_secret_remove: Secret secret:ctegusuqgebhibaoqjr0 seems to have no observers, could be removed
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
