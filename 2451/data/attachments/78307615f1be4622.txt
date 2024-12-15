@@ -1,0 +1,82 @@
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  application/0 [idle] active: received database credentials of the second database
+  application/1 [idle] active: received database credentials of the second database
+  another-database/0 [idle] active: Primary
+  mongodb/2 [executing] active: Primary
+  mongodb/3 [executing] active:
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.5.3    unsupported  03:59:37Z
+
+App                  Version  Status  Scale  Charm        Channel  Rev  Exposed  Message
+another-application           active      1  application             1  no       received database credentials of the first database
+another-database              active      1  mongodb                 0  no       
+application                   active      2  application             0  no       received database credentials of the second database
+mongodb                       active      2  mongodb                 1  no       
+
+Unit                    Workload  Agent  Machine  Public address  Ports      Message
+another-application/0*  active    idle   7        10.157.200.5               received database credentials of the first database
+another-database/0*     active    idle   4        10.157.200.70   27017/tcp  Primary
+application/0*          active    idle   0        10.157.200.137             received database credentials of the second database
+application/1           active    idle   1        10.157.200.29              received database credentials of the second database
+mongodb/2               active    idle   5        10.157.200.2    27017/tcp  Primary
+mongodb/3*              active    idle   6        10.157.200.75   27017/tcp  
+
+Machine  State    Address         Inst id        Base          AZ  Message
+0        started  10.157.200.137  juju-7fdfd7-0  ubuntu@20.04      Running
+1        started  10.157.200.29   juju-7fdfd7-1  ubuntu@20.04      Running
+4        started  10.157.200.70   juju-7fdfd7-4  ubuntu@22.04      Running
+5        started  10.157.200.2    juju-7fdfd7-5  ubuntu@22.04      Running
+6        started  10.157.200.75   juju-7fdfd7-6  ubuntu@22.04      Running
+7        started  10.157.200.5    juju-7fdfd7-7  ubuntu@20.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-0: 03:46:57 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 03:46:57 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-application-0: 03:46:57 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-4: 03:47:38 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-4: 03:47:38 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-another-database-0: 03:47:38 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-2: 03:47:42 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 03:47:42 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-3: 03:47:42 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-3: 03:47:42 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-0: 03:47:42 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-1: 03:47:42 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-1: 03:47:51 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 03:47:51 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-application-1: 03:47:51 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-another-database-0: 03:48:05 ERROR unit.another-database/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-another-database-0: 03:48:05 ERROR unit.another-database/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-1: 03:48:09 ERROR unit.mongodb/1.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-1: 03:48:09 ERROR unit.mongodb/1.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-0: 03:48:09 ERROR unit.mongodb/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-0: 03:48:09 ERROR unit.mongodb/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-another-database-0: 03:49:21 ERROR unit.another-database/0.juju-log _on_secret_remove: Secret secret:ctf53bnnf55hiab6vlbg seems to have no observers, could be removed
+unit-mongodb-0: 03:49:54 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:ctf53jnnf55hiab6vlc0 seems to have no observers, could be removed
+unit-mongodb-0: 03:52:20 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:ctf53nnnf55hiab6vlcg seems to have no observers, could be removed
+machine-5: 03:52:47 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-5: 03:52:47 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-2: 03:52:48 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-6: 03:52:48 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-6: 03:52:48 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-3: 03:52:48 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-2: 03:53:06 ERROR unit.mongodb/2.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-2: 03:53:06 ERROR unit.mongodb/2.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-3: 03:53:07 ERROR unit.mongodb/3.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-3: 03:53:07 ERROR unit.mongodb/3.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-0: 03:53:44 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:ctf53nnnf55hiab6vlcg seems to have no observers, could be removed
+unit-mongodb-0: 03:53:48 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:ctf53nnnf55hiab6vlcg seems to have no observers, could be removed
+unit-mongodb-3: 03:54:28 ERROR unit.mongodb/3.juju-log _on_secret_remove: Secret secret:ctf53nnnf55hiab6vlcg seems to have no observers, could be removed
+unit-mongodb-3: 03:54:28 ERROR unit.mongodb/3.juju-log _on_secret_remove: Secret secret:ctf53nnnf55hiab6vlcg seems to have no observers, could be removed
+unit-mongodb-3: 03:54:29 ERROR unit.mongodb/3.juju-log _on_secret_remove: Secret secret:ctf53nnnf55hiab6vlcg seems to have no observers, could be removed
+unit-mongodb-3: 03:54:34 ERROR unit.mongodb/3.juju-log _on_secret_remove: Secret secret:ctf53nnnf55hiab6vlcg seems to have no observers, could be removed
+unit-mongodb-3: 03:55:04 ERROR unit.mongodb/3.juju-log _on_secret_remove: Secret secret:ctf53nnnf55hiab6vlcg seems to have no observers, could be removed
+machine-7: 03:56:43 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-7: 03:56:43 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-another-application-0: 03:56:43 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-3: 03:58:47 ERROR unit.mongodb/3.juju-log _on_secret_remove: Secret secret:ctf53nnnf55hiab6vlcg seems to have no observers, could be removed
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
