@@ -1,58 +1,66 @@
-# MongoDB Operator Terraform module
+# Terraform module for mongodb-operator
 
-This folder contains a base [Terraform][Terraform] module for the `mongodb` charm.
+This is a Terraform module facilitating the deployment of the MongoDB charm with [Terraform juju provider](https://github.com/juju/terraform-provider-juju/). For more information, refer to the provider [documentation](https://registry.terraform.io/providers/juju/juju/latest/docs). 
 
-The module uses the [Terraform Juju provider][Terraform Juju provider] to model the charm deployment onto any Kubernetes environment managed by [Juju][Juju].
+## Requirements
+This module requires a `juju` model to be available. Refer to the [usage section](#usage) below for more details.
 
-The base module is not intended to be deployed in separation (it is possible though), but should rather serve as a building block for higher level modules.
+## API
 
-## Module structure
+### Inputs
+The module offers the following configurable inputs:
 
-- **main.tf** - Defines the Juju application to be deployed.
-- **variables.tf** - Allows customization of the deployment such as Juju model name, channel or application name and charm configuration.
-- **output.tf** - Responsible for integrating the module with other Terraform modules, primarily by defining potential integration endpoints (charm integrations), but also by exposing the application name.
-- **terraform.tf** - Defines the Terraform provider.
+| Name | Type | Description | Required |
+| - | - | - | - |
+| `app_name`| string | Application name | False |
+| `channel`| string | Channel that the charm is deployed from | False |
+| `base`| string | The series to be used for this charm | False |
+| `config`| map(string) | Map of the charm configuration options | False |
+| `model_name`| string | Name of the model that the charm is deployed on | True |
+| `resources`| map(string) | Map of the charm resources | False |
+| `revision`| number | Revision number of the charm name | False |
+| `units`| number | Number of units to be deployed | False |
+| `constraints`| string | Machine constraints for the charm | False |
+| `storage`| map(string) | Storage description, must follow the juju provider schema | False |
 
-## Using mongodb base module in higher level modules
 
-If you want to use `mongodb-operator` base module as part of your Terraform module, import it like shown below.
+### Outputs
+Upon applied, the module exports the following outputs:
 
-```text
+| Name | Description |
+| - | - |
+| `app_name`|  Application name |
+| `provides`| Map of `provides` endpoints |
+| `requires`| Map of `requires` endpoints |
+
+## Usage
+
+This module is intended to be used as part of a higher-level module. When defining one, users should ensure that Terraform is aware of the `juju_model` dependency of the charm module. There are two options to do so when creating a high-level module:
+
+### Define a `juju_model` resource
+Define a `juju_model` resource and pass to the `model_name` input a reference to the `juju_model` resource's name. For example:
+
+```
+resource "juju_model" "mongodb" {
+  name = mongodb
+}
+
 module "mongodb-operator" {
-  source = "git::https://github.com/canonical/mongodb-operator.git/terraform"
-  
-  model_name = "juju_model_name"
-  
-  (Customize configuration variables here if needed)
+  source = "<path-to-this-directory>"
+  model_name = juju_model.mongodb.name
 }
 ```
 
-Please see the link to customize the Grafana configuration variables if needed.
+### Define a `data` source
+Define a `data` source and pass to the `model_name` input a reference to the `data.juju_model` resource's name. This will enable Terraform to look for a `juju_model` resource with a name attribute equal to the one provided, and apply only if this is present. Otherwise, it will fail before applying anything.
 
-- [MongoDB configuration options][MongoDB configuration options]
+```
+data "juju_model" "mongodb" {
+  name = var.model_name
+}
 
-Create the integrations, for instance:
-
-```text
-resource "juju_integration" "amf-db" {
-  model = var.model_name
-
-  application {
-    name     = module.amf.app_name
-    endpoint = module.amf.database_endpoint
-  }
-
-  application {
-    name     = module.mongodb.app_name
-    endpoint = module.mongodb.database_endpoint
-  }
+module "mongodb" {
+  source = "<path-to-this-directory>"
+  model_name = data.juju_model.mongodb.name
 }
 ```
-
-Please check the available [integration pairs][integration pairs].
-
-[Terraform]: https://www.terraform.io/
-[Juju]: https://juju.is
-[Terraform Juju provider]: https://registry.terraform.io/providers/juju/juju/latest
-[MongoDB configuration options]: https://charmhub.io/mongodb/configure?channel=6/edge
-[integration pairs]: https://charmhub.io/mongodb/integrations?channel=6/edge

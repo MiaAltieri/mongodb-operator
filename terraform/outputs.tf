@@ -13,11 +13,6 @@ output "database_endpoint" {
   value       = "database"
 }
 
-output "obsolete_endpoint" {
-  description = "Name of the endpoint to provide the mongodb interface."
-  value       = "obsolete"
-}
-
 output "cos_agent_endpoint" {
   description = "Name of the endpoint to provide the cos_agent interface."
   value       = "cos-agent"
@@ -32,22 +27,6 @@ output "cluster_endpoint" {
   description = "Name of the endpoint to provide the config-server interface."
   value       = "cluster"
 }
-
-output "metrics_endpoint" {
-  description = "Name of the endpoint to provide the prometheus_scrape interface."
-  value       = "metrics-endpoint"
-}
-
-output "grafana_dashboard_endpoint" {
-  description = "Name of the endpoint to provide the grafana_dashboard interface."
-  value       = "grafana-dashboard"
-}
-
-output "logging_endpoint" {
-  description = "Name of the endpoint to provide the loki_push_api relation interface."
-  value       = "logging"
-}
-
 
 # Required integration endpoints
 
