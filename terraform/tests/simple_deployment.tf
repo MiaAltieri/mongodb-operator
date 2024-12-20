@@ -3,7 +3,7 @@ module "mongodb" {
   app_name = var.app_name
   model    = var.model_name
   units    = var.simple_mongodb_units
-  channel = "6/edge"
+  channel  = "6/edge"
 }
 
 resource "juju_integration" "simple_deployment_tls-operator_mongodb-integration" {
