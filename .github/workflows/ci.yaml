@@ -51,9 +51,9 @@ jobs:
       - name: lint test charm module
         working-directory: ./terraform/tests
         run: |
-        terraform init
-        terraform fmt
-        terraform validate
+          terraform init
+          terraform fmt
+          terraform validate
       - name: run checks - prepare
         run: |
           sudo snap install juju --channel=3.6/beta --classic
