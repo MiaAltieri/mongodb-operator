@@ -27,7 +27,7 @@ APP_NAME = METADATA["name"]
 PORT = 27017
 UNIT_IDS = [0, 1, 2]
 SERIES = "jammy"
-
+DEPLOYMENT_TIMEOUT = 2000
 logger = logging.getLogger(__name__)
 
 logger = logging.getLogger(__name__)

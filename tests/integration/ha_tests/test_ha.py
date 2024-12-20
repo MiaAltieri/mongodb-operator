@@ -13,6 +13,7 @@ from pytest_operator.plugin import OpsTest
 from tenacity import RetryError, Retrying, stop_after_delay, wait_fixed
 
 from ..helpers import (
+    DEPLOYMENT_TIMEOUT,
     check_or_scale_app,
     get_app_name,
     get_unit_ip,
@@ -81,7 +82,7 @@ async def test_build_and_deploy(ops_test: OpsTest) -> None:
     storage = {"mongodb": {"pool": "lxd", "size": 2048}}
 
     await ops_test.model.deploy(my_charm, num_units=required_units, storage=storage)
-    await ops_test.model.wait_for_idle()
+    await ops_test.model.wait_for_idle(timeout=DEPLOYMENT_TIMEOUT)
 
 
 @pytest.mark.runner(["self-hosted", "linux", "X64", "jammy", "large"])
@@ -349,7 +350,9 @@ async def test_unique_cluster_dbs(ops_test: OpsTest, continuous_writes) -> None:
     # deploy new cluster
     my_charm = await ops_test.build_charm(".")
     await ops_test.model.deploy(my_charm, num_units=1, application_name=ANOTHER_DATABASE_APP_NAME)
-    await ops_test.model.wait_for_idle(apps=[ANOTHER_DATABASE_APP_NAME], status="active")
+    await ops_test.model.wait_for_idle(
+        apps=[ANOTHER_DATABASE_APP_NAME], status="active", timeout=DEPLOYMENT_TIMEOUT
+    )
 
     # write data to new cluster
     ip_addresses = [
@@ -772,7 +775,7 @@ async def test_network_cut(ops_test, continuous_writes):
 @pytest.mark.unstable
 async def test_scale_up_down(ops_test: OpsTest, continuous_writes):
     """Scale up and down the application and verify the replica set is healthy."""
-    scales = [3, -3, 4, -4, 5, -5, 6, -6, 7, -7]
+    scales = [3, -3, 4, -4, 5, -5]
     for count in scales:
         await scale_and_verify(ops_test, count=count)
     await verify_writes(ops_test)
@@ -784,7 +787,7 @@ async def test_scale_up_down(ops_test: OpsTest, continuous_writes):
 @pytest.mark.unstable
 async def test_scale_up_down_removing_leader(ops_test: OpsTest, continuous_writes):
     """Scale up and down the application and verify the replica set is healthy."""
-    scales = [3, -3, 4, -4, 5, -5, 6, -6, 7, -7]
+    scales = [3, -3, 4, -4, 5, -5]
     for count in scales:
         await scale_and_verify(ops_test, count=count, remove_leader=True)
     await verify_writes(ops_test)

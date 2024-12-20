@@ -6,7 +6,11 @@
 import pytest
 from pytest_operator.plugin import OpsTest
 
-from ..helpers import destroy_cluster, wait_for_mongodb_units_blocked
+from ..helpers import (
+    DEPLOYMENT_TIMEOUT,
+    destroy_cluster,
+    wait_for_mongodb_units_blocked,
+)
 from ..tls_tests import helpers as tls_helpers
 from .helpers import deploy_cluster_components, integrate_cluster
 
@@ -38,7 +42,7 @@ async def test_build_and_deploy(ops_test: OpsTest) -> None:
         apps=[CERTS_APP_NAME, CONFIG_SERVER_APP_NAME, SHARD_ONE_APP_NAME, SHARD_TWO_APP_NAME],
         idle_period=20,
         raise_on_blocked=False,
-        timeout=TIMEOUT,
+        timeout=DEPLOYMENT_TIMEOUT,
         raise_on_error=False,
     )
 

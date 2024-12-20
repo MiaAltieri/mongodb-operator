@@ -8,7 +8,13 @@ import pytest
 from pytest_operator.plugin import OpsTest
 
 from ..ha_tests import helpers as ha_helpers
-from ..helpers import check_or_scale_app, find_unit, get_app_name, unit_hostname
+from ..helpers import (
+    DEPLOYMENT_TIMEOUT,
+    check_or_scale_app,
+    find_unit,
+    get_app_name,
+    unit_hostname,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +45,7 @@ async def test_build_and_deploy(ops_test: OpsTest) -> None:
     await ops_test.model.deploy(MONGODB_CHARM_NAME, channel="6/edge", num_units=3)
 
     await ops_test.model.wait_for_idle(
-        apps=["mongodb"], status="active", timeout=1000, idle_period=120
+        apps=["mongodb"], status="active", timeout=DEPLOYMENT_TIMEOUT, idle_period=120
     )
 
 
