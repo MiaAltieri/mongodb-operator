@@ -49,8 +49,8 @@ jobs:
           terraform fmt
           terraform validate
       - name: lint test charm module
-         working-directory: ./terraform/tests
-         run: |
+        working-directory: ./terraform/tests
+        run: |
           terraform init
           terraform fmt
           terraform validate
