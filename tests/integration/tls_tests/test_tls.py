@@ -9,7 +9,7 @@ import pytest
 import yaml
 from pytest_operator.plugin import OpsTest
 
-from ..helpers import UNIT_IDS, check_or_scale_app, get_app_name
+from ..helpers import DEPLOYMENT_TIMEOUT, UNIT_IDS, check_or_scale_app, get_app_name
 from .helpers import (
     EXTERNAL_CERT_PATH,
     INTERNAL_CERT_PATH,
@@ -47,12 +47,14 @@ async def test_build_and_deploy(ops_test: OpsTest) -> None:
         async with ops_test.fast_forward():
             my_charm = await ops_test.build_charm(".")
             await ops_test.model.deploy(my_charm, num_units=3)
-            await ops_test.model.wait_for_idle(apps=[app_name], status="active")
+            await ops_test.model.wait_for_idle(
+                apps=[app_name], status="active", timeout=DEPLOYMENT_TIMEOUT
+            )
 
     config = {"ca-common-name": "Test CA"}
     await ops_test.model.deploy(TLS_CERTIFICATES_APP_NAME, channel="stable", config=config)
     await ops_test.model.wait_for_idle(
-        apps=[TLS_CERTIFICATES_APP_NAME], status="active", timeout=1000
+        apps=[TLS_CERTIFICATES_APP_NAME], status="active", timeout=DEPLOYMENT_TIMEOUT
     )
 
 

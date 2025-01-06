@@ -10,7 +10,7 @@ import pytest
 from pytest_operator.plugin import OpsTest
 
 from ..ha_tests import helpers as ha_helpers
-from ..helpers import find_unit, unit_hostname
+from ..helpers import DEPLOYMENT_TIMEOUT, find_unit, unit_hostname
 from ..sharding_tests.helpers import (
     deploy_cluster_components,
     generate_mongodb_client,
@@ -34,7 +34,6 @@ SHARD_COMPONENTS = [SHARD_ONE_APP_NAME, SHARD_TWO_APP_NAME]
 CLUSTER_COMPONENTS = [SHARD_ONE_APP_NAME, SHARD_TWO_APP_NAME, CONFIG_SERVER_APP_NAME]
 SHARD_REL_NAME = "sharding"
 CONFIG_SERVER_REL_NAME = "config-server"
-TIMEOUT = 15 * 60
 MEDIAN_REELECTION_TIME = 12
 
 
@@ -51,11 +50,17 @@ async def test_build_and_deploy(ops_test: OpsTest) -> None:
     await deploy_cluster_components(ops_test, num_units_cluster_config, channel="6/edge")
 
     await ops_test.model.wait_for_idle(
-        apps=CLUSTER_COMPONENTS, idle_period=20, timeout=TIMEOUT, raise_on_blocked=False
+        apps=CLUSTER_COMPONENTS,
+        idle_period=20,
+        timeout=DEPLOYMENT_TIMEOUT,
+        raise_on_blocked=False,
     )
     await integrate_cluster(ops_test)
     await ops_test.model.wait_for_idle(
-        apps=CLUSTER_COMPONENTS, status="active", idle_period=20, timeout=TIMEOUT
+        apps=CLUSTER_COMPONENTS,
+        status="active",
+        idle_period=20,
+        timeout=DEPLOYMENT_TIMEOUT,
     )
 
 
@@ -152,7 +157,6 @@ async def test_pre_upgrade_check_failure(ops_test: OpsTest) -> None:
             apps=CLUSTER_COMPONENTS,
             idle_period=20,
             status="active",
-            timeout=TIMEOUT,
             raise_on_blocked=False,
         )
 

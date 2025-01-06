@@ -12,7 +12,13 @@ from pytest_operator.plugin import OpsTest
 from tenacity import Retrying, stop_after_delay, wait_fixed
 
 from ..backup_tests import helpers as backup_helpers
-from ..helpers import destroy_cluster, get_leader_id, get_password, set_password
+from ..helpers import (
+    DEPLOYMENT_TIMEOUT,
+    destroy_cluster,
+    get_leader_id,
+    get_password,
+    set_password,
+)
 from . import writes_helpers
 from .helpers import generate_mongodb_client, write_data_to_mongodb
 
@@ -406,7 +412,7 @@ async def deploy_cluster_backup_test(
         apps=[S3_APP_NAME, config_server_name, shard_one_name, shard_two_name],
         idle_period=20,
         raise_on_blocked=False,
-        timeout=TIMEOUT,
+        timeout=DEPLOYMENT_TIMEOUT,
         raise_on_error=False,
     )
 

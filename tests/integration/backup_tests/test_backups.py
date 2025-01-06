@@ -13,6 +13,7 @@ from tenacity import RetryError, Retrying, stop_after_delay, wait_fixed
 
 from ..ha_tests import helpers as ha_helpers
 from ..helpers import (
+    DEPLOYMENT_TIMEOUT,
     destroy_cluster,
     get_app_name,
     is_relation_joined,
@@ -61,7 +62,7 @@ async def test_build_and_deploy(ops_test: OpsTest) -> None:
     # deploy the s3 integrator charm
     await ops_test.model.deploy(S3_APP_NAME, channel="edge")
 
-    await ops_test.model.wait_for_idle()
+    await ops_test.model.wait_for_idle(timeout=DEPLOYMENT_TIMEOUT)
 
 
 @pytest.mark.runner(["self-hosted", "linux", "X64", "jammy", "large"])
@@ -347,7 +348,12 @@ async def test_restore_new_cluster(
     db_charm = await ops_test.build_charm(".")
     await ops_test.model.deploy(db_charm, num_units=3, application_name=new_cluster_app_name)
     await asyncio.gather(
-        ops_test.model.wait_for_idle(apps=[new_cluster_app_name], status="active", idle_period=15),
+        ops_test.model.wait_for_idle(
+            apps=[new_cluster_app_name],
+            status="active",
+            idle_period=15,
+            timeout=DEPLOYMENT_TIMEOUT,
+        ),
     )
 
     db_unit = await helpers.get_leader_unit(ops_test, db_app_name=new_cluster_app_name)

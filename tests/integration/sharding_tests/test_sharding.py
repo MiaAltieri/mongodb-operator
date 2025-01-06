@@ -5,6 +5,7 @@ import pytest
 from pytest_operator.plugin import OpsTest
 
 from ..helpers import (
+    DEPLOYMENT_TIMEOUT,
     get_leader_id,
     get_password,
     set_password,
@@ -71,7 +72,7 @@ async def test_build_and_deploy(ops_test: OpsTest) -> None:
         ],
         idle_period=20,
         raise_on_blocked=False,
-        timeout=TIMEOUT,
+        timeout=DEPLOYMENT_TIMEOUT,
         raise_on_error=False,
     )
 
