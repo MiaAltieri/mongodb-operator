@@ -124,7 +124,7 @@ async def test_rollback_on_shard_and_config_server(
     new_charm = await ops_test.build_charm(".")
     await run_upgrade_sequence(ops_test, CONFIG_SERVER_APP_NAME, new_charm=new_charm)
 
-    with open("charm_internal_version", mode="r") as fd:
+    with open("charm_version", mode="r") as fd:
         revision = fd.read().strip()
 
     # Wait for statuses to settle down

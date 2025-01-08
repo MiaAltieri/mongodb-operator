@@ -21,7 +21,7 @@ class Config:
     MONGODB_SNAP_DATA_DIR = "/var/snap/charmed-mongodb/current"
     MONGOD_CONF_DIR = f"{MONGODB_SNAP_DATA_DIR}/etc/mongod"
     MONGOD_CONF_FILE_PATH = f"{MONGOD_CONF_DIR}/mongod.conf"
-    CHARM_INTERNAL_VERSION_FILE = "charm_internal_version"
+    CHARM_INTERNAL_VERSION_FILE = "charm_version"
     SNAP_PACKAGES = [("charmed-mongodb", "6/edge", 123)]
 
     MONGODB_COMMON_PATH = Path("/var/snap/charmed-mongodb/common")
