@@ -41,6 +41,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Install terraform snap
+        run: |
+          sudo snap install terraform --channel=latest/stable --classic
       - name: lint charm module
         working-directory: ./terraform
         run: |
