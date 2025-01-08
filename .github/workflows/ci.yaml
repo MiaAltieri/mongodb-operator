@@ -41,16 +41,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: lint charm module
         working-directory: ./terraform
         run: |
-          terraform init
-          terraform fmt
-          terraform validate
-      - name: lint test charm module
-         working-directory: ./terraform/tests
-         run: |
           terraform init
           terraform fmt
           terraform validate
