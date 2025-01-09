@@ -34,7 +34,7 @@ jobs:
 
   terraform-test:
     name: Terraform - Lint and Simple Deployment
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 120
     steps:
       - name: Checkout repo
@@ -103,7 +103,7 @@ jobs:
 
   check-terraform:
     name: Check Terraform
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         working-directory: ./terraform
