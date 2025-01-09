@@ -25,6 +25,7 @@ from .ha_tests.helpers import (
     stop_continous_writes,
 )
 from .helpers import (
+    DEPLOYMENT_TIMEOUT,
     PORT,
     UNIT_IDS,
     audit_log_line_sanity_check,
@@ -61,7 +62,7 @@ async def test_build_and_deploy(ops_test: OpsTest) -> None:
 
     my_charm = await ops_test.build_charm(".")
     await ops_test.model.deploy(my_charm, num_units=len(UNIT_IDS))
-    await ops_test.model.wait_for_idle()
+    await ops_test.model.wait_for_idle(timeout=DEPLOYMENT_TIMEOUT)
 
 
 @pytest.mark.runner(["self-hosted", "linux", "X64", "jammy", "large"])

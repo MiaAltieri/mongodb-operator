@@ -7,6 +7,7 @@ import pytest
 from pymongo.errors import OperationFailure
 from pytest_operator.plugin import OpsTest
 
+from ..helpers import DEPLOYMENT_TIMEOUT
 from .helpers import count_users, generate_mongodb_client, get_username_password
 
 MONGOS_HOST_APP_NAME = "application"
@@ -52,7 +53,7 @@ async def test_build_and_deploy(ops_test: OpsTest, mongos_host_application_charm
         apps=[CONFIG_SERVER_APP_NAME, SHARD_ONE_APP_NAME, MONGOS_HOST_APP_NAME],
         idle_period=20,
         raise_on_blocked=False,  # cluster components are blocked waiting for integration.
-        timeout=TIMEOUT,
+        timeout=DEPLOYMENT_TIMEOUT,
         raise_on_error=False,
     )
 

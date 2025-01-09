@@ -13,7 +13,12 @@ from pytest_operator.plugin import OpsTest
 from tenacity import RetryError
 
 from ...ha_tests.helpers import replica_set_primary
-from ...helpers import check_or_scale_app, get_app_name, is_relation_joined
+from ...helpers import (
+    DEPLOYMENT_TIMEOUT,
+    check_or_scale_app,
+    get_app_name,
+    is_relation_joined,
+)
 from .helpers import (
     assert_created_user_can_connect,
     get_application_relation_data,
@@ -89,7 +94,10 @@ async def test_deploy_charms(ops_test: OpsTest, application_charm, database_char
     else:
         APP_NAMES.append(DATABASE_APP_NAME)
     await ops_test.model.wait_for_idle(
-        apps=APP_NAMES, status="active", wait_for_at_least_units=required_units
+        apps=APP_NAMES,
+        status="active",
+        wait_for_at_least_units=required_units,
+        timeout=DEPLOYMENT_TIMEOUT,
     )
 
 
@@ -316,7 +324,9 @@ async def test_two_applications_doesnt_share_the_same_relation_data(
         application_charm,
         application_name=ANOTHER_APPLICATION_NAME,
     )
-    await ops_test.model.wait_for_idle(apps=all_app_names, status="active")
+    await ops_test.model.wait_for_idle(
+        apps=all_app_names, status="active", timeout=DEPLOYMENT_TIMEOUT
+    )
 
     db_app_name = (
         await get_app_name(ops_test, test_deployments=[ANOTHER_DATABASE_APP_NAME])

@@ -5,7 +5,7 @@ import pytest
 from juju.errors import JujuAPIError
 from pytest_operator.plugin import OpsTest
 
-from ..helpers import wait_for_mongodb_units_blocked
+from ..helpers import DEPLOYMENT_TIMEOUT, wait_for_mongodb_units_blocked
 
 S3_APP_NAME = "s3-integrator"
 SHARD_ONE_APP_NAME = "shard"
@@ -75,7 +75,7 @@ async def test_build_and_deploy(
         ],
         idle_period=20,
         raise_on_blocked=False,
-        timeout=TIMEOUT,
+        timeout=DEPLOYMENT_TIMEOUT,
     )
 
     await ops_test.model.integrate(

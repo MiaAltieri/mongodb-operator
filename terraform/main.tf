@@ -7,7 +7,7 @@ resource "juju_application" "mongodb" {
     name     = "mongodb"
     channel  = var.channel
     revision = var.revision
-    base     =  "ubuntu@22.04"
+    base     = "ubuntu@22.04"
   }
   config      = var.config
   model       = var.model

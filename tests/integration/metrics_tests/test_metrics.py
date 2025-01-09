@@ -11,6 +11,7 @@ from pytest_operator.plugin import OpsTest
 
 from ..ha_tests import helpers as ha_helpers
 from ..helpers import (
+    DEPLOYMENT_TIMEOUT,
     UNIT_IDS,
     check_or_scale_app,
     find_unit,
@@ -40,7 +41,7 @@ async def test_build_and_deploy(ops_test: OpsTest) -> None:
 
     my_charm = await ops_test.build_charm(".")
     await ops_test.model.deploy(my_charm, num_units=3)
-    await ops_test.model.wait_for_idle()
+    await ops_test.model.wait_for_idle(timeout=DEPLOYMENT_TIMEOUT)
 
 
 @pytest.mark.runner(["self-hosted", "linux", "X64", "jammy", "large"])

@@ -73,7 +73,7 @@ jobs:
       - name: Terraform deploy
         working-directory: ./terraform/tests/
         run: |
-          terraform apply  -var "model=test" -target null_resource.simple_deployment_juju_wait_deployment -auto-approve
+          terraform apply  -var "model_name=test" -target null_resource.simple_deployment_juju_wait_deployment -auto-approve
 
   lib-check:
     name: Check libraries
