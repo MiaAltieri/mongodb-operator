@@ -16,7 +16,7 @@ on:
 jobs:
   lint:
     name: Lint
-    uses: canonical/data-platform-workflows/.github/workflows/lint.yaml@v21.0.0
+    uses: canonical/data-platform-workflows/.github/workflows/lint.yaml@v24.0.6
 
   unit-test:
     name: Unit test charm
@@ -34,14 +34,16 @@ jobs:
 
   terraform-test:
     name: Terraform - Lint and Simple Deployment
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 120
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
+      - name: Install terraform snap
+        run: |
+          sudo snap install terraform --channel=latest/stable --classic
       - name: lint charm module
         working-directory: ./terraform
         run: |
@@ -101,7 +103,7 @@ jobs:
 
   check-terraform:
     name: Check Terraform
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         working-directory: ./terraform
@@ -138,7 +140,7 @@ jobs:
           - tests/integration/sharding_tests/application
           - tests/integration/relation_tests/new_relations/application-charm
     name: Build charm
-    uses: canonical/data-platform-workflows/.github/workflows/build_charm.yaml@v21.0.0
+    uses: canonical/data-platform-workflows/.github/workflows/build_charm.yaml@v24.0.6
     with:
       path-to-charm-directory: ${{ matrix.path }}
 
@@ -158,7 +160,7 @@ jobs:
       - lint
       - unit-test
       - build
-    uses: canonical/data-platform-workflows/.github/workflows/integration_test_charm.yaml@v21.0.0
+    uses: canonical/data-platform-workflows/.github/workflows/integration_test_charm.yaml@v24.0.6
     with:
       artifact-prefix: packed-charm-cache-false # TODO revert to "packed-charm-cache-true" when cache re-enabled
       cloud: lxd

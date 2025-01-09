@@ -1,12 +1,6 @@
 [tool.poetry]
-name = "mongodb"
-version = "0.0.1"
-description = ""
-license = "Apache-2.0"
-authors = []
-readme = "README.md"
-homepage = "https://charmhub.io/mongodb?channel=6/edge"
-repository = "https://github.com/canonical/mongodb-operator"
+package-mode = false
+requires-poetry = ">=2.0.0"
 
 [tool.poetry.dependencies]
 python = "^3.10.12"
@@ -16,7 +10,7 @@ pymongo = "^4.7.3"
 tenacity = "^8.2.3"
 pyyaml = "^6.0.1"
 jinja2 = "^3.1.3"
-poetry-core = "^1.9.0"
+poetry-core = "^2.0"
 data-platform-helpers = "^0.1.3"
 pyOpenSSL = "^24.2.1"
 
@@ -27,6 +21,9 @@ cryptography = "^42.0.5"  # tls_certificates lib v3
 jsonschema = "^4.22.0"  # tls_certificates lib v3
 cosl = "^0.0.16"  # loki_push_api
 pyOpenSSL = "^24.2.1"
+
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.8"
 
 [tool.poetry.group.format]
 optional = true
@@ -70,13 +67,12 @@ pytest = "^8.1.1"
 pytest-asyncio = "^0.21.1"
 pytest-mock = "^3.14.0"
 pytest-operator = "^0.36.0"
-pytest-operator-cache = {git = "https://github.com/canonical/data-platform-workflows", tag = "v21.0.0", subdirectory = "python/pytest_plugins/pytest_operator_cache"}
-pytest-operator-groups = {git = "https://github.com/canonical/data-platform-workflows", tag = "v21.0.0", subdirectory = "python/pytest_plugins/pytest_operator_groups"}
-pytest-github-secrets = {git = "https://github.com/canonical/data-platform-workflows", tag = "v21.0.0", subdirectory = "python/pytest_plugins/github_secrets"}
-allure-pytest-collection-report = {git = "https://github.com/canonical/data-platform-workflows", tag = "v21.0.0", subdirectory = "python/pytest_plugins/allure_pytest_collection_report"}
+pytest-operator-cache = {git = "https://github.com/canonical/data-platform-workflows", tag = "v24.0.6", subdirectory = "python/pytest_plugins/pytest_operator_cache"}
+pytest-operator-groups = {git = "https://github.com/canonical/data-platform-workflows", tag = "v24.0.6", subdirectory = "python/pytest_plugins/pytest_operator_groups"}
+pytest-github-secrets = {git = "https://github.com/canonical/data-platform-workflows", tag = "v24.0.6", subdirectory = "python/pytest_plugins/github_secrets"}
+allure-pytest-collection-report = {git = "https://github.com/canonical/data-platform-workflows", tag = "v24.0.6", subdirectory = "python/pytest_plugins/allure_pytest_collection_report"}
 
 [build-system]
-requires = ["poetry-core>=1.9.0"]
 build-backend = "poetry.core.masonry.api"
 
 # Testing tools configuration

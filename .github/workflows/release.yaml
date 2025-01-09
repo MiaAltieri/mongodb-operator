@@ -14,7 +14,7 @@ jobs:
 
   build:
     name: Build charm
-    uses: canonical/data-platform-workflows/.github/workflows/build_charm.yaml@v21.0.0
+    uses: canonical/data-platform-workflows/.github/workflows/build_charm.yaml@v24.0.6
     with:
       artifact-prefix: temp-release-packed-charm  # TODO: remove after caching re-enabled on PR
 
@@ -23,7 +23,7 @@ jobs:
     needs:
       - ci-tests
       - build
-    uses: canonical/data-platform-workflows/.github/workflows/release_charm.yaml@v21.0.0
+    uses: canonical/data-platform-workflows/.github/workflows/release_charm.yaml@v24.0.6
     with:
       channel: 6/edge
       artifact-prefix: ${{ needs.build.outputs.artifact-prefix }}
