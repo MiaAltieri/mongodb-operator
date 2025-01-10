@@ -164,7 +164,7 @@ jobs:
       - build
     uses: canonical/data-platform-workflows/.github/workflows/integration_test_charm.yaml@v26.0.0
     with:
-      artifact-prefix: packed-charm-cache-false # TODO revert to "packed-charm-cache-true" when cache re-enabled
+      artifact-prefix: packed-charm-cache-false  # TODO: revert cache
       cloud: lxd
       juju-agent-version: ${{ matrix.juju.agent }}
       juju-snap-channel: ${{ matrix.juju.snap_channel }}
