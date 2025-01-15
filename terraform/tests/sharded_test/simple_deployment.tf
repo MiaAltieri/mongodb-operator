@@ -1,29 +1,35 @@
+locals {
+  mongodb_apps = {
+    "config-server" = {
+      app_name = var.config_server_app_name
+      units    = var.config_server_units
+      role = "config-server"
+    }
+    "shard-one" = {
+      app_name = var.shard_one_app_name
+      units    = var.shard_one_units
+      role = "shard"
+    }
+    "shard-two" = {
+      app_name = var.shard_two_app_name
+      units    = var.shard_two_units
+      role = "shard"
+    }
+  }
+}
+
 module "mongodb" {
+  for_each = local.mongodb_apps
   source   = "../../"
-  app_name = var.config_server_app_name
+  app_name = each.value.app_name
   model    = var.model_name
-  units    = var.config_server_units
+  units    = each.value.units
   config = {
-    role = "config-server"
+    role = each.key 
   }
   channel  = "6/edge"
 }
 
-resource "juju_integration" "simple_deployment_tls-operator_mongodb-integration" {
-  model = var.model_name
-
-  application {
-    name = juju_application.self-signed-certificates.name
-  }
-  application {
-    name = var.config_server_app_name
-  }
-  depends_on = [
-    juju_application.self-signed-certificates,
-    module.mongodb
-  ]
-
-}
 
 resource "juju_integration" "simple_deployment_data-integrator_mongos-integration" {
   model = var.model_name
@@ -41,6 +47,32 @@ resource "juju_integration" "simple_deployment_data-integrator_mongos-integratio
 
 }
 
+resource "juju_integration" "config-server_integrations" {
+  for_each = tomap({
+    "shard-one" = {
+      app_name = var.shard_one_app_name
+    }
+    "shard-two" = {
+      app_name = var.shard_two_app_name
+    }
+  })
+
+  model = var.model_name
+
+  application {
+    name = var.config_server_app_name
+    endpoint = "config-server"
+  }
+
+  application {
+    name = each.value.app_name
+    endpoint = "sharding"
+  }
+
+  depends_on = [
+    module.mongodb,
+  ]
+}
 
 resource "juju_integration" "simple_deployment_mongodb_mongos-integration" {
   model = var.model_name
@@ -58,6 +90,33 @@ resource "juju_integration" "simple_deployment_mongodb_mongos-integration" {
 
 }
 
+resource "juju_integration" "simple_deployment_tls-operator_mongodb-integration" {
+  for_each = merge(
+    local.mongodb_apps,
+    {
+      "mongos" = {
+        app_name = "mongos"
+        units    = 1
+      }
+    }
+  )
+
+  model = var.model_name
+
+  application {
+    name = juju_application.self-signed-certificates.name
+  }
+
+  application {
+    name = each.value.app_name
+  }
+
+  depends_on = [
+    juju_application.self-signed-certificates,
+    module.mongodb,
+    juju_application.mongos
+  ]
+}
 
 resource "juju_integration" "simple_deployment_s3-integrator_mongodb-integration" {
   model = var.model_name
@@ -75,15 +134,19 @@ resource "juju_integration" "simple_deployment_s3-integrator_mongodb-integration
 
 }
 
-resource "juju_integration" "simple_deployment_grafana-agent_mongodb-integration" {
+resource "juju_integration" "grafana_agent_mongodb_integration" {
+  for_each = local.mongodb_apps
+
   model = var.model_name
 
   application {
     name = juju_application.grafana-agent.name
   }
+
   application {
-    name = var.config_server_app_name
+    name = each.value.app_name
   }
+
   depends_on = [
     juju_application.grafana-agent,
     module.mongodb
