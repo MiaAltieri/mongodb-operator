@@ -31,7 +31,7 @@ module "mongodb" {
 }
 
 
-resource "juju_integration" "simple_deployment_data-integrator_mongos-integration" {
+resource "juju_integration" "data-integrator_mongos-integration" {
   model = var.model_name
 
   application {
@@ -74,7 +74,7 @@ resource "juju_integration" "config-server_integrations" {
   ]
 }
 
-resource "juju_integration" "simple_deployment_mongodb_mongos-integration" {
+resource "juju_integration" "mongodb_mongos-integration" {
   model = var.model_name
 
   application {
@@ -85,12 +85,13 @@ resource "juju_integration" "simple_deployment_mongodb_mongos-integration" {
   }
   depends_on = [
     juju_application.mongos,
-    module.mongodb
+    module.mongodb,
+    juju_integration.data-integrator_mongos-integration
   ]
 
 }
 
-resource "juju_integration" "simple_deployment_tls-operator_mongodb-integration" {
+resource "juju_integration" "tls-operator_mongodb-integration" {
   for_each = merge(
     local.mongodb_apps,
     {
@@ -113,12 +114,12 @@ resource "juju_integration" "simple_deployment_tls-operator_mongodb-integration"
 
   depends_on = [
     juju_application.self-signed-certificates,
-    module.mongodb,
-    juju_application.mongos
+    juju_integration.mongodb_mongos-integration,
+    juju_integration.config-server_integrations
   ]
 }
 
-resource "juju_integration" "simple_deployment_s3-integrator_mongodb-integration" {
+resource "juju_integration" "s3-integrator_mongodb-integration" {
   model = var.model_name
 
   application {
@@ -129,7 +130,7 @@ resource "juju_integration" "simple_deployment_s3-integrator_mongodb-integration
   }
   depends_on = [
     juju_application.s3-integrator,
-    module.mongodb
+    juju_integration.config-server_integrations,
   ]
 
 }
@@ -153,12 +154,12 @@ resource "juju_integration" "grafana_agent_mongodb_integration" {
   ]
 }
 
-resource "null_resource" "simple_deployment_juju_wait_deployment" {
+resource "null_resource" "juju_wait_deployment" {
   provisioner "local-exec" {
     command = <<-EOT
     juju-wait -v --model ${var.model_name}
     EOT
   }
 
-  depends_on = [juju_integration.simple_deployment_tls-operator_mongodb-integration]
+  depends_on = [juju_integration.tls-operator_mongodb-integration]
 }
