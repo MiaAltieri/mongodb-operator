@@ -1,0 +1,142 @@
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.6.1    unsupported  03:02:51Z
+
+App                 Version  Status  Scale  Charm    Channel  Rev  Exposed  Message
+another-database-a           active      1  mongodb             1  no       
+mongodb                      active    8/9  mongodb             0  no       
+
+Unit                   Workload  Agent       Machine  Public address  Ports      Message
+another-database-a/0*  active    idle        6        10.214.140.214  27017/tcp  Primary
+mongodb/6*             active    idle        7        10.214.140.113  27017/tcp  Primary
+mongodb/11             active    idle        12       10.214.140.193  27017/tcp  
+mongodb/12             active    idle        13       10.214.140.207  27017/tcp  
+mongodb/13             active    idle        14       10.214.140.223  27017/tcp  
+mongodb/14             active    idle        15       10.214.140.185  27017/tcp  
+mongodb/15             active    idle        16       10.214.140.106  27017/tcp  
+mongodb/16             active    idle        17       10.214.140.59   27017/tcp  
+mongodb/17             waiting   allocating  18       10.214.140.241             agent initialising
+mongodb/18             active    idle        19       10.214.140.114  27017/tcp  
+
+Machine  State    Address         Inst id         Base          AZ  Message
+6        started  10.214.140.214  juju-d65f9d-6   ubuntu@22.04      Running
+7        started  10.214.140.113  juju-d65f9d-7   ubuntu@22.04      Running
+12       started  10.214.140.193  juju-d65f9d-12  ubuntu@22.04      Running
+13       started  10.214.140.207  juju-d65f9d-13  ubuntu@22.04      Running
+14       started  10.214.140.223  juju-d65f9d-14  ubuntu@22.04      Running
+15       started  10.214.140.185  juju-d65f9d-15  ubuntu@22.04      Running
+16       started  10.214.140.106  juju-d65f9d-16  ubuntu@22.04      Running
+17       started  10.214.140.59   juju-d65f9d-17  ubuntu@22.04      Running
+18       started  10.214.140.241  juju-d65f9d-18  ubuntu@22.04      Running
+19       started  10.214.140.114  juju-d65f9d-19  ubuntu@22.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-2: 01:51:11 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 01:51:11 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-2: 01:51:11 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-2: 01:51:24 ERROR unit.mongodb/2.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-2: 01:51:24 ERROR unit.mongodb/2.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-1: 01:51:27 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 01:51:27 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-1: 01:51:27 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-1: 01:51:41 ERROR unit.mongodb/1.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-1: 01:51:41 ERROR unit.mongodb/1.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-0: 01:53:54 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 01:53:54 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-0: 01:53:54 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-0: 01:54:07 ERROR unit.mongodb/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-0: 01:54:07 ERROR unit.mongodb/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-2: 02:00:16 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:cu46g7aul59ch7thk9a0 seems to have no observers, could be removed
+machine-3: 02:05:12 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-3: 02:05:12 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-3: 02:05:12 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-3: 02:05:26 ERROR unit.mongodb/3.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-3: 02:05:26 ERROR unit.mongodb/3.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-4: 02:08:07 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-4: 02:08:07 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-4: 02:08:07 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-5: 02:08:07 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-5: 02:08:07 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-5: 02:08:07 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-4: 02:08:24 ERROR unit.mongodb/4.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-4: 02:08:24 ERROR unit.mongodb/4.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-5: 02:08:25 ERROR unit.mongodb/5.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-5: 02:08:25 ERROR unit.mongodb/5.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-6: 02:12:27 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-6: 02:12:27 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-another-database-a-0: 02:12:27 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-another-database-a-0: 02:12:42 ERROR unit.another-database-a/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-another-database-a-0: 02:12:42 ERROR unit.another-database-a/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-another-database-a-0: 02:13:32 ERROR unit.another-database-a/0.juju-log _on_secret_remove: Secret secret:cu46meaul59ch7thk9ag seems to have no observers, could be removed
+machine-7: 02:15:43 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-7: 02:15:43 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-6: 02:15:43 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-6: 02:15:59 ERROR unit.mongodb/6.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-6: 02:15:59 ERROR unit.mongodb/6.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-1: 02:23:03 ERROR unit.mongodb/1.juju-log Deferring process_unremoved_units: error=ServerSelectionTimeoutError('No replica set members match selector "Primary()", Timeout: 1.0s, Topology Description: <TopologyDescription id: 67886d868b097b2d92fbc057, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription (\'10.214.140.113\', 27017) server_type: RSSecondary, rtt: 0.0008059150022745598>, <ServerDescription (\'10.214.140.179\', 27017) server_type: RSSecondary, rtt: 0.0007682540017412975>, <ServerDescription (\'10.214.140.254\', 27017) server_type: RSSecondary, rtt: 0.0006660830003966112>, <ServerDescription (\'10.214.140.39\', 27017) server_type: RSSecondary, rtt: 0.001439595998817822>]>')
+unit-mongodb-1: 02:23:04 ERROR unit.mongodb/1.juju-log Deferring on updating app relation data since: error: ServerSelectionTimeoutError('No replica set members match selector "Primary()", Timeout: 1.0s, Topology Description: <TopologyDescription id: 67886d878b097b2d92fbc058, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription (\'10.214.140.113\', 27017) server_type: RSSecondary, rtt: 0.0004755240006488748>, <ServerDescription (\'10.214.140.179\', 27017) server_type: RSSecondary, rtt: 0.0008099440019577742>, <ServerDescription (\'10.214.140.254\', 27017) server_type: RSSecondary, rtt: 0.0006707720021950081>, <ServerDescription (\'10.214.140.39\', 27017) server_type: RSSecondary, rtt: 0.0009394870030519087>]>')
+unit-mongodb-1: 02:23:06 ERROR unit.mongodb/1.juju-log Deferring reconfigure: error=ServerSelectionTimeoutError('No replica set members match selector "Primary()", Timeout: 1.0s, Topology Description: <TopologyDescription id: 67886d898b097b2d92fbc059, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription (\'10.214.140.113\', 27017) server_type: RSSecondary, rtt: 0.0006650899995293003>, <ServerDescription (\'10.214.140.179\', 27017) server_type: RSSecondary, rtt: 0.0016365470000891946>, <ServerDescription (\'10.214.140.254\', 27017) server_type: RSSecondary, rtt: 0.0007036040005914401>, <ServerDescription (\'10.214.140.39\', 27017) server_type: RSSecondary, rtt: 0.000586321999435313>]>')
+unit-mongodb-1: 02:23:11 ERROR unit.mongodb/1.juju-log database-peers:1: Deferring process_unremoved_units: error=ServerSelectionTimeoutError('No replica set members match selector "Primary()", Timeout: 1.0s, Topology Description: <TopologyDescription id: 67886d8ee4835737f9670add, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription (\'10.214.140.113\', 27017) server_type: RSSecondary, rtt: 0.0034287790003872942>, <ServerDescription (\'10.214.140.179\', 27017) server_type: RSSecondary, rtt: 0.0011939793999772518>, <ServerDescription (\'10.214.140.254\', 27017) server_type: RSSecondary, rtt: 0.0005885770005988888>, <ServerDescription (\'10.214.140.39\', 27017) server_type: RSSecondary, rtt: 0.0008882709989848081>]>')
+machine-1: 02:28:57 ERROR juju.worker.dependency "api-caller" manifold worker returned unexpected error: api connection broken unexpectedly
+machine-9: 02:39:16 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-9: 02:39:16 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-8: 02:39:16 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-10: 02:39:18 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-10: 02:39:18 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-9: 02:39:18 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-8: 02:39:20 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-8: 02:39:20 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-7: 02:39:20 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-8: 02:39:38 ERROR unit.mongodb/8.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-8: 02:39:38 ERROR unit.mongodb/8.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-9: 02:39:39 ERROR unit.mongodb/9.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-9: 02:39:39 ERROR unit.mongodb/9.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-7: 02:39:40 ERROR unit.mongodb/7.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-7: 02:39:40 ERROR unit.mongodb/7.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-13: 02:43:24 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-13: 02:43:24 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-12: 02:43:24 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-11: 02:43:25 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-11: 02:43:25 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-10: 02:43:26 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-12: 02:43:26 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-12: 02:43:26 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-11: 02:43:26 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-14: 02:43:28 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-14: 02:43:28 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-13: 02:43:28 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-12: 02:43:47 ERROR unit.mongodb/12.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-12: 02:43:47 ERROR unit.mongodb/12.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-10: 02:43:49 ERROR unit.mongodb/10.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-10: 02:43:49 ERROR unit.mongodb/10.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-11: 02:43:50 ERROR unit.mongodb/11.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-11: 02:43:50 ERROR unit.mongodb/11.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-13: 02:43:51 ERROR unit.mongodb/13.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-13: 02:43:51 ERROR unit.mongodb/13.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-17: 02:48:10 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-17: 02:48:10 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-16: 02:48:10 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-18: 02:48:13 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-18: 02:48:13 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-17: 02:48:13 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-16: 02:48:14 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-16: 02:48:14 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-15: 02:48:14 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-15: 02:48:20 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-15: 02:48:20 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-14: 02:48:20 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-19: 02:48:24 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-19: 02:48:24 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-18: 02:48:24 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-16: 02:48:34 ERROR unit.mongodb/16.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-16: 02:48:34 ERROR unit.mongodb/16.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-15: 02:48:38 ERROR unit.mongodb/15.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-15: 02:48:38 ERROR unit.mongodb/15.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-14: 02:48:42 ERROR unit.mongodb/14.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-14: 02:48:42 ERROR unit.mongodb/14.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-18: 02:48:46 ERROR unit.mongodb/18.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-18: 02:48:46 ERROR unit.mongodb/18.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...

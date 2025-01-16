@@ -1,0 +1,93 @@
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.6.1    unsupported  02:02:51Z
+
+App                Version  Status   Scale  Charm          Channel      Rev  Exposed  Message
+application                 active       1  application                   0  no       
+application-host            active       1  application                   0  no       
+config-server-one           active       1  mongodb                       0  no       
+config-server-two           active       1  mongodb                       1  no       
+mongos                      active       1  mongos         6/edge        35  no       
+replication                 active       1  mongodb                       3  no       
+s3-integrator               blocked      1  s3-integrator  latest/edge   99  no       Missing parameters: ['access-key', 'secret-key']
+shard                       active       1  mongodb                       2  no       
+
+Unit                  Workload  Agent      Machine  Public address  Ports            Message
+application-host/0*   active    idle       4        10.87.103.172                    
+  mongos/0*           waiting   idle                10.87.103.172                    Waiting for secrets from config-server
+application/0*        active    idle       6        10.87.103.39                     
+config-server-one/0*  active    idle       0        10.87.103.185   27017-27018/tcp  
+config-server-two/0*  active    idle       1        10.87.103.236   27017-27018/tcp  
+replication/0*        blocked   idle       5        10.87.103.164   27017/tcp        Relation to mongos not supported, config role must be config-server
+s3-integrator/0*      blocked   executing  3        10.87.103.166                    Missing parameters: ['access-key', 'secret-key']
+shard/0*              blocked   executing  2        10.87.103.48    27017/tcp        Relation to s3-integrator is not supported, config role must be config-server
+
+Machine  State    Address        Inst id        Base          AZ  Message
+0        started  10.87.103.185  juju-1d0498-0  ubuntu@22.04      Running
+1        started  10.87.103.236  juju-1d0498-1  ubuntu@22.04      Running
+2        started  10.87.103.48   juju-1d0498-2  ubuntu@22.04      Running
+3        started  10.87.103.166  juju-1d0498-3  ubuntu@22.04      Running
+4        started  10.87.103.172  juju-1d0498-4  ubuntu@22.04      Running
+5        started  10.87.103.164  juju-1d0498-5  ubuntu@22.04      Running
+6        started  10.87.103.39   juju-1d0498-6  ubuntu@20.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-1: 01:50:00 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 01:50:00 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-two-0: 01:50:00 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-0: 01:50:04 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 01:50:04 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-one-0: 01:50:04 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-6: 01:50:25 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-6: 01:50:25 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-application-0: 01:50:25 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-config-server-two-0: 01:50:37 ERROR unit.config-server-two/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-config-server-two-0: 01:50:37 ERROR unit.config-server-two/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-config-server-one-0: 01:50:39 ERROR unit.config-server-one/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-config-server-one-0: 01:50:39 ERROR unit.config-server-one/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-3: 01:52:09 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-3: 01:52:09 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-s3-integrator-0: 01:52:09 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-4: 01:52:49 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-4: 01:52:49 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-application-host-0: 01:52:49 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-5: 01:53:48 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-5: 01:53:48 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-replication-0: 01:53:48 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-replication-0: 01:54:06 ERROR unit.replication/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-replication-0: 01:54:06 ERROR unit.replication/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-2: 01:54:07 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 01:54:07 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-0: 01:54:07 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-shard-0: 01:54:26 ERROR unit.shard/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-shard-0: 01:54:26 ERROR unit.shard/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-replication-0: 01:56:05 ERROR unit.replication/0.juju-log _on_secret_remove: Secret secret:cu46e8fohp7ch0dj0chg seems to have no observers, could be removed
+unit-config-server-one-0: 01:56:08 ERROR unit.config-server-one/0.juju-log _on_secret_remove: Secret secret:cu46e97ohp7ch0dj0ci0 seems to have no observers, could be removed
+unit-config-server-two-0: 01:57:23 ERROR unit.config-server-two/0.juju-log _on_secret_remove: Secret secret:cu46ervohp7ch0dj0cig seems to have no observers, could be removed
+unit-shard-0: 01:58:18 ERROR unit.shard/0.juju-log _on_secret_remove: Secret secret:cu46f9vohp7ch0dj0cj0 seems to have no observers, could be removed
+unit-mongos-0: 01:58:43 ERROR juju.worker.meterstatus error running "meter-status-changed": exit status 2
+unit-shard-0: 02:01:00 ERROR juju.worker.uniter resolver loop error: permission denied
+unit-shard-0: 02:01:00 ERROR juju.worker.dependency "uniter" manifold worker returned unexpected error: permission denied
+unit-config-server-one-0: 02:01:00 ERROR juju.worker.uniter resolver loop error: permission denied
+unit-config-server-one-0: 02:01:00 ERROR juju.worker.dependency "uniter" manifold worker returned unexpected error: relation scope id "30cbbd36-5bdc-4c8d-85a0-6e5ea21d0498:r#12#shard": settings 30cbbd36-5bdc-4c8d-85a0-6e5ea21d0498:r#12#shard not found (not found)
+unit-shard-0: 02:01:22 ERROR unit.shard/0.juju-log database:13: Charm is in sharding role: shard. Does not support database interface.
+unit-shard-0: 02:01:22 ERROR unit.shard/0.juju-log database:13: Charm is in sharding role: shard. Does not support database interface.
+unit-config-server-one-0: 02:01:23 ERROR unit.config-server-one/0.juju-log database:14: Charm is in sharding role: config-server. Does not support database interface.
+unit-config-server-one-0: 02:01:23 ERROR unit.config-server-one/0.juju-log database:14: Charm is in sharding role: config-server. Does not support database interface.
+unit-shard-0: 02:01:24 ERROR unit.shard/0.juju-log database:13: Charm is in sharding role: shard. Does not support database interface.
+unit-config-server-one-0: 02:01:24 ERROR unit.config-server-one/0.juju-log database:14: Charm is in sharding role: config-server. Does not support database interface.
+unit-config-server-one-0: 02:01:25 ERROR unit.config-server-one/0.juju-log database:14: Charm is in sharding role: config-server. Does not support database interface.
+unit-shard-0: 02:01:28 ERROR unit.shard/0.juju-log database:13: Charm is in sharding role: shard. Does not support database interface.
+unit-config-server-one-0: 02:01:28 ERROR unit.config-server-one/0.juju-log database:14: Charm is in sharding role: config-server. Does not support database interface.
+unit-replication-0: 02:01:51 ERROR unit.replication/0.juju-log sharding:15: Charm is in sharding role: replication. Does not support sharding interface.
+unit-replication-0: 02:01:52 ERROR unit.replication/0.juju-log sharding:15: Charm is in sharding role: replication. Does not support sharding interface.
+unit-config-server-one-0: 02:01:52 ERROR unit.config-server-one/0.juju-log config-server:15: Failed to add shard replication to the config server, error=OperationFailure("Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed', '$clusterTime': {'clusterTime': Timestamp(1736992912, 1), 'signature': {'hash': b'\\xac\\x7f\\x82\\xe6\\xba\\xdd\\xeb+WHj\\x05\\xd8\\x8a\\xfe\\xdc\\x8f\\x1d$1', 'keyId': 7460326217120481305}}, 'operationTime': Timestamp(1736992912, 1)}")
+unit-config-server-one-0: 02:01:52 ERROR unit.config-server-one/0.juju-log config-server:15: replication shard does not have the same auth as the config server.
+unit-replication-0: 02:01:55 ERROR unit.replication/0.juju-log sharding:15: Charm is in sharding role: replication. Does not support sharding interface.
+unit-replication-0: 02:01:57 ERROR unit.replication/0.juju-log sharding:15: Charm is in sharding role: replication. Does not support sharding interface.
+unit-mongos-0: 02:02:23 ERROR unit.mongos/0.juju-log cluster:17: Can't delete secret for relation 11
+unit-mongos-0: 02:02:48 ERROR unit.mongos/0.juju-log cluster:18: Can't delete secret for relation 11
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
