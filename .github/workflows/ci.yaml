@@ -75,11 +75,16 @@ jobs:
         run: |
           sg 'lxd' -c "juju bootstrap 'localhost' --config model-logs-size=10G"
           juju model-defaults logging-config='<root>=INFO; unit=DEBUG'
-          juju add-model test
-      - name: Terraform deploy
-        working-directory: ./terraform/tests/
+          juju add-model test-rs
+          juju add-model test-sc
+      - name: Terraform deploy replica set tests
+        working-directory: ./terraform/tests/replica_set_test
         run: |
-          terraform apply  -var "model_name=test" -target null_resource.simple_deployment_juju_wait_deployment -auto-approve
+          terraform apply  -var "model_name=test-rs" -target null_resource.simple_deployment_juju_wait_deployment -auto-approve
+      - name: Terraform deploy sharded tests
+        working-directory: ./terraform/tests/sharded_test
+        run: |
+          terraform apply  -var "model_name=test-sc" -target null_resource.simple_deployment_juju_wait_deployment -auto-approve
 
   lib-check:
     name: Check libraries
