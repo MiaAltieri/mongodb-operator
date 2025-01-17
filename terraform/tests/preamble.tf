@@ -23,3 +23,21 @@ resource "juju_application" "data-integrator" {
   model      = var.model_name
   depends_on = [null_resource.preamble]
 }
+
+resource "juju_application" "grafana-agent" {
+  charm {
+    name    = "grafana-agent"
+    channel = "latest/stable"
+  }
+  model      = var.model_name
+  depends_on = [null_resource.preamble]
+}
+
+resource "juju_application" "s3-integrator" {
+  charm {
+    name    = "s3-integrator"
+    channel = "latest/stable"
+  }
+  model      = var.model_name
+  depends_on = [null_resource.preamble]
+}
