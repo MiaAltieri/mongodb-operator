@@ -82,12 +82,12 @@ jobs:
           juju add-model test-rs
           juju add-model test-sc
       - name: Terraform deploy replica set tests
-        working-directory: ./terraform/tests/replica_set_test
+        working-directory: ./terraform/modules/replica_set_module
         run: |
           terraform init
           terraform apply  -var "model_name=test-rs" -target null_resource.simple_deployment_juju_wait_deployment -auto-approve
       - name: Terraform deploy sharded tests
-        working-directory: ./terraform/tests/sharded_test
+        working-directory: ./terraform/modules/sharded_module
         run: |
           terraform init
           terraform apply  -var "model_name=test-sc" -target null_resource.simple_deployment_juju_wait_deployment -auto-approve
