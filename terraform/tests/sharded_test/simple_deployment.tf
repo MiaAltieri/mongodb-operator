@@ -3,17 +3,17 @@ locals {
     "config-server" = {
       app_name = var.config_server_app_name
       units    = var.config_server_units
-      role = "config-server"
+      role     = "config-server"
     }
     "shard-one" = {
       app_name = var.shard_one_app_name
       units    = var.shard_one_units
-      role = "shard"
+      role     = "shard"
     }
     "shard-two" = {
       app_name = var.shard_two_app_name
       units    = var.shard_two_units
-      role = "shard"
+      role     = "shard"
     }
   }
 }
@@ -24,10 +24,10 @@ module "mongodb" {
   app_name = each.value.app_name
   model    = var.model_name
   units    = each.value.units
-  config = {
-    role = each.key 
-  }
   channel  = "6/edge"
+  config = {
+    role = each.key
+  }
 }
 
 
@@ -60,12 +60,12 @@ resource "juju_integration" "config-server_integrations" {
   model = var.model_name
 
   application {
-    name = var.config_server_app_name
+    name     = var.config_server_app_name
     endpoint = "config-server"
   }
 
   application {
-    name = each.value.app_name
+    name     = each.value.app_name
     endpoint = "sharding"
   }
 
