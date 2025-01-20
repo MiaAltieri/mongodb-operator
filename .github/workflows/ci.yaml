@@ -9,14 +9,18 @@ concurrency:
 on:
   pull_request:
   schedule:
-    - cron: "53 0 * * *" # Daily at 00:53 UTC
+    - cron: '53 0 * * *'  # Daily at 00:53 UTC
   # Triggered on push to branch "main" by .github/workflows/release.yaml
   workflow_call:
+    outputs:
+      artifact-prefix:
+        description: build_charm.yaml `artifact-prefix` output
+        value: ${{ jobs.build.outputs.artifact-prefix }}
 
 jobs:
   lint:
     name: Lint
-    uses: canonical/data-platform-workflows/.github/workflows/lint.yaml@v24.0.6
+    uses: canonical/data-platform-workflows/.github/workflows/lint.yaml@v29.0.0
 
   unit-test:
     name: Unit test charm
@@ -101,6 +105,7 @@ jobs:
       - name: Check libs
         uses: canonical/charming-actions/check-libraries@2.6.3
         with:
+          charmcraft-channel: latest/candidate  # TODO: remove after charmcraft 3.3 stable release
           credentials: ${{ secrets.CHARMHUB_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           use-labels: false
@@ -145,33 +150,23 @@ jobs:
           - tests/integration/sharding_tests/application
           - tests/integration/relation_tests/new_relations/application-charm
     name: Build charm
-    uses: canonical/data-platform-workflows/.github/workflows/build_charm.yaml@v24.0.6
+    uses: canonical/data-platform-workflows/.github/workflows/build_charm.yaml@v29.0.0
     with:
+      charmcraft-snap-channel: latest/candidate  # TODO: remove after charmcraft 3.3 stable release
       path-to-charm-directory: ${{ matrix.path }}
 
   integration-test:
-    strategy:
-      fail-fast: false
-      matrix:
-        juju:
-          # This runs on all runs
-          - agent: 3.5.3 # renovate: juju-agent-pin-minor
-            allure_report: true
-          # This runs only on scheduled runs, DPW 21 specifics (scheduled + 3.6/X)
-          - snap_channel: 3.6/stable
-            allure_report: false
-    name: Integration test charm | ${{ matrix.juju.agent || matrix.juju.snap_channel }}
+    name: Integration test charm
     needs:
       - lint
       - unit-test
       - build
-    uses: canonical/data-platform-workflows/.github/workflows/integration_test_charm.yaml@v24.0.6
+    uses: canonical/data-platform-workflows/.github/workflows/integration_test_charm.yaml@v29.0.0
     with:
-      artifact-prefix: packed-charm-cache-false # TODO revert to "packed-charm-cache-true" when cache re-enabled
+      artifact-prefix: ${{ needs.build.outputs.artifact-prefix }}
       cloud: lxd
-      juju-agent-version: ${{ matrix.juju.agent }}
-      juju-snap-channel: ${{ matrix.juju.snap_channel }}
-      _beta_allure_report: ${{ matrix.juju.allure_report }}
+      juju-agent-version: 3.6.1  # renovate: juju-agent-pin-minor
+      _beta_allure_report: true
     permissions:
       contents: write # Needed for Allure Report beta
     secrets:
