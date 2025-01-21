@@ -44,12 +44,11 @@ async def test_build_and_deploy(ops_test: OpsTest) -> None:
         await check_or_scale_app(ops_test, app_name, len(UNIT_IDS))
     else:
         app_name = DATABASE_APP_NAME
-        async with ops_test.fast_forward():
-            my_charm = await ops_test.build_charm(".")
-            await ops_test.model.deploy(my_charm, num_units=3)
-            await ops_test.model.wait_for_idle(
-                apps=[app_name], status="active", timeout=DEPLOYMENT_TIMEOUT
-            )
+        my_charm = await ops_test.build_charm(".")
+        await ops_test.model.deploy(my_charm, num_units=3)
+        await ops_test.model.wait_for_idle(
+            apps=[app_name], status="active", timeout=DEPLOYMENT_TIMEOUT
+        )
 
     config = {"ca-common-name": "Test CA"}
     await ops_test.model.deploy(TLS_CERTIFICATES_APP_NAME, channel="stable", config=config)

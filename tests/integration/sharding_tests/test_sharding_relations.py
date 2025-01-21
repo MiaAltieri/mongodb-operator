@@ -289,7 +289,7 @@ async def test_shard_s3_relation(ops_test: OpsTest) -> None:
     await wait_for_mongodb_units_blocked(
         ops_test,
         SHARD_ONE_APP_NAME,
-        status="Relation to s3-integrator is not supported, config role must be config-server",
+        status="Relation to s3-integrator is not supported, config role must be config-server.",
         timeout=300,
     )
 

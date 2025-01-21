@@ -26,7 +26,7 @@ APP_2 = "APP_2"
 
 
 class TestCharm(unittest.TestCase):
-    @patch("charm.get_charm_revision")
+    @patch("single_kernel_mongo.managers.mongodb_operator.get_charm_revision")
     @patch_network_get(private_address="1.1.1.1")
     def setUp(self, get_charm_revision):
         get_charm_revision.return_value = CHARM_VERSION
@@ -61,37 +61,41 @@ class TestCharm(unittest.TestCase):
         # case one: retrieves invalid versions + valid
         self.add_invalid_relation()
         self.add_valid_relation()
-        invalid_version = self.harness.charm.version_checker.get_invalid_versions()
+        invalid_version = (
+            self.harness.charm.operator.cross_app_version_checker.get_invalid_versions()
+        )
         assert invalid_version == [(APP_0, INVALID_VERSION)]
 
         # case two: missing version info
         self.add_relation_with_no_version()
         with self.assertRaises(NoVersionError):
-            self.harness.charm.version_checker.get_invalid_versions()
+            self.harness.charm.operator.cross_app_version_checker.get_invalid_versions()
 
     def test_get_version_of_related_app(self):
         """Verifies that version checker can retrieve integrated application versions."""
         # case one: get version
         self.add_invalid_relation()
-        version = self.harness.charm.version_checker.get_version_of_related_app(APP_0)
+        version = self.harness.charm.operator.cross_app_version_checker.get_version_of_related_app(
+            APP_0
+        )
         assert version == INVALID_VERSION
 
         # case two: missing version info
         self.add_relation_with_no_version()
         with self.assertRaises(NoVersionError):
-            self.harness.charm.version_checker.get_version_of_related_app(APP_2)
+            self.harness.charm.operator.cross_app_version_checker.get_version_of_related_app(APP_2)
 
     def test_is_related_app_locally_built_charm(self):
         """Verifies that version checker can retrieve integrated application deployment types."""
         # case one: local deployment
         self.add_valid_relation(deployment=LOCAL_DEPLOYMENT)
-        assert self.harness.charm.version_checker.is_local_charm(APP_1)
+        assert self.harness.charm.operator.cross_app_version_checker.is_local_charm(APP_1)
 
         # case two: charmhub deployment
         self.add_invalid_relation(deployment=CHARMHUB_DEPLOYMENT)
-        assert not self.harness.charm.version_checker.is_local_charm(APP_0)
+        assert not self.harness.charm.operator.cross_app_version_checker.is_local_charm(APP_0)
 
         # case three: missing version info
         self.add_relation_with_no_version()
         with self.assertRaises(NoVersionError):
-            self.harness.charm.version_checker.is_local_charm(APP_2)
+            self.harness.charm.operator.cross_app_version_checker.is_local_charm(APP_2)

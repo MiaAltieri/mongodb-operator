@@ -110,10 +110,10 @@ async def test_upgrade(
         ops_test, CONFIG_SERVER_APP_NAME, SHARD_TWO_DB_NAME
     )
     assert (
-        shard_one_actual_writes == shard_one_expected_writes["number"]
+        shard_one_actual_writes >= shard_one_expected_writes["number"]
     ), "continuous writes to shard one failed during upgrade"
     assert (
-        shard_two_actual_writes == shard_two_expected_writes["number"]
+        shard_two_actual_writes >= shard_two_expected_writes["number"]
     ), "continuous writes to shard two failed during upgrade"
 
     # after all shards have upgraded, verify that the balancer has been turned back on

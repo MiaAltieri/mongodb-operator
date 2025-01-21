@@ -39,7 +39,12 @@ async def test_build_and_deploy(ops_test: OpsTest) -> None:
     await ops_test.model.deploy(CERTS_APP_NAME, channel="stable")
 
     await ops_test.model.wait_for_idle(
-        apps=[CERTS_APP_NAME, CONFIG_SERVER_APP_NAME, SHARD_ONE_APP_NAME, SHARD_TWO_APP_NAME],
+        apps=[
+            CERTS_APP_NAME,
+            CONFIG_SERVER_APP_NAME,
+            SHARD_ONE_APP_NAME,
+            SHARD_TWO_APP_NAME,
+        ],
         idle_period=20,
         raise_on_blocked=False,
         timeout=DEPLOYMENT_TIMEOUT,
@@ -136,7 +141,10 @@ async def test_tls_inconsistent_rels(ops_test: OpsTest) -> None:
     )
 
     await wait_for_mongodb_units_blocked(
-        ops_test, SHARD_ONE_APP_NAME, status="Shard requires TLS to be enabled.", timeout=450
+        ops_test,
+        SHARD_ONE_APP_NAME,
+        status="Shard requires TLS to be enabled",
+        timeout=450,
     )
 
     # Re-integrate to bring cluster back to steady state

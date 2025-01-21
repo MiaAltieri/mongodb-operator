@@ -305,7 +305,10 @@ async def test_user_with_extra_roles(ops_test: OpsTest):
         or DATABASE_APP_NAME
     )
     await assert_created_user_can_connect(
-        ops_test, db_app_name, username=USER_CREATED_FROM_APP1, password=PW_CREATED_FROM_APP1
+        ops_test,
+        db_app_name,
+        username=USER_CREATED_FROM_APP1,
+        password=PW_CREATED_FROM_APP1,
     )
 
 
@@ -352,7 +355,9 @@ async def test_two_applications_doesnt_share_the_same_relation_data(
 
 @pytest.mark.runner(["self-hosted", "linux", "X64", "jammy", "large"])
 @pytest.mark.group(1)
-async def test_an_application_can_connect_to_multiple_database_clusters(ops_test: OpsTest):
+async def test_an_application_can_connect_to_multiple_database_clusters(
+    ops_test: OpsTest,
+):
     """Test that an application can connect to different clusters of the same database."""
     # Relate the application with both database clusters
     # and wait for them exchanging some connection data.
@@ -361,7 +366,8 @@ async def test_an_application_can_connect_to_multiple_database_clusters(ops_test
         or DATABASE_APP_NAME
     )
     first_cluster_relation = await ops_test.model.integrate(
-        f"{APPLICATION_APP_NAME}:{MULTIPLE_DATABASE_CLUSTERS_RELATION_NAME}", db_app_name
+        f"{APPLICATION_APP_NAME}:{MULTIPLE_DATABASE_CLUSTERS_RELATION_NAME}",
+        db_app_name,
     )
     second_cluster_relation = await ops_test.model.integrate(
         f"{APPLICATION_APP_NAME}:{MULTIPLE_DATABASE_CLUSTERS_RELATION_NAME}",
@@ -411,7 +417,7 @@ async def test_an_application_can_connect_to_multiple_aliased_database_clusters(
         ),
     )
 
-    await ops_test.model.wait_for_idle(apps=APP_NAMES, status="active")
+    await ops_test.model.wait_for_idle(apps=APP_NAMES, status="active", idle_period=20)
 
     # Retrieve the connection string to both database clusters using the relation aliases
     # and assert they are different.
@@ -471,7 +477,8 @@ async def test_removed_relation_no_longer_has_access(ops_test: OpsTest):
         or DATABASE_APP_NAME
     )
     await ops_test.model.applications[db_app_name].remove_relation(
-        f"{APPLICATION_APP_NAME}:{FIRST_DATABASE_RELATION_NAME}", f"{db_app_name}:database"
+        f"{APPLICATION_APP_NAME}:{FIRST_DATABASE_RELATION_NAME}",
+        f"{db_app_name}:database",
     )
     await ops_test.model.wait_for_idle(apps=APP_NAMES, status="active")
 
@@ -503,5 +510,8 @@ async def test_removed_relation_no_longer_has_access(ops_test: OpsTest):
         or DATABASE_APP_NAME
     )
     await assert_created_user_can_connect(
-        ops_test, db_app_name, username=USER_CREATED_FROM_APP1, password=PW_CREATED_FROM_APP1
+        ops_test,
+        db_app_name,
+        username=USER_CREATED_FROM_APP1,
+        password=PW_CREATED_FROM_APP1,
     )
