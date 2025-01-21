@@ -1,0 +1,41 @@
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.6.1    unsupported  01:52:25Z
+
+App      Version  Status  Scale  Charm    Channel  Rev  Exposed  Message
+mongodb           active      3  mongodb             0  no       
+
+Unit        Workload  Agent  Machine  Public address  Ports      Message
+mongodb/0   active    idle   0        10.232.56.81    27017/tcp  
+mongodb/1   active    idle   1        10.232.56.182   27017/tcp  Primary
+mongodb/2*  active    idle   2        10.232.56.177   27017/tcp  
+
+Machine  State    Address        Inst id        Base          AZ  Message
+0        started  10.232.56.81   juju-41504f-0  ubuntu@22.04      Running
+1        started  10.232.56.182  juju-41504f-1  ubuntu@22.04      Running
+2        started  10.232.56.177  juju-41504f-2  ubuntu@22.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-0: 01:44:40 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 01:44:40 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-0: 01:44:40 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-2: 01:44:54 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 01:44:54 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-2: 01:44:54 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-0: 01:44:58 ERROR unit.mongodb/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-0: 01:44:58 ERROR unit.mongodb/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-1: 01:44:59 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 01:44:59 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-1: 01:44:59 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-2: 01:45:15 ERROR unit.mongodb/2.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-2: 01:45:15 ERROR unit.mongodb/2.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-1: 01:45:19 ERROR unit.mongodb/1.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-1: 01:45:19 ERROR unit.mongodb/1.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-0: 01:46:41 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:cu7for0n2jdcvc12fojg seems to have no observers, could be removed
+unit-mongodb-0: 01:47:51 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:cu7for0n2jdcvc12fojg seems to have no observers, could be removed
+machine-0: 01:49:10 ERROR juju.worker.dependency "api-caller" manifold worker returned unexpected error: api connection broken unexpectedly
+machine-0: 01:49:10 ERROR juju.worker.uniter.metrics failed to close the collect-metrics listener: close unix /var/lib/juju/agents/unit-mongodb-0/2947582032/s: use of closed network connection
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
