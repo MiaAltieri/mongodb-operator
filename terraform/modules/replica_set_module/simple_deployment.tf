@@ -69,7 +69,7 @@ resource "juju_integration" "simple_deployment_grafana-agent_mongodb-integration
   ]
 }
 
-resource "null_resource" "simple_deployment_juju_wait_deployment" {
+resource "null_resource" "juju_wait_deployment" {
   provisioner "local-exec" {
     command = <<-EOT
     juju-wait -v --model ${var.model_name}
