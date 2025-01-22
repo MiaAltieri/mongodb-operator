@@ -108,7 +108,7 @@ jobs:
         run: |
           juju add-model ${{ matrix.module.model_name }}
           terraform init
-          terraform apply  -var "model_name=${{ matrix.module.model_name }}" -target null_resource.simple_deployment_juju_wait_deployment -auto-approve
+          terraform apply  -var "model_name=${{ matrix.module.model_name }}" -target null_resource.juju_wait_deployment -auto-approve
 
   lib-check:
     name: Check libraries

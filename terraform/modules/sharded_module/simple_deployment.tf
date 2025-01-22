@@ -1,21 +1,19 @@
 locals {
-  mongodb_apps = {
-    "config-server" = {
-      app_name = var.config_server_app_name
-      units    = var.config_server_units
-      role     = "config-server"
-    }
-    "shard-one" = {
-      app_name = var.shard_one_app_name
-      units    = var.shard_one_units
+  mongodb_apps = merge(
+    {
+      "config-server" = {
+        app_name = var.config_server_app_name
+        units    = var.config_server_replicas
+        role     = "config-server"
+      }
+    },
+    { for shard in var.shards : shard.name => {
+      app_name = shard.name
+      units    = shard.replicas
       role     = "shard"
+      }
     }
-    "shard-two" = {
-      app_name = var.shard_two_app_name
-      units    = var.shard_two_units
-      role     = "shard"
-    }
-  }
+  )
 }
 
 module "mongodb" {
@@ -49,11 +47,8 @@ resource "juju_integration" "data-integrator_mongos-integration" {
 
 resource "juju_integration" "config-server_integrations" {
   for_each = tomap({
-    "shard-one" = {
-      app_name = var.shard_one_app_name
-    }
-    "shard-two" = {
-      app_name = var.shard_two_app_name
+    for shard in var.shards : shard.name => {
+      app_name = shard.name
     }
   })
 

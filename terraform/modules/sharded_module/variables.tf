@@ -4,37 +4,28 @@ variable "model_name" {
 }
 
 variable "config_server_app_name" {
-  description = "mongodb app name"
+  description = "config-server app name"
   type        = string
   default     = "config-server"
 }
 
-variable "config_server_units" {
+variable "config_server_replicas" {
   description = "Node count"
   type        = number
   default     = 1
 }
 
-variable "shard_one_app_name" {
-  description = "mongodb app name"
-  type        = string
-  default     = "shard-one"
+variable "shards" {
+  description = "A list of shards containing their name and number of replicas"
+  type = list(object({
+    name     = string
+    replicas = number
+  }))
+  default = [
+    { name = "shard0", replicas = 2 },
+    { name = "shard1", replicas = 1 }
+  ]
 }
 
-variable "shard_one_units" {
-  description = "Node count"
-  type        = number
-  default     = 1
-}
 
-variable "shard_two_app_name" {
-  description = "mongodb app name"
-  type        = string
-  default     = "shard-two"
-}
 
-variable "shard_two_units" {
-  description = "Node count"
-  type        = number
-  default     = 1
-}
