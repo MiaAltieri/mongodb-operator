@@ -1,0 +1,80 @@
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/0 [idle] active: 
+  mongodb/1 [idle] active: 
+  mongodb/2 [idle] active: Primary
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/0 [idle] active: 
+  mongodb/1 [idle] active: 
+  mongodb/2 [idle] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/0 [idle] active: 
+  mongodb/1 [idle] active: 
+  mongodb/2 [idle] active:
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.6.1    unsupported  01:57:18Z
+
+App                       Version  Status  Scale  Charm                     Channel        Rev  Exposed  Message
+mongodb                            active      3  mongodb                                    0  no       
+self-signed-certificates           active      1  self-signed-certificates  latest/stable  155  no       
+
+Unit                         Workload  Agent  Machine  Public address  Ports      Message
+mongodb/0*                   active    idle   0        10.32.15.227    27017/tcp  
+mongodb/1                    active    idle   1        10.32.15.173    27017/tcp  
+mongodb/2                    active    idle   2        10.32.15.31     27017/tcp  
+self-signed-certificates/0*  active    idle   3        10.32.15.254               
+
+Machine  State    Address       Inst id        Base          AZ  Message
+0        started  10.32.15.227  juju-630e9c-0  ubuntu@22.04      Running
+1        started  10.32.15.173  juju-630e9c-1  ubuntu@22.04      Running
+2        started  10.32.15.31   juju-630e9c-2  ubuntu@22.04      Running
+3        started  10.32.15.254  juju-630e9c-3  ubuntu@22.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-0: 01:36:40 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 01:36:40 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-0: 01:36:40 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-1: 01:36:40 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 01:36:40 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-1: 01:36:40 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-2: 01:36:42 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 01:36:42 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-2: 01:36:42 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-0: 01:37:11 ERROR unit.mongodb/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-0: 01:37:11 ERROR unit.mongodb/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-1: 01:37:11 ERROR unit.mongodb/1.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-1: 01:37:11 ERROR unit.mongodb/1.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-2: 01:37:12 ERROR unit.mongodb/2.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-2: 01:37:12 ERROR unit.mongodb/2.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-0: 01:37:56 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:cuap3npujthcodat47eg seems to have no observers, could be removed
+machine-3: 01:47:51 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-3: 01:47:51 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-self-signed-certificates-0: 01:47:52 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-1: 01:48:21 ERROR unit.mongodb/1.juju-log certificates:2: Non-existing secret unit:int-cert-secret was attempted to be removed.
+unit-mongodb-0: 01:48:21 ERROR unit.mongodb/0.juju-log certificates:2: Non-existing secret unit:int-cert-secret was attempted to be removed.
+unit-mongodb-2: 01:48:21 ERROR unit.mongodb/2.juju-log certificates:2: Non-existing secret unit:int-cert-secret was attempted to be removed.
+unit-mongodb-0: 01:48:21 ERROR unit.mongodb/0.juju-log certificates:2: Non-existing secret unit:ext-cert-secret was attempted to be removed.
+unit-mongodb-2: 01:48:21 ERROR unit.mongodb/2.juju-log certificates:2: Non-existing secret unit:ext-cert-secret was attempted to be removed.
+unit-mongodb-1: 01:48:21 ERROR unit.mongodb/1.juju-log certificates:2: Non-existing secret unit:ext-cert-secret was attempted to be removed.
+unit-mongodb-2: 01:49:24 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47gg seems to have no observers, could be removed
+unit-mongodb-0: 01:49:25 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47g0 seems to have no observers, could be removed
+unit-mongodb-1: 01:49:25 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47fg seems to have no observers, could be removed
+unit-mongodb-2: 01:51:57 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47gg seems to have no observers, could be removed
+unit-mongodb-1: 01:51:57 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47fg seems to have no observers, could be removed
+unit-mongodb-2: 01:51:57 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47gg seems to have no observers, could be removed
+unit-mongodb-1: 01:51:57 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47fg seems to have no observers, could be removed
+unit-mongodb-0: 01:51:58 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47g0 seems to have no observers, could be removed
+unit-mongodb-0: 01:51:59 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47g0 seems to have no observers, could be removed
+unit-mongodb-1: 01:54:26 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47fg seems to have no observers, could be removed
+unit-mongodb-1: 01:54:27 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47fg seems to have no observers, could be removed
+unit-mongodb-0: 01:54:27 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47g0 seems to have no observers, could be removed
+unit-mongodb-0: 01:54:28 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47g0 seems to have no observers, could be removed
+unit-mongodb-2: 01:54:29 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47gg seems to have no observers, could be removed
+unit-mongodb-2: 01:54:30 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47gg seems to have no observers, could be removed
+unit-mongodb-1: 01:56:11 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47fg seems to have no observers, could be removed
+unit-mongodb-0: 01:56:11 ERROR unit.mongodb/0.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47g0 seems to have no observers, could be removed
+unit-mongodb-2: 01:56:11 ERROR unit.mongodb/2.juju-log _on_secret_remove: Secret secret:cuap8p9ujthcodat47gg seems to have no observers, could be removed
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
