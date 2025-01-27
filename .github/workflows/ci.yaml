@@ -71,10 +71,10 @@ jobs:
       matrix:
         module:
           - name: replica set tests
-            working_directory: terraform/modules/replica_set_module
+            working_directory: terraform/modules/replica_set
             model_name: test-rs
           - name: sharded tests
-            working_directory: terraform/modules/sharded_module
+            working_directory: terraform/modules/sharded_cluster
             model_name: test-sc
     steps:
       - name: Checkout repo
