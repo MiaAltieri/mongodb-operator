@@ -9,7 +9,7 @@ concurrency:
 on:
   pull_request:
   schedule:
-    - cron: '53 0 * * *'  # Daily at 00:53 UTC
+    - cron: "53 0 * * *" # Daily at 00:53 UTC
   # Triggered on push to branch "main" by .github/workflows/release.yaml
   workflow_call:
     outputs:
@@ -36,10 +36,10 @@ jobs:
       - name: Run tests
         run: tox run -e unit
 
-  terraform-test:
-    name: Terraform - Lint and Simple Deployment
+  terraform-lint:
+    name: Terraform - Lint
     runs-on: ubuntu-22.04
-    timeout-minutes: 120
+    timeout-minutes: 10
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -55,12 +55,36 @@ jobs:
           terraform fmt
           terraform validate
       - name: lint test charm module
-        working-directory: ./terraform/tests
+        working-directory: ./terraform/modules
         run: |
           terraform init
           terraform fmt
           terraform validate
-      - name: run checks - prepare
+
+  terraform-test:
+    name: Terraform - Run terraform tests
+    needs:
+      - terraform-lint
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    strategy:
+      matrix:
+        module:
+          - name: replica set tests
+            working_directory: terraform/modules/replica_set
+            model_name: test-rs
+          - name: sharded tests
+            working_directory: terraform/modules/sharded_cluster
+            model_name: test-sc
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install terraform snap
+        run: |
+          sudo snap install terraform --channel=latest/stable --classic
+      - name: juju set up
         run: |
           sudo snap install juju --channel=3.6/beta --classic
           sudo snap install juju-wait --channel=latest/stable --classic
@@ -79,11 +103,12 @@ jobs:
         run: |
           sg 'lxd' -c "juju bootstrap 'localhost' --config model-logs-size=10G"
           juju model-defaults logging-config='<root>=INFO; unit=DEBUG'
-          juju add-model test
-      - name: Terraform deploy
-        working-directory: ./terraform/tests/
+      - name: Terraform deploy ${{ matrix.module.name }}
+        working-directory: ${{ matrix.module.working_directory }}
         run: |
-          terraform apply  -var "model_name=test" -target null_resource.simple_deployment_juju_wait_deployment -auto-approve
+          juju add-model ${{ matrix.module.model_name }}
+          terraform init
+          terraform apply  -var "model_name=${{ matrix.module.model_name }}" -target null_resource.juju_wait_deployment -auto-approve
 
   lib-check:
     name: Check libraries
@@ -100,7 +125,7 @@ jobs:
       - name: Check libs
         uses: canonical/charming-actions/check-libraries@2.6.3
         with:
-          charmcraft-channel: latest/candidate  # TODO: remove after charmcraft 3.3 stable release
+          charmcraft-channel: latest/candidate # TODO: remove after charmcraft 3.3 stable release
           credentials: ${{ secrets.CHARMHUB_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           use-labels: false
@@ -147,7 +172,7 @@ jobs:
     name: Build charm
     uses: canonical/data-platform-workflows/.github/workflows/build_charm.yaml@v29.0.0
     with:
-      charmcraft-snap-channel: latest/candidate  # TODO: remove after charmcraft 3.3 stable release
+      charmcraft-snap-channel: latest/candidate # TODO: remove after charmcraft 3.3 stable release
       path-to-charm-directory: ${{ matrix.path }}
 
   integration-test:
@@ -160,7 +185,7 @@ jobs:
     with:
       artifact-prefix: ${{ needs.build.outputs.artifact-prefix }}
       cloud: lxd
-      juju-agent-version: 3.6.1  # renovate: juju-agent-pin-minor
+      juju-agent-version: 3.6.1 # renovate: juju-agent-pin-minor
       _beta_allure_report: true
     permissions:
       contents: write # Needed for Allure Report beta
