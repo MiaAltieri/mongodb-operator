@@ -12,25 +12,24 @@ jobs:
     permissions:
       contents: write  # Needed for Allure Report beta
 
-  release-charm:
+  release:
     name: Release charm
     needs:
       - ci-tests
     uses: canonical/data-platform-workflows/.github/workflows/release_charm.yaml@v29.0.0
     with:
-      charmcraft-snap-channel: latest/candidate  # TODO: remove after charmcraft 3.3 stable release
       channel: 6/edge
       artifact-prefix: ${{ needs.ci-tests.outputs.artifact-prefix }}
     secrets:
       charmhub-token: ${{ secrets.CHARMHUB_TOKEN }}
     permissions:
-      contents: write # Needed to create GitHub release
+      contents: write  # Needed to create git tags
 
   release-libraries:
     name: Release libraries
     runs-on: ubuntu-latest
     needs:
-      - release-charm
+      - release
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,6 +41,5 @@ jobs:
       - name: Release any bumped charm libs
         uses: canonical/charming-actions/release-libraries@2.4.0
         with:
-          charmcraft-channel: latest/candidate  # TODO: remove after charmcraft 3.3 stable release
           credentials: "${{ secrets.CHARMHUB_TOKEN }}"
           github-token: "${{ secrets.GITHUB_TOKEN }}"
