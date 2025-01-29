@@ -70,8 +70,12 @@ class MongoDBTLS(Object):
             self.charm.on[Config.TLS.TLS_PEER_RELATION].relation_broken,
             self._on_tls_relation_broken,
         )
-        self.framework.observe(self.certs.on.certificate_available, self._on_certificate_available)
-        self.framework.observe(self.certs.on.certificate_expiring, self._on_certificate_expiring)
+        self.framework.observe(
+            self.certs.on.certificate_available, self._on_certificate_available
+        )
+        self.framework.observe(
+            self.certs.on.certificate_expiring, self._on_certificate_expiring
+        )
 
     def is_tls_enabled(self, internal: bool):
         """Returns a boolean indicating if TLS for a given internal/external is enabled."""
@@ -80,7 +84,10 @@ class MongoDBTLS(Object):
     def _on_set_tls_private_key(self, event: ActionEvent) -> None:
         """Set the TLS private key, which will be used for requesting the certificate."""
         logger.debug("Request to set TLS private key received.")
-        if self.charm.is_role(Config.Role.MONGOS) and not self.charm.has_config_server():
+        if (
+            self.charm.is_role(Config.Role.MONGOS)
+            and not self.charm.has_config_server()
+        ):
             logger.error(
                 "mongos is not running (not integrated to config-server) deferring renewal of certificates."
             )
@@ -93,8 +100,12 @@ class MongoDBTLS(Object):
             return
 
         try:
-            self.request_certificate(event.params.get("external-key", None), internal=False)
-            self.request_certificate(event.params.get("internal-key", None), internal=True)
+            self.request_certificate(
+                event.params.get("external-key", None), internal=False
+            )
+            self.request_certificate(
+                event.params.get("internal-key", None), internal=True
+            )
             logger.debug("Successfully set TLS private key.")
         except ValueError as e:
             event.fail(str(e))
@@ -145,7 +156,10 @@ class MongoDBTLS(Object):
 
     def _on_tls_relation_joined(self, event: RelationJoinedEvent) -> None:
         """Request certificate when TLS relation joined."""
-        if self.charm.is_role(Config.Role.MONGOS) and not self.charm.has_config_server():
+        if (
+            self.charm.is_role(Config.Role.MONGOS)
+            and not self.charm.has_config_server()
+        ):
             logger.info(
                 "mongos is not running (not integrated to config-server) deferring renewal of certificates."
             )
@@ -174,7 +188,9 @@ class MongoDBTLS(Object):
                 "Disabling TLS is not supported during an upgrade. The charm may be in a broken, unrecoverable state."
             )
 
-        logger.debug("Disabling external and internal TLS for unit: %s", self.charm.unit.name)
+        logger.debug(
+            "Disabling external and internal TLS for unit: %s", self.charm.unit.name
+        )
 
         for internal in [True, False]:
             self.set_tls_secret(internal, Config.TLS.SECRET_CA_LABEL, None)
@@ -193,20 +209,28 @@ class MongoDBTLS(Object):
 
     def _on_certificate_available(self, event: CertificateAvailableEvent) -> None:
         """Enable TLS when TLS certificate available."""
-        if self.charm.is_role(Config.Role.MONGOS) and not self.charm.config_server_db:
+        if (
+            self.charm.is_role(Config.Role.MONGOS)
+            and not self.charm.has_config_server()
+        ):
             logger.debug(
                 "mongos requires config-server in order to start, do not restart with TLS until integrated to config-server"
             )
             event.defer()
             return
 
-        if not self.charm.db_initialised:
+        # mongos must recieve its certificates in order for it to get initialised
+        if not self.charm.db_initialised and not self.charm.is_role(Config.Role.MONGOS):
             logger.info("Deferring %s. db is not initialised.", str(type(event)))
             event.defer()
             return
 
-        int_csr = self.get_tls_secret(internal=True, label_name=Config.TLS.SECRET_CSR_LABEL)
-        ext_csr = self.get_tls_secret(internal=False, label_name=Config.TLS.SECRET_CSR_LABEL)
+        int_csr = self.get_tls_secret(
+            internal=True, label_name=Config.TLS.SECRET_CSR_LABEL
+        )
+        ext_csr = self.get_tls_secret(
+            internal=False, label_name=Config.TLS.SECRET_CSR_LABEL
+        )
 
         if ext_csr and event.certificate_signing_request.rstrip() == ext_csr.rstrip():
             logger.debug("The external TLS certificate available.")
@@ -238,15 +262,25 @@ class MongoDBTLS(Object):
             event.defer()
             return
 
-        logger.info("Restarting mongod with TLS enabled.")
-
         self.charm.delete_tls_certificate_from_workload()
         self.charm.push_tls_certificate_to_workload()
+
+        # if mongos hasn't been started let it be started with the integration to the
+        # config-server
+        if not self.charm.db_initialised and self.charm.is_role(Config.Role.MONGOS):
+            logger.info(
+                "Mongos has not yet been initialized, will enable TLS when it is set up with the config-server."
+            )
+            return
+
+        logger.info("Restarting mongod with TLS enabled.")
         self.charm.status.set_and_share_status(MaintenanceStatus("enabling TLS"))
         self.charm.restart_charm_services()
 
         if not self.charm.is_db_service_ready():
-            self.charm.status.set_and_share_status(WaitingStatus("Waiting for MongoDB to start"))
+            self.charm.status.set_and_share_status(
+                WaitingStatus("Waiting for MongoDB to start")
+            )
         elif self.charm.unit.status == WaitingStatus(
             "Waiting for MongoDB to start"
         ) or self.charm.unit.status == MaintenanceStatus("enabling TLS"):
@@ -255,10 +289,14 @@ class MongoDBTLS(Object):
 
     def is_waiting_for_both_certs(self) -> bool:
         """Returns a boolean indicating whether additional certs are needed."""
-        if not self.get_tls_secret(internal=True, label_name=Config.TLS.SECRET_CERT_LABEL):
+        if not self.get_tls_secret(
+            internal=True, label_name=Config.TLS.SECRET_CERT_LABEL
+        ):
             logger.debug("Waiting for internal certificate.")
             return True
-        if not self.get_tls_secret(internal=False, label_name=Config.TLS.SECRET_CERT_LABEL):
+        if not self.get_tls_secret(
+            internal=False, label_name=Config.TLS.SECRET_CERT_LABEL
+        ):
             logger.debug("Waiting for external certificate.")
             return True
 
@@ -266,7 +304,10 @@ class MongoDBTLS(Object):
 
     def _on_certificate_expiring(self, event: CertificateExpiringEvent) -> None:
         """Request the new certificate when old certificate is expiring."""
-        if self.charm.is_role(Config.Role.MONGOS) and not self.charm.has_config_server():
+        if (
+            self.charm.is_role(Config.Role.MONGOS)
+            and not self.charm.has_config_server()
+        ):
             logger.info(
                 "mongos is not running (not integrated to config-server) deferring renewal of certificates."
             )
@@ -283,7 +324,9 @@ class MongoDBTLS(Object):
             internal = False
         elif (
             event.certificate.rstrip()
-            == self.get_tls_secret(internal=True, label_name=Config.TLS.SECRET_CERT_LABEL).rstrip()
+            == self.get_tls_secret(
+                internal=True, label_name=Config.TLS.SECRET_CERT_LABEL
+            ).rstrip()
         ):
             logger.debug("The internal TLS certificate expiring.")
             internal = True
@@ -297,7 +340,9 @@ class MongoDBTLS(Object):
     def request_new_certificates(self, internal: bool) -> None:
         """Requests the renewel of a new certificate."""
         key = self.get_tls_secret(internal, Config.TLS.SECRET_KEY_LABEL).encode("utf-8")
-        old_csr = self.get_tls_secret(internal, Config.TLS.SECRET_CSR_LABEL).encode("utf-8")
+        old_csr = self.get_tls_secret(internal, Config.TLS.SECRET_CSR_LABEL).encode(
+            "utf-8"
+        )
         sans = self.get_new_sans()
         new_csr = generate_csr(
             private_key=key,
@@ -313,7 +358,9 @@ class MongoDBTLS(Object):
             new_certificate_signing_request=new_csr,
         )
 
-        self.set_tls_secret(internal, Config.TLS.SECRET_CSR_LABEL, new_csr.decode("utf-8"))
+        self.set_tls_secret(
+            internal, Config.TLS.SECRET_CSR_LABEL, new_csr.decode("utf-8")
+        )
         self.set_waiting_for_cert_to_update(waiting=True, internal=internal)
 
     def get_new_sans(self) -> dict[str, list[str]]:
@@ -332,7 +379,11 @@ class MongoDBTLS(Object):
                 f"{self.charm.app.name}-{unit_id}.{self.charm.app.name}-endpoints",
             ],
             SANS_IPS_KEY: [
-                str(self.charm.model.get_binding(self.peer_relation).network.bind_address)
+                str(
+                    self.charm.model.get_binding(
+                        self.peer_relation
+                    ).network.bind_address
+                )
             ],
         }
 
@@ -353,7 +404,9 @@ class MongoDBTLS(Object):
 
         try:
             cert = x509.load_pem_x509_certificate(pem_file.encode(), default_backend())
-            sans = cert.extensions.get_extension_for_class(x509.SubjectAlternativeName).value
+            sans = cert.extensions.get_extension_for_class(
+                x509.SubjectAlternativeName
+            ).value
             sans_ip = [str(san) for san in sans.get_values_for_type(x509.IPAddress)]
             sans_dns = [str(san) for san in sans.get_values_for_type(x509.DNSName)]
         except x509.ExtensionNotFound:
