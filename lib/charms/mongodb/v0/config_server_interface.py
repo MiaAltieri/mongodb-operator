@@ -40,7 +40,9 @@ KEYFILE_KEY = "key-file"
 KEY_FILE = "keyFile"
 HOSTS_KEY = "host"
 CONFIG_SERVER_DB_KEY = "config-server-db"
-MONGOS_SOCKET_URI_FMT = "%2Fvar%2Fsnap%2Fcharmed-mongodb%2Fcommon%2Fvar%2Fmongodb-27018.sock"
+MONGOS_SOCKET_URI_FMT = (
+    "%2Fvar%2Fsnap%2Fcharmed-mongodb%2Fcommon%2Fvar%2Fmongodb-27018.sock"
+)
 INT_TLS_CA_KEY = f"int-{Config.TLS.SECRET_CA_LABEL}"
 
 # The unique Charmhub library identifier, never change it
@@ -51,7 +53,7 @@ LIBAPI = 0
 
 # Increment this PATCH version before using `charmcraft publish-lib` or reset
 # to 0 if you are raising the major API version
-LIBPATCH = 15
+LIBPATCH = 1
 
 
 class ClusterProvider(Object):
@@ -67,7 +69,9 @@ class ClusterProvider(Object):
         self.substrate = substrate
         self.relation_name = relation_name
         self.charm = charm
-        self.database_provides = DatabaseProvides(self.charm, relation_name=self.relation_name)
+        self.database_provides = DatabaseProvides(
+            self.charm, relation_name=self.relation_name
+        )
 
         super().__init__(charm, self.relation_name)
         self.framework.observe(
@@ -87,6 +91,9 @@ class ClusterProvider(Object):
 
     def pass_hook_checks(self, event: EventBase) -> bool:
         """Runs the pre-hooks checks for ClusterProvider, returns True if all pass."""
+        if not self.charm.unit.is_leader():
+            return False
+
         if not self.charm.db_initialised:
             logger.info("Deferring %s. db is not initialised.", type(event))
             event.defer()
@@ -94,11 +101,9 @@ class ClusterProvider(Object):
 
         if not self.is_valid_mongos_integration():
             logger.info(
-                "Skipping %s. ClusterProvider is only be executed by config-server", type(event)
+                "Skipping %s. ClusterProvider is only be executed by config-server",
+                type(event),
             )
-            return False
-
-        if not self.charm.unit.is_leader():
             return False
 
         if self.charm.upgrade_in_progress:
@@ -116,12 +121,17 @@ class ClusterProvider(Object):
             self.charm.model.relations[Config.Relations.CLUSTER_RELATIONS_NAME]
         )
 
-        if not self.charm.is_role(Config.Role.CONFIG_SERVER) and is_integrated_to_mongos:
+        if (
+            not self.charm.is_role(Config.Role.CONFIG_SERVER)
+            and is_integrated_to_mongos
+        ):
             return False
 
         return True
 
-    def _on_database_requested(self, event: DatabaseRequestedEvent | RelationChangedEvent) -> None:
+    def _on_database_requested(
+        self, event: DatabaseRequestedEvent | RelationChangedEvent
+    ) -> None:
         """Handles the database requested event.
 
         The first time secrets are written to relations should be on this event.
@@ -160,7 +170,9 @@ class ClusterProvider(Object):
         """Handles providing mongos with KeyFile and hosts."""
         # First we need to ensure that the database requested event has run
         # otherwise we risk the chance of writing secrets in plain sight.
-        if not self.database_provides.fetch_relation_field(event.relation.id, "database"):
+        if not self.database_provides.fetch_relation_field(
+            event.relation.id, "database"
+        ):
             logger.info("Database Requested has not run yet, skipping.")
             event.defer()
             return
@@ -188,7 +200,9 @@ class ClusterProvider(Object):
             return
 
         if not self.charm.proceed_on_broken_event(event):
-            logger.info("Skipping relation broken event, broken event due to scale down")
+            logger.info(
+                "Skipping relation broken event, broken event due to scale down"
+            )
             return
 
         # mongos-k8s router is in charge of removing its own users.
@@ -228,9 +242,13 @@ class ClusterProvider(Object):
         """Updates the new CA for all related shards."""
         for relation in self.charm.model.relations[self.relation_name]:
             if new_ca is None:
-                self.database_provides.delete_relation_data(relation.id, {INT_TLS_CA_KEY: new_ca})
+                self.database_provides.delete_relation_data(
+                    relation.id, {INT_TLS_CA_KEY: new_ca}
+                )
             else:
-                self.database_provides.update_relation_data(relation.id, {INT_TLS_CA_KEY: new_ca})
+                self.database_provides.update_relation_data(
+                    relation.id, {INT_TLS_CA_KEY: new_ca}
+                )
 
 
 class ClusterRequirer(Object):
@@ -277,7 +295,9 @@ class ClusterRequirer(Object):
 
     def _on_relation_created_handler(self, event: RelationCreatedEvent) -> None:
         logger.info("Integrating to config-server")
-        self.charm.status.set_and_share_status(WaitingStatus("Connecting to config-server"))
+        self.charm.status.set_and_share_status(
+            WaitingStatus("Connecting to config-server")
+        )
         self.database_requires._on_relation_created_event(event)
 
     def _on_database_created(self, event) -> None:
@@ -292,8 +312,12 @@ class ClusterRequirer(Object):
             return
 
         logger.info("Database and user created for mongos application")
-        self.charm.set_secret(Config.Relations.APP_SCOPE, Config.Secrets.USERNAME, event.username)
-        self.charm.set_secret(Config.Relations.APP_SCOPE, Config.Secrets.PASSWORD, event.password)
+        self.charm.set_secret(
+            Config.Relations.APP_SCOPE, Config.Secrets.USERNAME, event.username
+        )
+        self.charm.set_secret(
+            Config.Relations.APP_SCOPE, Config.Secrets.PASSWORD, event.password
+        )
 
         # K8s charm have a 1:Many client scheme and share connection info in a different manner.
         if self.substrate == Config.Substrate.VM:
@@ -318,7 +342,9 @@ class ClusterRequirer(Object):
             return
 
         updated_keyfile = self.update_keyfile(key_file_contents=key_file_contents)
-        updated_config = self.update_config_server_db(config_server_db=config_server_db_uri)
+        updated_config = self.update_config_server_db(
+            config_server_db=config_server_db_uri
+        )
 
         # avoid restarting mongos when possible
         if not updated_keyfile and not updated_config and self.is_mongos_running():
@@ -334,7 +360,9 @@ class ClusterRequirer(Object):
         # restart on high loaded databases can be very slow (e.g. up to 10-20 minutes).
         if not self.is_mongos_running():
             logger.info("mongos has not started, deferring")
-            self.charm.status.set_and_share_status(WaitingStatus("Waiting for mongos to start"))
+            self.charm.status.set_and_share_status(
+                WaitingStatus("Waiting for mongos to start")
+            )
             event.defer()
             return
 
@@ -354,7 +382,9 @@ class ClusterRequirer(Object):
             self.charm.client_relations.oversee_users(None, None)
         except PyMongoError:
             event.defer()
-            logger.debug("failed to add users on mongos-k8s router, will defer and try again.")
+            logger.debug(
+                "failed to add users on mongos-k8s router, will defer and try again."
+            )
 
     def _on_relation_broken(self, event: RelationBrokenEvent) -> None:
         # Only relation_deparated events can check if scaling down
@@ -366,7 +396,9 @@ class ClusterRequirer(Object):
             return
 
         if not self.charm.proceed_on_broken_event(event):
-            logger.info("Skipping relation broken event, broken event due to scale down")
+            logger.info(
+                "Skipping relation broken event, broken event due to scale down"
+            )
             return
 
         try:
@@ -426,12 +458,12 @@ class ClusterRequirer(Object):
             event.defer()
             return False
 
-        if not self.is_ca_compatible():
+        # race condition where mongos cannot start without TLS certificates, but mongos cannot
+        # request TLS certificates without knowing the name of the config-server.
+        if self.is_waiting_to_request_certs():
             logger.info(
-                "Deferring %s. mongos is integrated to a different CA than the config server. Please use the same CA for all cluster components.",
-                str(type(event)),
+                "Mongos was waiting for config-server to enable TLS. Wait for TLS to be enabled until starting mongos."
             )
-
             event.defer()
             return False
 
@@ -475,12 +507,16 @@ class ClusterRequirer(Object):
 
         # put keyfile on the machine with appropriate permissions
         self.charm.push_file_to_unit(
-            parent_dir=Config.MONGOD_CONF_DIR, file_name=KEY_FILE, file_contents=key_file_contents
+            parent_dir=Config.MONGOD_CONF_DIR,
+            file_name=KEY_FILE,
+            file_contents=key_file_contents,
         )
 
         if self.charm.unit.is_leader():
             self.charm.set_secret(
-                Config.Relations.APP_SCOPE, Config.Secrets.SECRET_KEYFILE_NAME, key_file_contents
+                Config.Relations.APP_SCOPE,
+                Config.Secrets.SECRET_KEYFILE_NAME,
+                key_file_contents,
             )
 
         return True
@@ -516,6 +552,22 @@ class ClusterRequirer(Object):
             CONFIG_SERVER_DB_KEY,
         )
 
+    def is_waiting_to_request_certs(self) -> bool:
+        """Returns True if mongos has been waiting for config server in order to request certs."""
+        if not self.charm.model.get_relation(Config.TLS.TLS_PEER_RELATION):
+            return False
+
+        mongos_tls_ca = self.charm.tls.get_tls_secret(
+            internal=True, label_name=Config.TLS.SECRET_CA_LABEL
+        )
+
+        # our CA is none until certs have been requested. We cannot request certs until integrated
+        # to config-server.
+        if not mongos_tls_ca:
+            return True
+
+        return False
+
     def is_ca_compatible(self) -> bool:
         """Returns true if both the mongos and the config server use the same CA."""
         config_server_relation = self.charm.model.get_relation(self.relation_name)
@@ -543,9 +595,13 @@ class ClusterRequirer(Object):
         if not config_server_relation:
             return False
 
-        mongos_has_tls = self.charm.model.get_relation(Config.TLS.TLS_PEER_RELATION) is not None
+        mongos_has_tls = (
+            self.charm.model.get_relation(Config.TLS.TLS_PEER_RELATION) is not None
+        )
         config_server_has_tls = (
-            self.database_requires.fetch_relation_field(config_server_relation.id, INT_TLS_CA_KEY)
+            self.database_requires.fetch_relation_field(
+                config_server_relation.id, INT_TLS_CA_KEY
+            )
             is not None
         )
         if config_server_has_tls and not mongos_has_tls:
@@ -559,9 +615,13 @@ class ClusterRequirer(Object):
         if not config_server_relation:
             return False
 
-        mongos_has_tls = self.charm.model.get_relation(Config.TLS.TLS_PEER_RELATION) is not None
+        mongos_has_tls = (
+            self.charm.model.get_relation(Config.TLS.TLS_PEER_RELATION) is not None
+        )
         config_server_has_tls = (
-            self.database_requires.fetch_relation_field(config_server_relation.id, INT_TLS_CA_KEY)
+            self.database_requires.fetch_relation_field(
+                config_server_relation.id, INT_TLS_CA_KEY
+            )
             is not None
         )
         if not config_server_has_tls and mongos_has_tls:
