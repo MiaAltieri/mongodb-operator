@@ -1,0 +1,403 @@
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.6.1    unsupported  02:10:57Z
+
+App      Version  Status  Scale  Charm    Channel  Rev  Exposed  Message
+mongodb           active      5  mongodb             0  no       
+
+Unit        Workload  Agent      Machine  Public address  Ports      Message
+mongodb/1*  waiting   executing  1        10.57.163.115   27017/tcp  waiting to reconfigure replica set
+mongodb/2   active    idle       2        10.57.163.69    27017/tcp  
+mongodb/3   active    idle       3        10.57.163.194   27017/tcp  
+mongodb/4   active    idle       4        10.57.163.192   27017/tcp  
+mongodb/5   error     idle       5        10.57.163.22               hook failed: "secret-changed"
+
+Machine  State    Address        Inst id        Base          AZ  Message
+1        started  10.57.163.115  juju-de6c67-1  ubuntu@22.04      Running
+2        started  10.57.163.69   juju-de6c67-2  ubuntu@22.04      Running
+3        started  10.57.163.194  juju-de6c67-3  ubuntu@22.04      Running
+4        started  10.57.163.192  juju-de6c67-4  ubuntu@22.04      Running
+5        started  10.57.163.22   juju-de6c67-5  ubuntu@22.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-1: 01:37:05 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 01:37:05 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-1: 01:37:05 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-2: 01:37:05 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 01:37:05 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-2: 01:37:05 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-0: 01:37:06 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 01:37:06 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-0: 01:37:06 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-1: 01:37:43 ERROR unit.mongodb/1.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-1: 01:37:43 ERROR unit.mongodb/1.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-2: 01:37:43 ERROR unit.mongodb/2.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-2: 01:37:43 ERROR unit.mongodb/2.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-0: 01:37:43 ERROR unit.mongodb/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-0: 01:37:43 ERROR unit.mongodb/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-1: 01:39:12 ERROR unit.mongodb/1.juju-log _on_secret_remove: Secret secret:cuddgajtnnbt4rq5hgfg seems to have no observers, could be removed
+machine-3: 01:48:00 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-3: 01:48:00 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-3: 01:48:00 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-3: 01:48:25 ERROR unit.mongodb/3.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-3: 01:48:25 ERROR unit.mongodb/3.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-4: 01:52:30 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-4: 01:52:30 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-4: 01:52:30 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-4: 01:52:57 ERROR unit.mongodb/4.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-4: 01:52:57 ERROR unit.mongodb/4.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-5: 01:53:55 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-5: 01:53:55 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-mongodb-5: 01:53:55 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-mongodb-5: 01:54:23 ERROR unit.mongodb/5.juju-log Unable to set params: ['vm.max_map_count']
+unit-mongodb-5: 01:54:23 ERROR unit.mongodb/5.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongodb-5: 02:04:32 ERROR unit.mongodb/5.juju-log An exception occurred when installing charmed-mongodb. Reason: Snap: 'charmed-mongodb'; command ['snap', 'install', 'charmed-mongodb', '--revision="123"'] failed with output = ''
+unit-mongodb-5: 02:04:37 ERROR unit.mongodb/5.juju-log An exception occurred when starting mongod agent, error: Could not ['snap', 'start', '--enable', 'charmed-mongodb.mongod'] for snap [charmed-mongodb]: error: snap "charmed-mongodb" has no service "mongod"
+.
+unit-mongodb-5: 02:04:38 ERROR unit.mongodb/5.juju-log Uncaught exception while in charm code:
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 818, in _request_raw
+    response = self.opener.open(request, timeout=self.timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 525, in open
+    response = meth(req, response)
+  File "/usr/lib/python3.10/urllib/request.py", line 634, in http_response
+    response = self.parent.error(
+  File "/usr/lib/python3.10/urllib/request.py", line 563, in error
+    return self._call_chain(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 643, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 404: Not Found
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 1618, in <module>
+    main(MongodbOperatorCharm)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 551, in main
+    manager.run()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 530, in run
+    self._emit()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 519, in _emit
+    _emit_charm_event(self.charm, self.dispatcher.event_name)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 147, in _emit_charm_event
+    event_to_emit.emit(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 348, in emit
+    framework._emit(event)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 860, in _emit
+    self._reemit(event_path)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 950, in _reemit
+    custom_handler(event)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 805, in _on_secret_changed
+    self._connect_mongodb_exporter()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 1201, in _connect_mongodb_exporter
+    mongodb_snap.set({Config.Monitoring.URI_PARAM_NAME: self.monitor_config.uri})
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 346, in set
+    self._snap_client._put_snap_conf(self._name, config)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 848, in _put_snap_conf
+    return self._request("PUT", f"snaps/{name}/conf", body=conf)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 771, in _request
+    response = self._request_raw(method, path, query, headers, data)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 829, in _request_raw
+    raise SnapAPIError(body, code, status, message)
+charms.operator_libs_linux.v2.snap.SnapAPIError
+unit-mongodb-5: 02:04:38 ERROR juju.worker.uniter.operation hook "secret-changed" (via hook dispatching script: dispatch) failed: exit status 1
+unit-mongodb-5: 02:04:45 ERROR unit.mongodb/5.juju-log Uncaught exception while in charm code:
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 818, in _request_raw
+    response = self.opener.open(request, timeout=self.timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 525, in open
+    response = meth(req, response)
+  File "/usr/lib/python3.10/urllib/request.py", line 634, in http_response
+    response = self.parent.error(
+  File "/usr/lib/python3.10/urllib/request.py", line 563, in error
+    return self._call_chain(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 643, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 404: Not Found
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 1618, in <module>
+    main(MongodbOperatorCharm)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 551, in main
+    manager.run()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 530, in run
+    self._emit()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 519, in _emit
+    _emit_charm_event(self.charm, self.dispatcher.event_name)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 147, in _emit_charm_event
+    event_to_emit.emit(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 348, in emit
+    framework._emit(event)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 860, in _emit
+    self._reemit(event_path)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 950, in _reemit
+    custom_handler(event)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 805, in _on_secret_changed
+    self._connect_mongodb_exporter()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 1201, in _connect_mongodb_exporter
+    mongodb_snap.set({Config.Monitoring.URI_PARAM_NAME: self.monitor_config.uri})
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 346, in set
+    self._snap_client._put_snap_conf(self._name, config)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 848, in _put_snap_conf
+    return self._request("PUT", f"snaps/{name}/conf", body=conf)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 771, in _request
+    response = self._request_raw(method, path, query, headers, data)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 829, in _request_raw
+    raise SnapAPIError(body, code, status, message)
+charms.operator_libs_linux.v2.snap.SnapAPIError
+unit-mongodb-5: 02:04:45 ERROR juju.worker.uniter.operation hook "secret-changed" (via hook dispatching script: dispatch) failed: exit status 1
+unit-mongodb-5: 02:04:57 ERROR unit.mongodb/5.juju-log Uncaught exception while in charm code:
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 818, in _request_raw
+    response = self.opener.open(request, timeout=self.timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 525, in open
+    response = meth(req, response)
+  File "/usr/lib/python3.10/urllib/request.py", line 634, in http_response
+    response = self.parent.error(
+  File "/usr/lib/python3.10/urllib/request.py", line 563, in error
+    return self._call_chain(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 643, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 404: Not Found
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 1618, in <module>
+    main(MongodbOperatorCharm)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 551, in main
+    manager.run()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 530, in run
+    self._emit()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 519, in _emit
+    _emit_charm_event(self.charm, self.dispatcher.event_name)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 147, in _emit_charm_event
+    event_to_emit.emit(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 348, in emit
+    framework._emit(event)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 860, in _emit
+    self._reemit(event_path)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 950, in _reemit
+    custom_handler(event)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 805, in _on_secret_changed
+    self._connect_mongodb_exporter()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 1201, in _connect_mongodb_exporter
+    mongodb_snap.set({Config.Monitoring.URI_PARAM_NAME: self.monitor_config.uri})
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 346, in set
+    self._snap_client._put_snap_conf(self._name, config)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 848, in _put_snap_conf
+    return self._request("PUT", f"snaps/{name}/conf", body=conf)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 771, in _request
+    response = self._request_raw(method, path, query, headers, data)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 829, in _request_raw
+    raise SnapAPIError(body, code, status, message)
+charms.operator_libs_linux.v2.snap.SnapAPIError
+unit-mongodb-5: 02:04:57 ERROR juju.worker.uniter.operation hook "secret-changed" (via hook dispatching script: dispatch) failed: exit status 1
+unit-mongodb-5: 02:05:18 ERROR unit.mongodb/5.juju-log Uncaught exception while in charm code:
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 818, in _request_raw
+    response = self.opener.open(request, timeout=self.timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 525, in open
+    response = meth(req, response)
+  File "/usr/lib/python3.10/urllib/request.py", line 634, in http_response
+    response = self.parent.error(
+  File "/usr/lib/python3.10/urllib/request.py", line 563, in error
+    return self._call_chain(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 643, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 404: Not Found
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 1618, in <module>
+    main(MongodbOperatorCharm)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 551, in main
+    manager.run()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 530, in run
+    self._emit()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 519, in _emit
+    _emit_charm_event(self.charm, self.dispatcher.event_name)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 147, in _emit_charm_event
+    event_to_emit.emit(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 348, in emit
+    framework._emit(event)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 860, in _emit
+    self._reemit(event_path)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 950, in _reemit
+    custom_handler(event)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 805, in _on_secret_changed
+    self._connect_mongodb_exporter()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 1201, in _connect_mongodb_exporter
+    mongodb_snap.set({Config.Monitoring.URI_PARAM_NAME: self.monitor_config.uri})
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 346, in set
+    self._snap_client._put_snap_conf(self._name, config)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 848, in _put_snap_conf
+    return self._request("PUT", f"snaps/{name}/conf", body=conf)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 771, in _request
+    response = self._request_raw(method, path, query, headers, data)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 829, in _request_raw
+    raise SnapAPIError(body, code, status, message)
+charms.operator_libs_linux.v2.snap.SnapAPIError
+unit-mongodb-5: 02:05:18 ERROR juju.worker.uniter.operation hook "secret-changed" (via hook dispatching script: dispatch) failed: exit status 1
+unit-mongodb-5: 02:05:58 ERROR unit.mongodb/5.juju-log Uncaught exception while in charm code:
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 818, in _request_raw
+    response = self.opener.open(request, timeout=self.timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 525, in open
+    response = meth(req, response)
+  File "/usr/lib/python3.10/urllib/request.py", line 634, in http_response
+    response = self.parent.error(
+  File "/usr/lib/python3.10/urllib/request.py", line 563, in error
+    return self._call_chain(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 643, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 404: Not Found
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 1618, in <module>
+    main(MongodbOperatorCharm)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 551, in main
+    manager.run()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 530, in run
+    self._emit()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 519, in _emit
+    _emit_charm_event(self.charm, self.dispatcher.event_name)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 147, in _emit_charm_event
+    event_to_emit.emit(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 348, in emit
+    framework._emit(event)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 860, in _emit
+    self._reemit(event_path)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 950, in _reemit
+    custom_handler(event)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 805, in _on_secret_changed
+    self._connect_mongodb_exporter()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 1201, in _connect_mongodb_exporter
+    mongodb_snap.set({Config.Monitoring.URI_PARAM_NAME: self.monitor_config.uri})
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 346, in set
+    self._snap_client._put_snap_conf(self._name, config)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 848, in _put_snap_conf
+    return self._request("PUT", f"snaps/{name}/conf", body=conf)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 771, in _request
+    response = self._request_raw(method, path, query, headers, data)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 829, in _request_raw
+    raise SnapAPIError(body, code, status, message)
+charms.operator_libs_linux.v2.snap.SnapAPIError
+unit-mongodb-5: 02:05:59 ERROR juju.worker.uniter.operation hook "secret-changed" (via hook dispatching script: dispatch) failed: exit status 1
+unit-mongodb-5: 02:07:20 ERROR unit.mongodb/5.juju-log Uncaught exception while in charm code:
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 818, in _request_raw
+    response = self.opener.open(request, timeout=self.timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 525, in open
+    response = meth(req, response)
+  File "/usr/lib/python3.10/urllib/request.py", line 634, in http_response
+    response = self.parent.error(
+  File "/usr/lib/python3.10/urllib/request.py", line 563, in error
+    return self._call_chain(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 643, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 404: Not Found
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 1618, in <module>
+    main(MongodbOperatorCharm)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 551, in main
+    manager.run()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 530, in run
+    self._emit()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 519, in _emit
+    _emit_charm_event(self.charm, self.dispatcher.event_name)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 147, in _emit_charm_event
+    event_to_emit.emit(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 348, in emit
+    framework._emit(event)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 860, in _emit
+    self._reemit(event_path)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 950, in _reemit
+    custom_handler(event)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 805, in _on_secret_changed
+    self._connect_mongodb_exporter()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 1201, in _connect_mongodb_exporter
+    mongodb_snap.set({Config.Monitoring.URI_PARAM_NAME: self.monitor_config.uri})
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 346, in set
+    self._snap_client._put_snap_conf(self._name, config)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 848, in _put_snap_conf
+    return self._request("PUT", f"snaps/{name}/conf", body=conf)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 771, in _request
+    response = self._request_raw(method, path, query, headers, data)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 829, in _request_raw
+    raise SnapAPIError(body, code, status, message)
+charms.operator_libs_linux.v2.snap.SnapAPIError
+unit-mongodb-5: 02:07:20 ERROR juju.worker.uniter.operation hook "secret-changed" (via hook dispatching script: dispatch) failed: exit status 1
+unit-mongodb-5: 02:10:05 ERROR unit.mongodb/5.juju-log Uncaught exception while in charm code:
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 818, in _request_raw
+    response = self.opener.open(request, timeout=self.timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 525, in open
+    response = meth(req, response)
+  File "/usr/lib/python3.10/urllib/request.py", line 634, in http_response
+    response = self.parent.error(
+  File "/usr/lib/python3.10/urllib/request.py", line 563, in error
+    return self._call_chain(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 643, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 404: Not Found
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 1618, in <module>
+    main(MongodbOperatorCharm)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 551, in main
+    manager.run()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 530, in run
+    self._emit()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 519, in _emit
+    _emit_charm_event(self.charm, self.dispatcher.event_name)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/main.py", line 147, in _emit_charm_event
+    event_to_emit.emit(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 348, in emit
+    framework._emit(event)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 860, in _emit
+    self._reemit(event_path)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 950, in _reemit
+    custom_handler(event)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 805, in _on_secret_changed
+    self._connect_mongodb_exporter()
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/src/charm.py", line 1201, in _connect_mongodb_exporter
+    mongodb_snap.set({Config.Monitoring.URI_PARAM_NAME: self.monitor_config.uri})
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 346, in set
+    self._snap_client._put_snap_conf(self._name, config)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 848, in _put_snap_conf
+    return self._request("PUT", f"snaps/{name}/conf", body=conf)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 771, in _request
+    response = self._request_raw(method, path, query, headers, data)
+  File "/var/lib/juju/agents/unit-mongodb-5/charm/lib/charms/operator_libs_linux/v2/snap.py", line 829, in _request_raw
+    raise SnapAPIError(body, code, status, message)
+charms.operator_libs_linux.v2.snap.SnapAPIError
+unit-mongodb-5: 02:10:05 ERROR juju.worker.uniter.operation hook "secret-changed" (via hook dispatching script: dispatch) failed: exit status 1
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
