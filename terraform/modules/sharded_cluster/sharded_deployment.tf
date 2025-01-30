@@ -24,7 +24,7 @@ module "mongodb" {
   units    = each.value.units
   channel  = "6/edge"
   config = {
-    role = each.key
+    role = each.value.role
   }
 }
 
