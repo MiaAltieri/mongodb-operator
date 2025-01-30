@@ -23,7 +23,7 @@ LIBAPI = 0
 
 # Increment this PATCH version before using `charmcraft publish-lib` or reset
 # to 0 if you are raising the major API version
-LIBPATCH = 6
+LIBPATCH = 7
 
 AUTH_FAILED_CODE = 18
 UNAUTHORISED_CODE = 13
@@ -75,7 +75,10 @@ class MongoDBStatusHandler(Object):
         if isinstance(self.charm.unit.status, ActiveStatus):
             return True
 
-        if ignore_unhealthy_upgrade and self.charm.unit.status == Config.Status.UNHEALTHY_UPGRADE:
+        if (
+            ignore_unhealthy_upgrade
+            and self.charm.unit.status == Config.Status.UNHEALTHY_UPGRADE
+        ):
             return True
 
         return self.is_status_related_to_mismatched_revision(
@@ -143,9 +146,9 @@ class MongoDBStatusHandler(Object):
         if not (config_relation := self.charm.shard.get_config_server_relation()):
             return
 
-        config_relation.data[self.charm.unit][Config.Status.STATUS_READY_FOR_UPGRADE] = json.dumps(
-            self.is_unit_status_ready_for_upgrade()
-        )
+        config_relation.data[self.charm.unit][
+            Config.Status.STATUS_READY_FOR_UPGRADE
+        ] = json.dumps(self.is_unit_status_ready_for_upgrade())
 
     def is_unit_status_ready_for_upgrade(self) -> bool:
         """Returns True if the status of the current unit reflects that it is ready for upgrade."""
@@ -180,7 +183,9 @@ class MongoDBStatusHandler(Object):
             statuses = self.get_statuses()
         except OperationFailure as e:
             if e.code in [UNAUTHORISED_CODE, AUTH_FAILED_CODE]:
-                waiting_status = f"Waiting to sync passwords across the {deployment_mode}"
+                waiting_status = (
+                    f"Waiting to sync passwords across the {deployment_mode}"
+                )
             elif e.code == TLS_CANNOT_FIND_PRIMARY:
                 waiting_status = (
                     f"Waiting to sync internal membership across the {deployment_mode}"
@@ -188,7 +193,9 @@ class MongoDBStatusHandler(Object):
             else:
                 raise
         except ServerSelectionTimeoutError:
-            waiting_status = f"Waiting to sync internal membership across the {deployment_mode}"
+            waiting_status = (
+                f"Waiting to sync internal membership across the {deployment_mode}"
+            )
 
         if waiting_status:
             return WaitingStatus(waiting_status)
@@ -226,6 +233,13 @@ class MongoDBStatusHandler(Object):
 
     def get_invalid_integration_status(self) -> Optional[StatusBase]:
         """Returns a status if an invalid integration is present."""
+        has_sharding_integration = (
+            self.model.relations[Config.Relations.CONFIG_SERVER_RELATIONS_NAME]
+            or self.model.relations[Config.Relations.SHARDING_RELATIONS_NAME]
+        )
+        if self.charm.is_role(Config.Role.REPLICATION) and has_sharding_integration:
+            return BlockedStatus("sharding interface cannot be used by replicas")
+
         if not self.charm.cluster.is_valid_mongos_integration():
             return BlockedStatus(
                 "Relation to mongos not supported, config role must be config-server"
@@ -263,12 +277,16 @@ class MongoDBStatusHandler(Object):
                 )
 
         if self.charm.is_role(Config.Role.SHARD):
-            config_server_revision = self.charm.version_checker.get_version_of_related_app(
-                self.charm.get_config_server_name()
+            config_server_revision = (
+                self.charm.version_checker.get_version_of_related_app(
+                    self.charm.get_config_server_name()
+                )
             )
             remote_local_identifier = (
                 "-locally built"
-                if self.charm.version_checker.is_local_charm(self.charm.get_config_server_name())
+                if self.charm.version_checker.is_local_charm(
+                    self.charm.get_config_server_name()
+                )
                 else ""
             )
             return BlockedStatus(
