@@ -11,10 +11,12 @@ S3_APP_NAME = "s3-integrator"
 SHARD_ONE_APP_NAME = "shard"
 CONFIG_SERVER_ONE_APP_NAME = "config-server-one"
 CONFIG_SERVER_TWO_APP_NAME = "config-server-two"
+CERTS_APP_NAME = "self-signed-certificates"
 REPLICATION_APP_NAME = "replication"
 APP_CHARM_NAME = "application"
 MONGOS_APP_NAME = "mongos"
 MONGOS_HOST_APP_NAME = "application-host"
+CERT_REL_NAME = "certificates"
 
 SHARDING_COMPONENTS = [SHARD_ONE_APP_NAME, CONFIG_SERVER_ONE_APP_NAME]
 
@@ -56,6 +58,7 @@ async def test_build_and_deploy(
         MONGOS_APP_NAME,
         channel="6/edge",
     )
+    await ops_test.model.deploy(CERTS_APP_NAME, channel="stable")
     await ops_test.model.deploy(S3_APP_NAME, channel="edge")
 
     # TODO: Future PR, once data integrator works with mongos charm deploy that charm instead of
@@ -72,6 +75,7 @@ async def test_build_and_deploy(
             CONFIG_SERVER_ONE_APP_NAME,
             CONFIG_SERVER_TWO_APP_NAME,
             SHARD_ONE_APP_NAME,
+            CERTS_APP_NAME,
         ],
         idle_period=20,
         raise_on_blocked=False,
@@ -293,4 +297,46 @@ async def test_shard_s3_relation(ops_test: OpsTest) -> None:
     await ops_test.model.applications[SHARD_ONE_APP_NAME].remove_relation(
         f"{S3_APP_NAME}:s3-credentials",
         f"{SHARD_ONE_APP_NAME}:s3-credentials",
+    )
+
+
+@pytest.mark.runner(["self-hosted", "linux", "X64", "jammy", "large"])
+@pytest.mark.group(1)
+@pytest.mark.abort_on_fail
+async def test_config_server_tls_replication_relation(ops_test: OpsTest) -> None:
+    """Verifies that using a replica as a shard fails even when TLS is integrated."""
+    # attempt to add a shard to a replication deployment as a config server.
+    await ops_test.model.integrate(
+        f"{REPLICATION_APP_NAME}",
+        f"{CERTS_APP_NAME}",
+    )
+
+    await ops_test.model.integrate(
+        f"{REPLICATION_APP_NAME}:{SHARD_REL_NAME}",
+        f"{CONFIG_SERVER_ONE_APP_NAME}:{CONFIG_SERVER_REL_NAME}",
+    )
+
+    await wait_for_mongodb_units_blocked(
+        ops_test,
+        REPLICATION_APP_NAME,
+        status="sharding interface cannot be used by replicas",
+        timeout=300,
+    )
+
+    # clean up relations
+    await ops_test.model.applications[REPLICATION_APP_NAME].remove_relation(
+        f"{CERTS_APP_NAME}:{CERT_REL_NAME}",
+        f"{REPLICATION_APP_NAME}:{CERT_REL_NAME}",
+    )
+
+    await ops_test.model.applications[REPLICATION_APP_NAME].remove_relation(
+        f"{CONFIG_SERVER_ONE_APP_NAME}:{CONFIG_SERVER_REL_NAME}",
+        f"{REPLICATION_APP_NAME}:{SHARD_REL_NAME}",
+    )
+
+    await ops_test.model.wait_for_idle(
+        apps=[REPLICATION_APP_NAME],
+        idle_period=20,
+        raise_on_blocked=False,
+        timeout=TIMEOUT,
     )

@@ -23,7 +23,7 @@ LIBAPI = 0
 
 # Increment this PATCH version before using `charmcraft publish-lib` or reset
 # to 0 if you are raising the major API version
-LIBPATCH = 6
+LIBPATCH = 7
 
 AUTH_FAILED_CODE = 18
 UNAUTHORISED_CODE = 13
@@ -226,6 +226,13 @@ class MongoDBStatusHandler(Object):
 
     def get_invalid_integration_status(self) -> Optional[StatusBase]:
         """Returns a status if an invalid integration is present."""
+        has_sharding_integration = (
+            self.model.relations[Config.Relations.CONFIG_SERVER_RELATIONS_NAME]
+            or self.model.relations[Config.Relations.SHARDING_RELATIONS_NAME]
+        )
+        if self.charm.is_role(Config.Role.REPLICATION) and has_sharding_integration:
+            return BlockedStatus("sharding interface cannot be used by replicas")
+
         if not self.charm.cluster.is_valid_mongos_integration():
             return BlockedStatus(
                 "Relation to mongos not supported, config role must be config-server"
