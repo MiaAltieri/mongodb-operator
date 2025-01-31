@@ -65,6 +65,9 @@ async def test_build_and_deploy(ops_test: OpsTest) -> None:
     await ops_test.model.wait_for_idle(timeout=DEPLOYMENT_TIMEOUT)
 
 
+@pytest.mark.runner(["self-hosted", "linux", "X64", "jammy", "large"])
+@pytest.mark.group(1)
+@pytest.mark.abort_on_fail
 async def test_blocked_missing_config(ops_test: OpsTest) -> None:
     """Test that when charm is missing pbm information that it reports that."""
     db_app_name = await get_app_name(ops_test)
