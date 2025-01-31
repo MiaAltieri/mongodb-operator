@@ -123,8 +123,12 @@ class MongoDBBackups(Object):
         self.framework.observe(
             self.s3_client.on.credentials_changed, self._on_s3_credential_changed
         )
-        self.framework.observe(self.charm.on.create_backup_action, self._on_create_backup_action)
-        self.framework.observe(self.charm.on.list_backups_action, self._on_list_backups_action)
+        self.framework.observe(
+            self.charm.on.create_backup_action, self._on_create_backup_action
+        )
+        self.framework.observe(
+            self.charm.on.list_backups_action, self._on_list_backups_action
+        )
         self.framework.observe(self.charm.on.restore_action, self._on_restore_action)
 
     def on_s3_relation_joined(self, event: RelationJoinedEvent) -> None:
@@ -224,7 +228,9 @@ class MongoDBBackups(Object):
                 MaintenanceStatus(f"backup started/running, backup id:'{backup_id}'")
             )
             self._success_action_with_info_log(
-                event, action, {"backup-status": f"backup started. backup id: {backup_id}"}
+                event,
+                action,
+                {"backup-status": f"backup started. backup id: {backup_id}"},
             )
         except (subprocess.CalledProcessError, ExecError, Exception) as e:
             self._fail_action_with_error_log(event, action, str(e))
@@ -254,7 +260,9 @@ class MongoDBBackups(Object):
 
         try:
             formatted_list = self._generate_backup_list_output()
-            self._success_action_with_info_log(event, action, {"backups": formatted_list})
+            self._success_action_with_info_log(
+                event, action, {"backups": formatted_list}
+            )
         except (subprocess.CalledProcessError, ExecError) as e:
             self._fail_action_with_error_log(event, action, str(e))
             return
@@ -293,7 +301,9 @@ class MongoDBBackups(Object):
         action = "restore"
         backup_id = event.params.get("backup-id")
         if not backup_id:
-            self._fail_action_with_error_log(event, action, "Missing backup-id to restore")
+            self._fail_action_with_error_log(
+                event, action, "Missing backup-id to restore"
+            )
             return False
 
         # only leader can restore backups. This prevents multiple restores from being attempted at
@@ -344,7 +354,9 @@ class MongoDBBackups(Object):
 
         Only replica sets and config servers can integrate to s3-integrator.
         """
-        if self.charm.is_role(Config.Role.SHARD) and self.model.get_relation(S3_RELATION):
+        if self.charm.is_role(Config.Role.SHARD) and self.model.get_relation(
+            S3_RELATION
+        ):
             return False
 
         return True
@@ -383,7 +395,9 @@ class MongoDBBackups(Object):
             )
             return
         except snap.SnapError as e:
-            logger.error("An exception occurred when starting pbm agent, error: %s.", str(e))
+            logger.error(
+                "An exception occurred when starting pbm agent, error: %s.", str(e)
+            )
             self.charm.status.set_and_share_status(BlockedStatus("couldn't start pbm"))
             return
         except ResyncError:
@@ -405,7 +419,9 @@ class MongoDBBackups(Object):
             ),
             return
         except ExecError as e:
-            self.charm.status.set_and_share_status(BlockedStatus(self.process_pbm_error(e.stdout)))
+            self.charm.status.set_and_share_status(
+                BlockedStatus(self.process_pbm_error(e.stdout))
+            )
             return
         except subprocess.CalledProcessError as e:
             logger.error("Syncing configurations failed: %s", str(e))
@@ -519,6 +535,13 @@ class MongoDBBackups(Object):
         if not self.model.get_relation(S3_RELATION):
             logger.info("No configurations for backups, not relation to s3-charm.")
             return None
+
+        if not self.are_s3_configurations_provided():
+            logger.info(
+                "relation to s3-charm exists, but not all necessary configurations have been set."
+            )
+            return BlockedStatus("s3 configurations missing.")
+
         try:
             previous_pbm_status = self.charm.unit.status
             pbm_status = self.charm.run_pbm_command(PBM_STATUS_CMD)
@@ -570,7 +593,11 @@ class MongoDBBackups(Object):
             # pbm will occasionally report backups that are currently running as failed, so it is
             # necessary to correct the backup list in this case.
             if last_reported_backup[0] == running_backup["name"]:
-                backup_list[0] = (last_reported_backup[0], last_reported_backup[1], "in progress")
+                backup_list[0] = (
+                    last_reported_backup[0],
+                    last_reported_backup[1],
+                    "in progress",
+                )
             else:
                 backup_list.append((running_backup["name"], "logical", "in progress"))
 
@@ -579,7 +606,11 @@ class MongoDBBackups(Object):
 
     def _format_backup_list(self, backup_list: List[str]) -> str:
         """Formats provided list of backups as a table."""
-        backups = ["{:<21s} | {:<12s} | {:s}".format("backup-id", "backup-type", "backup-status")]
+        backups = [
+            "{:<21s} | {:<12s} | {:s}".format(
+                "backup-id", "backup-type", "backup-status"
+            )
+        ]
 
         backups.append("-" * len(backups[0]))
         for backup_id, backup_type, backup_status in backup_list:
@@ -654,7 +685,9 @@ class MongoDBBackups(Object):
                         r"Starting backup '(?P<backup_id>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z)'",
                         output,
                     )
-                    return backup_id_match.group("backup_id") if backup_id_match else "N/A"
+                    return (
+                        backup_id_match.group("backup_id") if backup_id_match else "N/A"
+                    )
                 except (subprocess.CalledProcessError, ExecError) as e:
                     if isinstance(e, subprocess.CalledProcessError):
                         error_message = e.output.decode("utf-8")
@@ -703,11 +736,15 @@ class MongoDBBackups(Object):
         logger.info("Deferring %s: %s", action, message)
         event.defer()
 
-    def _success_action_with_info_log(self, event, action: str, results: Dict[str, str]) -> None:
+    def _success_action_with_info_log(
+        self, event, action: str, results: Dict[str, str]
+    ) -> None:
         logger.info("%s completed successfully", action.capitalize())
         event.set_results(results)
 
-    def _log_backup_restore_result(self, current_pbm_status, previous_pbm_status) -> None:
+    def _log_backup_restore_result(
+        self, current_pbm_status, previous_pbm_status
+    ) -> None:
         """Logs the result of the backup/restore operation.
 
         Expected to be called for not failed operations.
@@ -717,7 +754,9 @@ class MongoDBBackups(Object):
         )
         logger.info(operation_result)
 
-    def _get_backup_restore_operation_result(self, current_pbm_status, previous_pbm_status) -> str:
+    def _get_backup_restore_operation_result(
+        self, current_pbm_status, previous_pbm_status
+    ) -> str:
         """Returns a string with the result of the backup/restore operation.
 
         The function call is expected to be only for not failed operations.
@@ -756,9 +795,7 @@ class MongoDBBackups(Object):
                     break
 
             for host_info in cluster["nodes"]:
-                replica_info = (
-                    f"mongodb/{self.charm.unit_host(self.charm.unit)}:{Config.MONGOS_PORT}"
-                )
+                replica_info = f"mongodb/{self.charm.unit_host(self.charm.unit)}:{Config.MONGOS_PORT}"
                 if host_info["host"] == replica_info:
                     break
 
@@ -792,9 +829,9 @@ class MongoDBBackups(Object):
         backup_error_status = self.get_backup_error_status(backup_id)
 
         # When a charm is running as a Replica set it can generate its own remapping arguments
-        return self._is_backup_from_different_cluster(backup_error_status) and self.charm.is_role(
-            Config.Role.CONFIG_SERVER
-        )
+        return self._is_backup_from_different_cluster(
+            backup_error_status
+        ) and self.charm.is_role(Config.Role.CONFIG_SERVER)
 
     def get_backup_error_status(self, backup_id: str) -> str:
         """Get the error status for a provided backup."""
@@ -806,3 +843,36 @@ class MongoDBBackups(Object):
                 return backup.get("error", "")
 
         return ""
+
+    def are_s3_configurations_provided(self) -> bool:
+        """Returns True if not all necessary configurations for s3 are provided.
+
+        Minimum necessary s3 credentials can be found by reading the PBM page:
+        https://docs.percona.com/percona-backup-mongodb/reference/configuration-options.html#s3-type-storage-options
+        """
+        if not self.model.get_relation(S3_RELATION):
+            logger.info("No configurations for backups, not relation to s3-charm.")
+            return False
+
+        provided_configs = self._get_pbm_configs()
+        if (
+            not "storage.s3.access-key" not in provided_configs
+            or "storage.s3.secret-key" not in provided_configs
+        ):
+            logger.info("Missing s3 credentials")
+            return False
+
+        # note this is more of a sanity check - the s3 lib defaults this to the relation name
+        if "storage.s3.bucket" not in provided_configs:
+            logger.info("Missing bucket")
+            return False
+
+        # since we cannot determine whether the user has an AWS or GCP bucket or Minio bucket
+        # send them an info
+        if "storage.s3.region" not in provided_configs:
+            logger.info("Missing region - this is required for AWS and GCP")
+
+        if "storage.s3.endpointUrl" not in provided_configs:
+            logger.info("Missing endpointUrl - this is required for MinIO and GCP")
+
+        return True
