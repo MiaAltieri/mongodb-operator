@@ -51,7 +51,7 @@ LIBAPI = 0
 
 # Increment this PATCH version before using `charmcraft publish-lib` or reset
 # to 0 if you are raising the major API version
-LIBPATCH = 15
+LIBPATCH = 16
 
 
 class ClusterProvider(Object):
@@ -87,6 +87,9 @@ class ClusterProvider(Object):
 
     def pass_hook_checks(self, event: EventBase) -> bool:
         """Runs the pre-hooks checks for ClusterProvider, returns True if all pass."""
+        if not self.charm.unit.is_leader():
+            return False
+
         if not self.charm.db_initialised:
             logger.info("Deferring %s. db is not initialised.", type(event))
             event.defer()
@@ -94,11 +97,9 @@ class ClusterProvider(Object):
 
         if not self.is_valid_mongos_integration():
             logger.info(
-                "Skipping %s. ClusterProvider is only be executed by config-server", type(event)
+                "Skipping %s. ClusterProvider is only be executed by config-server",
+                type(event),
             )
-            return False
-
-        if not self.charm.unit.is_leader():
             return False
 
         if self.charm.upgrade_in_progress:
@@ -426,12 +427,12 @@ class ClusterRequirer(Object):
             event.defer()
             return False
 
-        if not self.is_ca_compatible():
+        # race condition where mongos cannot start without TLS certificates, but mongos cannot
+        # request TLS certificates without knowing the name of the config-server.
+        if self.is_waiting_to_request_certs():
             logger.info(
-                "Deferring %s. mongos is integrated to a different CA than the config server. Please use the same CA for all cluster components.",
-                str(type(event)),
+                "Mongos was waiting for config-server to enable TLS. Wait for TLS to be enabled until starting mongos."
             )
-
             event.defer()
             return False
 
@@ -475,12 +476,16 @@ class ClusterRequirer(Object):
 
         # put keyfile on the machine with appropriate permissions
         self.charm.push_file_to_unit(
-            parent_dir=Config.MONGOD_CONF_DIR, file_name=KEY_FILE, file_contents=key_file_contents
+            parent_dir=Config.MONGOD_CONF_DIR,
+            file_name=KEY_FILE,
+            file_contents=key_file_contents,
         )
 
         if self.charm.unit.is_leader():
             self.charm.set_secret(
-                Config.Relations.APP_SCOPE, Config.Secrets.SECRET_KEYFILE_NAME, key_file_contents
+                Config.Relations.APP_SCOPE,
+                Config.Secrets.SECRET_KEYFILE_NAME,
+                key_file_contents,
             )
 
         return True
@@ -515,6 +520,22 @@ class ClusterRequirer(Object):
             self.model.get_relation(Config.Relations.CLUSTER_RELATIONS_NAME).id,
             CONFIG_SERVER_DB_KEY,
         )
+
+    def is_waiting_to_request_certs(self) -> bool:
+        """Returns True if mongos has been waiting for config server in order to request certs."""
+        if not self.charm.model.get_relation(Config.TLS.TLS_PEER_RELATION):
+            return False
+
+        mongos_tls_ca = self.charm.tls.get_tls_secret(
+            internal=True, label_name=Config.TLS.SECRET_CA_LABEL
+        )
+
+        # our CA is none until certs have been requested. We cannot request certs until integrated
+        # to config-server.
+        if not mongos_tls_ca:
+            return True
+
+        return False
 
     def is_ca_compatible(self) -> bool:
         """Returns true if both the mongos and the config server use the same CA."""

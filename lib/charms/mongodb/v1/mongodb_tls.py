@@ -42,7 +42,7 @@ LIBAPI = 1
 
 # Increment this PATCH version before using `charmcraft publish-lib` or reset
 # to 0 if you are raising the major API version
-LIBPATCH = 5
+LIBPATCH = 6
 
 WAIT_CERT_UPDATE = "wait-cert-updated"
 
@@ -193,14 +193,15 @@ class MongoDBTLS(Object):
 
     def _on_certificate_available(self, event: CertificateAvailableEvent) -> None:
         """Enable TLS when TLS certificate available."""
-        if self.charm.is_role(Config.Role.MONGOS) and not self.charm.config_server_db:
+        if self.charm.is_role(Config.Role.MONGOS) and not self.charm.has_config_server():
             logger.debug(
                 "mongos requires config-server in order to start, do not restart with TLS until integrated to config-server"
             )
             event.defer()
             return
 
-        if not self.charm.db_initialised:
+        # mongos must receive its certificates in order for it to get initialised
+        if not self.charm.db_initialised and not self.charm.is_role(Config.Role.MONGOS):
             logger.info("Deferring %s. db is not initialised.", str(type(event)))
             event.defer()
             return
@@ -238,10 +239,18 @@ class MongoDBTLS(Object):
             event.defer()
             return
 
-        logger.info("Restarting mongod with TLS enabled.")
-
         self.charm.delete_tls_certificate_from_workload()
         self.charm.push_tls_certificate_to_workload()
+
+        # if mongos hasn't been started let it be started with the integration to the
+        # config-server
+        if not self.charm.db_initialised and self.charm.is_role(Config.Role.MONGOS):
+            logger.info(
+                "Mongos has not yet been initialized, will enable TLS when it is set up with the config-server."
+            )
+            return
+
+        logger.info("Restarting mongod with TLS enabled.")
         self.charm.status.set_and_share_status(MaintenanceStatus("enabling TLS"))
         self.charm.restart_charm_services()
 
