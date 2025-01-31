@@ -89,9 +89,7 @@ async def test_blocked_incorrect_creds(ops_test: OpsTest) -> None:
     # set incorrect s3 credentials
     s3_integrator_unit = ops_test.model.applications[S3_APP_NAME].units[0]
     parameters = {"access-key": "user", "secret-key": "doesnt-exist"}
-    action = await s3_integrator_unit.run_action(
-        action_name="sync-s3-credentials", **parameters
-    )
+    action = await s3_integrator_unit.run_action(action_name="sync-s3-credentials", **parameters)
     await action.wait()
 
     # verify that Charmed MongoDB is blocked and reports incorrect credentials
@@ -138,9 +136,7 @@ async def test_ready_correct_conf(ops_test: OpsTest) -> None:
     await ops_test.model.applications[S3_APP_NAME].set_config(configuration_parameters)
 
     # after applying correct config options and creds the applications should both be active
-    await ops_test.model.wait_for_idle(
-        apps=[S3_APP_NAME], status="active", timeout=TIMEOUT
-    )
+    await ops_test.model.wait_for_idle(apps=[S3_APP_NAME], status="active", timeout=TIMEOUT)
     await ops_test.model.wait_for_idle(
         apps=[db_app_name], status="active", timeout=TIMEOUT, idle_period=60
     )
@@ -164,9 +160,7 @@ async def test_create_and_list_backups(ops_test: OpsTest, github_secrets) -> Non
     # verify backup is started
     action = await leader_unit.run_action(action_name="create-backup")
     backup_result = await action.wait()
-    assert (
-        "backup started" in backup_result.results["backup-status"]
-    ), "backup didn't start"
+    assert "backup started" in backup_result.results["backup-status"], "backup didn't start"
 
     # verify backup is present in the list of backups
     # the action `create-backup` only confirms that the command was sent to the `pbm`. Creating a
@@ -184,9 +178,7 @@ async def test_create_and_list_backups(ops_test: OpsTest, github_secrets) -> Non
 @pytest.mark.runner(["self-hosted", "linux", "X64", "jammy", "large"])
 @pytest.mark.group(1)
 @pytest.mark.abort_on_fail
-async def test_multi_backup(
-    ops_test: OpsTest, continuous_writes_to_db, github_secrets
-) -> None:
+async def test_multi_backup(ops_test: OpsTest, continuous_writes_to_db, github_secrets) -> None:
     """With writes in the DB test creating a backup while another one is running.
 
     Note that before creating the second backup we change the bucket and change the s3 storage
@@ -197,9 +189,7 @@ async def test_multi_backup(
     db_unit = await helpers.get_leader_unit(ops_test)
 
     # create first backup once ready
-    await ops_test.model.wait_for_idle(
-        apps=[db_app_name], status="active", idle_period=15
-    )
+    await ops_test.model.wait_for_idle(apps=[db_app_name], status="active", idle_period=15)
 
     action = await db_unit.run_action(action_name="create-backup")
     first_backup = await action.wait()
@@ -217,9 +207,7 @@ async def test_multi_backup(
     }
     await ops_test.model.applications[S3_APP_NAME].set_config(configuration_parameters)
 
-    await ops_test.model.wait_for_idle(
-        apps=[db_app_name], status="active", idle_period=15
-    )
+    await ops_test.model.wait_for_idle(apps=[db_app_name], status="active", idle_period=15)
 
     # create a backup as soon as possible. might not be immediately possible since only one backup
     # can happen at a time.
@@ -236,9 +224,7 @@ async def test_multi_backup(
     # backup can take a lot of time so this function returns once the command was successfully
     # sent to pbm. Therefore before checking, wait for Charmed MongoDB to finish creating the
     # backup
-    await ops_test.model.wait_for_idle(
-        apps=[db_app_name], status="active", idle_period=15
-    )
+    await ops_test.model.wait_for_idle(apps=[db_app_name], status="active", idle_period=15)
 
     # verify that backups was made in GCP bucket
     try:
@@ -258,9 +244,7 @@ async def test_multi_backup(
     }
     await ops_test.model.applications[S3_APP_NAME].set_config(configuration_parameters)
     await asyncio.gather(
-        ops_test.model.wait_for_idle(
-            apps=[db_app_name], status="active", idle_period=15
-        ),
+        ops_test.model.wait_for_idle(apps=[db_app_name], status="active", idle_period=15),
     )
 
     # verify that backups was made on the AWS bucket
@@ -303,9 +287,7 @@ async def test_restore(ops_test: OpsTest, add_writes_to_db) -> None:
     # collection that was backed up.
     await helpers.insert_unwanted_data(ops_test)
     new_number_of_writes = await ha_helpers.count_writes(ops_test)
-    assert (
-        new_number_of_writes > number_writes
-    ), "No writes to be cleared after restoring."
+    assert new_number_of_writes > number_writes, "No writes to be cleared after restoring."
 
     # find most recent backup id and restore
     action = await db_unit.run_action(action_name="list-backups")
@@ -315,14 +297,10 @@ async def test_restore(ops_test: OpsTest, add_writes_to_db) -> None:
     backup_id = most_recent_backup.split()[0]
     action = await db_unit.run_action(action_name="restore", **{"backup-id": backup_id})
     restore = await action.wait()
-    assert (
-        restore.results["restore-status"] == "restore started"
-    ), "restore not successful"
+    assert restore.results["restore-status"] == "restore started", "restore not successful"
 
     await asyncio.gather(
-        ops_test.model.wait_for_idle(
-            apps=[db_app_name], status="active", idle_period=15
-        ),
+        ops_test.model.wait_for_idle(apps=[db_app_name], status="active", idle_period=15),
     )
 
     # verify all writes are present
@@ -330,9 +308,7 @@ async def test_restore(ops_test: OpsTest, add_writes_to_db) -> None:
         for attempt in Retrying(stop=stop_after_delay(4), wait=wait_fixed(20)):
             with attempt:
                 number_writes_restored = await ha_helpers.count_writes(ops_test)
-                assert (
-                    number_writes == number_writes_restored
-                ), "writes not correctly restored"
+                assert number_writes == number_writes_restored, "writes not correctly restored"
     except RetryError:
         assert number_writes == number_writes_restored, "writes not correctly restored"
 
@@ -363,9 +339,7 @@ async def test_restore_new_cluster(
     await ops_test.model.applications[S3_APP_NAME].set_config(configuration_parameters)
     await asyncio.gather(
         ops_test.model.wait_for_idle(apps=[S3_APP_NAME], status="active"),
-        ops_test.model.wait_for_idle(
-            apps=[db_app_name], status="active", idle_period=15
-        ),
+        ops_test.model.wait_for_idle(apps=[db_app_name], status="active", idle_period=15),
     )
 
     # create a backup
@@ -378,9 +352,7 @@ async def test_restore_new_cluster(
 
     # deploy a new cluster with a different name
     db_charm = await ops_test.build_charm(".")
-    await ops_test.model.deploy(
-        db_charm, num_units=3, application_name=new_cluster_app_name
-    )
+    await ops_test.model.deploy(db_charm, num_units=3, application_name=new_cluster_app_name)
     await asyncio.gather(
         ops_test.model.wait_for_idle(
             apps=[new_cluster_app_name],
@@ -404,9 +376,7 @@ async def test_restore_new_cluster(
 
     # wait for new cluster to sync
     await asyncio.gather(
-        ops_test.model.wait_for_idle(
-            apps=[new_cluster_app_name], status="active", idle_period=15
-        ),
+        ops_test.model.wait_for_idle(apps=[new_cluster_app_name], status="active", idle_period=15),
     )
 
     # verify that the listed backups from the old cluster are not listed as failed.
@@ -422,9 +392,7 @@ async def test_restore_new_cluster(
     backup_id = most_recent_backup.split()[0]
     action = await db_unit.run_action(action_name="restore", **{"backup-id": backup_id})
     restore = await action.wait()
-    assert (
-        restore.results["restore-status"] == "restore started"
-    ), "restore not successful"
+    assert restore.results["restore-status"] == "restore started", "restore not successful"
 
     # verify all writes are present
     try:
@@ -454,9 +422,7 @@ async def test_update_backup_password(ops_test: OpsTest) -> None:
 
     # wait for charm to be idle before setting password
     await asyncio.gather(
-        ops_test.model.wait_for_idle(
-            apps=[db_app_name], status="active", idle_period=15
-        ),
+        ops_test.model.wait_for_idle(apps=[db_app_name], status="active", idle_period=15),
     )
 
     parameters = {"username": "backup"}
@@ -466,14 +432,10 @@ async def test_update_backup_password(ops_test: OpsTest) -> None:
 
     # wait for charm to be idle after setting password
     await asyncio.gather(
-        ops_test.model.wait_for_idle(
-            apps=[db_app_name], status="active", idle_period=15
-        ),
+        ops_test.model.wait_for_idle(apps=[db_app_name], status="active", idle_period=15),
     )
 
     # verify we still have connection to pbm via creating a backup
     action = await db_unit.run_action(action_name="create-backup")
     backup_result = await action.wait()
-    assert (
-        "backup started" in backup_result.results["backup-status"]
-    ), "backup didn't start"
+    assert "backup started" in backup_result.results["backup-status"], "backup didn't start"
