@@ -1,0 +1,162 @@
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.6.1    unsupported  02:01:38Z
+
+App                       Version  Status   Scale  Charm                     Channel        Rev  Exposed  Message
+config-server                      active       2  mongodb                                    3  no       
+self-signed-certificates           active       1  self-signed-certificates  latest/stable  155  no       
+shard-one                          error        3  mongodb                                    4  no       hook failed: "install"
+shard-two                          waiting    0/1  mongodb                                    5  no       agent initialising
+
+Unit                         Workload     Agent       Machine  Public address  Ports            Message
+config-server/2              active       idle        7        10.70.104.233   27017-27018/tcp  
+config-server/3*             active       executing   8        10.70.104.239                    (start) 
+self-signed-certificates/0*  active       idle        6        10.70.104.149                    
+shard-one/3*                 error        idle        9        10.70.104.31                     hook failed: "install"
+shard-one/4                  maintenance  executing   10       10.70.104.109                    (install) installing MongoDB
+shard-one/5                  maintenance  executing   11       10.70.104.32                     (install) installing MongoDB
+shard-two/1*                 waiting      allocating  12       10.70.104.153                    agent initialising
+
+Machine  State    Address        Inst id         Base          AZ  Message
+6        started  10.70.104.149  juju-affa1e-6   ubuntu@22.04      Running
+7        started  10.70.104.233  juju-affa1e-7   ubuntu@22.04      Running
+8        started  10.70.104.239  juju-affa1e-8   ubuntu@22.04      Running
+9        started  10.70.104.31   juju-affa1e-9   ubuntu@22.04      Running
+10       started  10.70.104.109  juju-affa1e-10  ubuntu@22.04      Running
+11       started  10.70.104.32   juju-affa1e-11  ubuntu@22.04      Running
+12       started  10.70.104.153  juju-affa1e-12  ubuntu@22.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-1: 01:34:52 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 01:34:52 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-1: 01:34:52 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-0: 01:34:54 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 01:34:54 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-0: 01:34:54 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-4: 01:35:21 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-4: 01:35:21 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-2: 01:35:21 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-2: 01:35:23 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 01:35:23 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-0: 01:35:23 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-3: 01:35:25 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-3: 01:35:25 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-1: 01:35:25 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-config-server-1: 01:35:30 ERROR unit.config-server/1.juju-log Unable to set params: ['vm.max_map_count']
+unit-config-server-1: 01:35:30 ERROR unit.config-server/1.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-config-server-0: 01:35:32 ERROR unit.config-server/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-config-server-0: 01:35:32 ERROR unit.config-server/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-shard-one-2: 01:36:01 ERROR unit.shard-one/2.juju-log Unable to set params: ['vm.max_map_count']
+unit-shard-one-2: 01:36:01 ERROR unit.shard-one/2.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-shard-one-0: 01:36:03 ERROR unit.shard-one/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-shard-one-0: 01:36:03 ERROR unit.shard-one/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-shard-one-1: 01:36:03 ERROR unit.shard-one/1.juju-log Unable to set params: ['vm.max_map_count']
+unit-shard-one-1: 01:36:03 ERROR unit.shard-one/1.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-5: 01:36:04 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-5: 01:36:04 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-two-0: 01:36:04 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-config-server-1: 01:36:19 ERROR unit.config-server/1.juju-log _on_secret_remove: Secret secret:cuenkv62ur1d0023q8l0 seems to have no observers, could be removed
+unit-shard-two-0: 01:36:31 ERROR unit.shard-two/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-shard-two-0: 01:36:31 ERROR unit.shard-two/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-shard-one-2: 01:36:38 ERROR unit.shard-one/2.juju-log _on_secret_remove: Secret secret:cuenl462ur1d0023q8lg seems to have no observers, could be removed
+unit-shard-two-0: 01:37:09 ERROR unit.shard-two/0.juju-log _on_secret_remove: Secret secret:cuenlcm2ur1d0023q8m0 seems to have no observers, could be removed
+machine-6: 01:39:23 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-6: 01:39:23 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-self-signed-certificates-0: 01:39:23 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-config-server-1: 01:40:00 ERROR unit.config-server/1.juju-log config-server:6: Failed to add shard shard-one to the config server, error=OperationFailure("Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed', '$clusterTime': {'clusterTime': Timestamp(1738373999, 2), 'signature': {'hash': b'\\x97{\\xe5\\xd2p\\xc0\\xdfX\\x93\\xa0\\x18\\xe4\\xf8\\xe1\\x05\\x04\\x81\\xf5a\\x1f', 'keyId': 7466258460309454873}}, 'operationTime': Timestamp(1738373999, 2)}")
+unit-config-server-1: 01:40:00 ERROR unit.config-server/1.juju-log config-server:6: shard-one shard does not have the same auth as the config server.
+unit-config-server-1: 01:40:17 ERROR unit.config-server/1.juju-log config-server:6: Failed to add shard shard-one to the config server, error=OperationFailure('Could not find host matching read preference { mode: "primary" } for set shard-one, full error: {\'ok\': 0.0, \'errmsg\': \'Could not find host matching read preference { mode: "primary" } for set shard-one\', \'code\': 133, \'codeName\': \'FailedToSatisfyReadPreference\', \'$clusterTime\': {\'clusterTime\': Timestamp(1738374016, 1), \'signature\': {\'hash\': b\'\\x02\\xce\\xcd\\xec>e\\x1f\\xf9\\xda+\\xe4\\xd1 \\xf6z\\x0e.L\\xd6E\', \'keyId\': 7466258460309454873}}, \'operationTime\': Timestamp(1738374016, 1)}')
+unit-config-server-1: 01:40:17 ERROR unit.config-server/1.juju-log config-server:6: Failed to add shard-one to cluster
+unit-config-server-1: 01:40:17 ERROR unit.config-server/1.juju-log config-server:6: Deferring _on_relation_event for shards interface since: error=OperationFailure('Could not find host matching read preference { mode: "primary" } for set shard-one, full error: {\'ok\': 0.0, \'errmsg\': \'Could not find host matching read preference { mode: "primary" } for set shard-one\', \'code\': 133, \'codeName\': \'FailedToSatisfyReadPreference\', \'$clusterTime\': {\'clusterTime\': Timestamp(1738374016, 1), \'signature\': {\'hash\': b\'\\x02\\xce\\xcd\\xec>e\\x1f\\xf9\\xda+\\xe4\\xd1 \\xf6z\\x0e.L\\xd6E\', \'keyId\': 7466258460309454873}}, \'operationTime\': Timestamp(1738374016, 1)}')
+unit-config-server-1: 01:40:42 ERROR unit.config-server/1.juju-log config-server:7: Failed to add shard shard-two to the config server, error=OperationFailure('Authentication failed., full error: {\'ok\': 0.0, \'errmsg\': \'Authentication failed.\', \'code\': 18, \'codeName\': \'AuthenticationFailed\', \'$clusterTime\': {\'clusterTime\': Timestamp(1738374042, 2), \'signature\': {\'hash\': b"b\\x87\\xb4\\x1eu\\x80bj\\x95\\x86\\xd2\\xfcpwE<k.\\x0b\'", \'keyId\': 7466258460309454873}}, \'operationTime\': Timestamp(1738374042, 2)}')
+unit-config-server-1: 01:40:42 ERROR unit.config-server/1.juju-log config-server:7: shard-two shard does not have the same auth as the config server.
+unit-shard-two-0: 01:40:58 ERROR unit.shard-two/0.juju-log _on_secret_remove: Secret secret:cuenlcm2ur1d0023q8m0 seems to have no observers, could be removed
+unit-shard-one-2: 01:43:34 ERROR unit.shard-one/2.juju-log _on_secret_remove: Secret secret:cuenl462ur1d0023q8lg seems to have no observers, could be removed
+unit-shard-one-2: 01:44:04 ERROR unit.shard-one/2.juju-log certificates:8: Non-existing secret unit:int-cert-secret was attempted to be removed.
+unit-shard-two-0: 01:44:04 ERROR unit.shard-two/0.juju-log certificates:9: Non-existing secret unit:int-cert-secret was attempted to be removed.
+unit-shard-one-0: 01:44:04 ERROR unit.shard-one/0.juju-log certificates:8: Non-existing secret unit:int-cert-secret was attempted to be removed.
+unit-config-server-1: 01:44:04 ERROR unit.config-server/1.juju-log certificates:10: Non-existing secret unit:int-cert-secret was attempted to be removed.
+unit-shard-one-1: 01:44:04 ERROR unit.shard-one/1.juju-log certificates:8: Non-existing secret unit:int-cert-secret was attempted to be removed.
+unit-shard-one-2: 01:44:04 ERROR unit.shard-one/2.juju-log certificates:8: Non-existing secret unit:ext-cert-secret was attempted to be removed.
+unit-shard-two-0: 01:44:04 ERROR unit.shard-two/0.juju-log certificates:9: Non-existing secret unit:ext-cert-secret was attempted to be removed.
+unit-config-server-0: 01:44:04 ERROR unit.config-server/0.juju-log certificates:10: Non-existing secret unit:int-cert-secret was attempted to be removed.
+unit-shard-one-0: 01:44:04 ERROR unit.shard-one/0.juju-log certificates:8: Non-existing secret unit:ext-cert-secret was attempted to be removed.
+unit-shard-one-1: 01:44:04 ERROR unit.shard-one/1.juju-log certificates:8: Non-existing secret unit:ext-cert-secret was attempted to be removed.
+unit-config-server-1: 01:44:04 ERROR unit.config-server/1.juju-log certificates:10: Non-existing secret unit:ext-cert-secret was attempted to be removed.
+unit-config-server-0: 01:44:05 ERROR unit.config-server/0.juju-log certificates:10: Non-existing secret unit:ext-cert-secret was attempted to be removed.
+unit-config-server-0: 01:44:16 ERROR unit.config-server/0.juju-log certificates:10: This operation (update_relation_data()) can only be performed by the leader unit
+unit-config-server-0: 01:44:16 ERROR unit.config-server/0.juju-log certificates:10: This operation (update_relation_data()) can only be performed by the leader unit
+unit-config-server-0: 01:45:08 ERROR unit.config-server/0.juju-log This operation (update_relation_data()) can only be performed by the leader unit
+unit-config-server-0: 01:45:08 ERROR unit.config-server/0.juju-log This operation (update_relation_data()) can only be performed by the leader unit
+unit-shard-two-0: 01:45:11 ERROR unit.shard-two/0.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8og seems to have no observers, could be removed
+unit-config-server-0: 01:45:57 ERROR unit.config-server/0.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8qg seems to have no observers, could be removed
+unit-config-server-1: 01:46:02 ERROR unit.config-server/1.juju-log _on_secret_remove: Secret secret:cuenn662ur1d0023q8ng seems to have no observers, could be removed
+unit-config-server-1: 01:46:03 ERROR unit.config-server/1.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8pg seems to have no observers, could be removed
+unit-shard-one-0: 01:46:07 ERROR unit.shard-one/0.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8p0 seems to have no observers, could be removed
+unit-shard-one-2: 01:46:08 ERROR unit.shard-one/2.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8o0 seems to have no observers, could be removed
+unit-shard-one-1: 01:46:09 ERROR unit.shard-one/1.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8q0 seems to have no observers, could be removed
+unit-shard-one-2: 01:48:12 ERROR unit.shard-one/2.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8o0 seems to have no observers, could be removed
+unit-shard-one-1: 01:48:12 ERROR unit.shard-one/1.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8q0 seems to have no observers, could be removed
+unit-shard-one-1: 01:48:13 ERROR unit.shard-one/1.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8q0 seems to have no observers, could be removed
+unit-shard-one-2: 01:48:13 ERROR unit.shard-one/2.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8o0 seems to have no observers, could be removed
+unit-shard-one-0: 01:48:13 ERROR unit.shard-one/0.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8p0 seems to have no observers, could be removed
+unit-shard-one-0: 01:48:14 ERROR unit.shard-one/0.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8p0 seems to have no observers, could be removed
+unit-shard-two-0: 01:50:06 ERROR unit.shard-two/0.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8og seems to have no observers, could be removed
+unit-shard-two-0: 01:50:06 ERROR unit.shard-two/0.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8og seems to have no observers, could be removed
+unit-config-server-0: 01:51:41 ERROR unit.config-server/0.juju-log certificates:10: This operation (update_relation_data()) can only be performed by the leader unit
+unit-config-server-0: 01:51:41 ERROR unit.config-server/0.juju-log certificates:10: This operation (update_relation_data()) can only be performed by the leader unit
+unit-config-server-1: 01:53:18 ERROR unit.config-server/1.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8pg seems to have no observers, could be removed
+unit-config-server-1: 01:53:19 ERROR unit.config-server/1.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8pg seems to have no observers, could be removed
+unit-config-server-1: 01:53:20 ERROR unit.config-server/1.juju-log _on_secret_remove: Secret secret:cuenmrm2ur1d0023q8n0 seems to have no observers, could be removed
+unit-config-server-0: 01:53:21 ERROR unit.config-server/0.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8qg seems to have no observers, could be removed
+unit-config-server-0: 01:53:22 ERROR unit.config-server/0.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8qg seems to have no observers, could be removed
+unit-config-server-0: 01:54:53 ERROR unit.config-server/0.juju-log certificates:10: This operation (delete_relation_data()) can only be performed by the leader unit
+unit-config-server-0: 01:54:53 ERROR unit.config-server/0.juju-log certificates:10: This operation (delete_relation_data()) can only be performed by the leader unit
+unit-shard-two-0: 01:55:12 ERROR unit.shard-two/0.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8og seems to have no observers, could be removed
+unit-shard-one-2: 01:55:26 ERROR unit.shard-one/2.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8o0 seems to have no observers, could be removed
+unit-shard-one-1: 01:55:26 ERROR unit.shard-one/1.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8q0 seems to have no observers, could be removed
+unit-shard-one-0: 01:55:27 ERROR unit.shard-one/0.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8p0 seems to have no observers, could be removed
+unit-shard-two-0: 01:55:30 ERROR unit.shard-two/0.juju-log Unable to access primary due to: 10.70.104.57:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms), Timeout: 1.0s, Topology Description: <TopologyDescription id: 679d7f10727ae5d66ec3ba36, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('10.70.104.57', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('10.70.104.57:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms)')>]>
+unit-shard-one-2: 01:55:30 ERROR unit.shard-one/2.juju-log Unable to access primary due to: 10.70.104.181:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms),10.70.104.157:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms),10.70.104.182:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms), Timeout: 1.0s, Topology Description: <TopologyDescription id: 679d7f11f2ad4b8ebfc0e9a8, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('10.70.104.157', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('10.70.104.157:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms)')>, <ServerDescription ('10.70.104.181', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('10.70.104.181:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms)')>, <ServerDescription ('10.70.104.182', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('10.70.104.182:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms)')>]>
+unit-config-server-1: 01:55:31 ERROR unit.config-server/1.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8pg seems to have no observers, could be removed
+unit-config-server-0: 01:55:31 ERROR unit.config-server/0.juju-log _on_secret_remove: Secret secret:cuenop62ur1d0023q8qg seems to have no observers, could be removed
+unit-config-server-1: 01:55:33 ERROR unit.config-server/1.juju-log config-server:6: Deferring _on_relation_event for shards interface since: error=ServerSelectionTimeoutError("10.70.104.184:27018: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms),10.70.104.228:27018: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms), Timeout: 1.0s, Topology Description: <TopologyDescription id: 679d7f14e6d1bf4b33e0d05c, topology_type: Unknown, servers: [<ServerDescription ('10.70.104.184', 27018) server_type: Unknown, rtt: None, error=AutoReconnect('10.70.104.184:27018: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms)')>, <ServerDescription ('10.70.104.228', 27018) server_type: Unknown, rtt: None, error=AutoReconnect('10.70.104.228:27018: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms)')>]>")
+unit-shard-two-0: 01:55:33 ERROR unit.shard-two/0.juju-log Unable to access primary due to: 10.70.104.57:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms), Timeout: 1.0s, Topology Description: <TopologyDescription id: 679d7f14be37fd64d42481b0, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('10.70.104.57', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('10.70.104.57:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms)')>]>
+unit-config-server-1: 01:55:36 ERROR unit.config-server/1.juju-log config-server:7: Deferring _on_relation_event for shards interface since: error=ServerSelectionTimeoutError("10.70.104.228:27018: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms),10.70.104.184:27018: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms), Timeout: 1.0s, Topology Description: <TopologyDescription id: 679d7f165099759bd7de5011, topology_type: Unknown, servers: [<ServerDescription ('10.70.104.184', 27018) server_type: Unknown, rtt: None, error=AutoReconnect('10.70.104.184:27018: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms)')>, <ServerDescription ('10.70.104.228', 27018) server_type: Unknown, rtt: None, error=AutoReconnect('10.70.104.228:27018: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms)')>]>")
+unit-config-server-1: 01:55:37 ERROR unit.config-server/1.juju-log config-server:7: Deferring _on_relation_event for shards interface since: error=ServerSelectionTimeoutError("10.70.104.228:27018: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms),10.70.104.184:27018: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms), Timeout: 1.0s, Topology Description: <TopologyDescription id: 679d7f185099759bd7de5012, topology_type: Unknown, servers: [<ServerDescription ('10.70.104.184', 27018) server_type: Unknown, rtt: None, error=AutoReconnect('10.70.104.184:27018: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms)')>, <ServerDescription ('10.70.104.228', 27018) server_type: Unknown, rtt: None, error=AutoReconnect('10.70.104.228:27018: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms)')>]>")
+unit-shard-one-2: 01:55:39 ERROR unit.shard-one/2.juju-log Unable to access primary due to: 10.70.104.182:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms),10.70.104.157:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms),10.70.104.181:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms), Timeout: 1.0s, Topology Description: <TopologyDescription id: 679d7f1afed37180afd80d4e, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('10.70.104.157', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('10.70.104.157:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms)')>, <ServerDescription ('10.70.104.181', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('10.70.104.181:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms)')>, <ServerDescription ('10.70.104.182', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('10.70.104.182:27017: [Errno 111] Connection refused (configured timeouts: socketTimeoutMS: 2000.0ms, connectTimeoutMS: 2000.0ms)')>]>
+unit-shard-one-2: 01:55:46 ERROR unit.shard-one/2.juju-log Deferring process_unremoved_units: error=ServerSelectionTimeoutError('No replica set members match selector "Primary()", Timeout: 1.0s, Topology Description: <TopologyDescription id: 679d7f20fed37180afd80d50, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription (\'10.70.104.157\', 27017) server_type: RSSecondary, rtt: 0.001997475999814924>, <ServerDescription (\'10.70.104.181\', 27017) server_type: RSSecondary, rtt: 0.0061678320007558796>, <ServerDescription (\'10.70.104.182\', 27017) server_type: RSSecondary, rtt: 0.000590602000556828>]>')
+unit-shard-one-2: 01:55:48 ERROR unit.shard-one/2.juju-log Deferring reconfigure: error=ServerSelectionTimeoutError('No replica set members match selector "Primary()", Timeout: 1.0s, Topology Description: <TopologyDescription id: 679d7f22fed37180afd80d51, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription (\'10.70.104.157\', 27017) server_type: RSSecondary, rtt: 0.0010361490003560903>, <ServerDescription (\'10.70.104.181\', 27017) server_type: RSSecondary, rtt: 0.0021795820002807886>, <ServerDescription (\'10.70.104.182\', 27017) server_type: RSSecondary, rtt: 0.0013834900000802008>]>')
+machine-4: 01:57:03 ERROR juju.api.watcher error trying to stop watcher: websocket: close sent
+machine-8: 02:00:42 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-8: 02:00:42 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-3: 02:00:42 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-7: 02:00:43 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-7: 02:00:43 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-2: 02:00:43 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-9: 02:01:04 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-9: 02:01:04 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-3: 02:01:04 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-config-server-3: 02:01:06 ERROR unit.config-server/3.juju-log Unable to set params: ['vm.max_map_count']
+unit-config-server-3: 02:01:06 ERROR unit.config-server/3.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-config-server-2: 02:01:07 ERROR unit.config-server/2.juju-log Unable to set params: ['vm.max_map_count']
+unit-config-server-2: 02:01:07 ERROR unit.config-server/2.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-11: 02:01:08 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-11: 02:01:08 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-5: 02:01:08 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-10: 02:01:13 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-10: 02:01:13 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-4: 02:01:13 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-shard-one-3: 02:01:27 ERROR unit.shard-one/3.juju-log Unable to set params: ['vm.max_map_count']
+unit-shard-one-3: 02:01:27 ERROR unit.shard-one/3.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+machine-12: 02:01:32 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-12: 02:01:32 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-two-1: 02:01:32 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-shard-one-5: 02:01:33 ERROR unit.shard-one/5.juju-log Unable to set params: ['vm.max_map_count']
+unit-shard-one-5: 02:01:33 ERROR unit.shard-one/5.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-shard-one-4: 02:01:36 ERROR unit.shard-one/4.juju-log Unable to set params: ['vm.max_map_count']
+unit-shard-one-4: 02:01:37 ERROR unit.shard-one/4.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
