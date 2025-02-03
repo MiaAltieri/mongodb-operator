@@ -95,6 +95,9 @@ async def test_blocked_incorrect_creds(ops_test: OpsTest) -> None:
     action = await s3_integrator_unit.run_action(action_name="sync-s3-credentials", **parameters)
     await action.wait()
 
+    # apply new configuration options
+    await ops_test.model.applications[S3_APP_NAME].set_config({"bucket": "doesnt-exist"})
+
     # verify that Charmed MongoDB is blocked and reports incorrect credentials
     await ops_test.model.wait_for_idle(apps=[S3_APP_NAME], status="active")
 

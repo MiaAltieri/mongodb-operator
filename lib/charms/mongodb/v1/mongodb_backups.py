@@ -832,13 +832,12 @@ class MongoDBBackups(Object):
 
         provided_configs = self._get_pbm_configs()
         if (
-            not "storage.s3.access-key" not in provided_configs
-            or "storage.s3.secret-key" not in provided_configs
+            "storage.s3.credentials.access-key-id" not in provided_configs
+            or "storage.s3.credentials.secret-access-key" not in provided_configs
         ):
             logger.info("Missing s3 credentials")
             return False
 
-        # note this is more of a sanity check - the s3 lib defaults this to the relation name
         if "storage.s3.bucket" not in provided_configs:
             logger.info("Missing bucket")
             return False
