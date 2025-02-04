@@ -821,7 +821,7 @@ class MongoDBBackups(Object):
         return ""
 
     def are_s3_configurations_provided(self) -> bool:
-        """Returns True if not all necessary configurations for s3 are provided.
+        """Returns True if all necessary configurations for s3 are provided.
 
         Minimum necessary s3 credentials can be found by reading the PBM page:
         https://docs.percona.com/percona-backup-mongodb/reference/configuration-options.html#s3-type-storage-options
