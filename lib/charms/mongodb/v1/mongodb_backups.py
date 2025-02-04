@@ -831,23 +831,22 @@ class MongoDBBackups(Object):
             return False
 
         provided_configs = self._get_pbm_configs()
-        if (
-            not provided_configs.get("storage.s3.credentials.access-key-id")
-            or not provided_configs.get("storage.s3.credentials.secret-access-key")
-        ):
+        if not provided_configs.get(
+            "storage.s3.credentials.access-key-id"
+        ) or not provided_configs.get("storage.s3.credentials.secret-access-key"):
             logger.info("Missing s3 credentials")
             return False
 
-        if "storage.s3.bucket" not in provided_configs:
+        if provided_configs.get("storage.s3.bucket"):
             logger.info("Missing bucket")
             return False
 
         # since we cannot determine whether the user has an AWS or GCP bucket or Minio bucket
         # send them an info
-        if "storage.s3.region" not in provided_configs:
+        if not provided_configs.get("storage.s3.region"):
             logger.info("Missing region - this is required for AWS and GCP")
 
-        if "storage.s3.endpointUrl" not in provided_configs:
+        if not provided_configs.get("storage.s3.endpointUrl"):
             logger.info("Missing endpointUrl - this is required for MinIO and GCP")
 
         return True
