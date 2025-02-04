@@ -832,8 +832,8 @@ class MongoDBBackups(Object):
 
         provided_configs = self._get_pbm_configs()
         if (
-            "storage.s3.credentials.access-key-id" not in provided_configs
-            or "storage.s3.credentials.secret-access-key" not in provided_configs
+            not provided_configs.get("storage.s3.credentials.access-key-id")
+            or not provided_configs.get("storage.s3.credentials.secret-access-key")
         ):
             logger.info("Missing s3 credentials")
             return False
