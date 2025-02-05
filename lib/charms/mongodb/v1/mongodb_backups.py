@@ -112,10 +112,11 @@ def _restore_retry_stop_condition(retry_state) -> bool:
 class MongoDBBackups(Object):
     """Manages MongoDB backups."""
 
-    def __init__(self, charm):
+    def __init__(self, charm, substrate="K8s"):
         """Manager of MongoDB client relations."""
         super().__init__(charm, "client-relations")
         self.charm = charm
+        self.substrate = substrate
 
         # s3 relation handles the config options for s3 backups
         self.s3_client = S3Requirer(self.charm, S3_RELATION)
@@ -881,13 +882,7 @@ class MongoDBBackups(Object):
             file_name=PBM_CERT,
             file_contents=ca_cert,
         )
-        subprocess.run(
-            ["update-ca-certificates"],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.PIPE,
-            check=True,
-            text=True,
-        )
+        self._update_ca_certificates()
 
         # pbm agent must be restarted to adapt these changes
         self.charm.restart_backup_service()
@@ -905,14 +900,20 @@ class MongoDBBackups(Object):
         """
 
         self.charm.remove_file_from_unit(parent_dir=TRUST_STORE, file_name=PBM_CERT)
-
-        subprocess.run(
-            ["update-ca-certificates"],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.PIPE,
-            check=True,
-            text=True,
-        )
-
+        self._update_ca_certificates()
         # pbm agent must be restarted to adapt these changes
         self.charm.restart_backup_service()
+
+    def _update_ca_certificates(self) -> None:
+        """Updates the ca-certificates."""
+        if self.substrate == Config.Substrate.VM:
+            subprocess.run(
+                ["update-ca-certificates"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.PIPE,
+                check=True,
+                text=True,
+            )
+        else:
+            container = self.charm.unit.get_container(Config.CONTAINER_NAME)
+            container.exec(["update-ca-certificates"])
