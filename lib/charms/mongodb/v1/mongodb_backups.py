@@ -112,7 +112,7 @@ def _restore_retry_stop_condition(retry_state) -> bool:
 class MongoDBBackups(Object):
     """Manages MongoDB backups."""
 
-    def __init__(self, charm, substrate="K8s"):
+    def __init__(self, charm, substrate=Config.Substrate.VM):
         """Manager of MongoDB client relations."""
         super().__init__(charm, "client-relations")
         self.charm = charm
@@ -864,14 +864,15 @@ class MongoDBBackups(Object):
         return ""
 
     def _save_ca_cert_to_trust_store(self, ca_cert: str) -> None:
-        """Save CA certificate.
-        - TODO add function to remove cert, and then the K8s equivalent
+        """Save CA certificate for backups.
 
         Args:
             ca_cert: CA certificate.
 
-        raises:
+        Raises:
             CalledProcessError
+                In this case we should let the charm go into error state
+            ContainerExecError
                 In this case we should let the charm go into error state
         """
         if not ca_cert:
@@ -883,25 +884,20 @@ class MongoDBBackups(Object):
             file_contents=ca_cert,
         )
         self._update_ca_certificates()
-
-        # pbm agent must be restarted to adapt these changes
         self.charm.restart_backup_service()
 
     def _remove_ca_cert_from_trust_store(self) -> None:
         """Removes CA certificate.
-        - TODO K8s equivalent
 
-        Args:
-            ca_cert: CA certificate.
-
-        raises:
+        Raises:
             CalledProcessError
+                In this case we should let the charm go into error state
+            ContainerExecError
                 In this case we should let the charm go into error state
         """
 
         self.charm.remove_file_from_unit(parent_dir=TRUST_STORE, file_name=PBM_CERT)
         self._update_ca_certificates()
-        # pbm agent must be restarted to adapt these changes
         self.charm.restart_backup_service()
 
     def _update_ca_certificates(self) -> None:
