@@ -837,7 +837,7 @@ class MongoDBBackups(Object):
             logger.info("Missing s3 credentials")
             return False
 
-        if provided_configs.get("storage.s3.bucket"):
+        if not provided_configs.get("storage.s3.bucket"):
             logger.info("Missing bucket")
             return False
 
