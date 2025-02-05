@@ -1,0 +1,256 @@
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:704 Scaling up by 3 units
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:719 Waiting for idle
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/2 [idle] active: Primary
+  mongodb/3 [idle] active: 
+  mongodb/4 [idle] active: 
+  mongodb/6 [idle] active: 
+  mongodb/7 [allocating] waiting: waiting for machine
+  mongodb/8 [allocating] waiting: waiting for machine
+  mongodb/9 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/7 [allocating] waiting: waiting for machine
+  mongodb/8 [allocating] waiting: waiting for machine
+  mongodb/9 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/7 [allocating] waiting: waiting for machine
+  mongodb/8 [allocating] waiting: waiting for machine
+  mongodb/9 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/7 [allocating] waiting: waiting for machine
+  mongodb/8 [allocating] waiting: waiting for machine
+  mongodb/9 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/7 [allocating] waiting: agent initialising
+  mongodb/8 [allocating] waiting: waiting for machine
+  mongodb/9 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/7 [executing] maintenance: installing MongoDB
+  mongodb/8 [allocating] waiting: agent initialising
+  mongodb/9 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/2 [idle] active: 
+  mongodb/3 [idle] active: 
+  mongodb/4 [idle] active: 
+  mongodb/6 [executing] active: 
+  mongodb/7 [executing] maintenance: installing MongoDB
+  mongodb/8 [executing] active: 
+  mongodb/9 [executing] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/6 [executing] active: 
+  mongodb/7 [executing] active: 
+  mongodb/8 [idle] active: 
+  mongodb/9 [executing] active: 
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:725 Validating replica set has primary
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:707 Scaling down by 3 units
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:717 Units to remove ['mongodb/2', 'mongodb/3', 'mongodb/4']
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:719 Waiting for idle
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/2 [executing] active: 
+  mongodb/3 [executing] active: 
+  mongodb/4 [executing] active: 
+  mongodb/6 [executing] active: 
+  mongodb/7 [executing] active: 
+  mongodb/8 [executing] active: 
+  mongodb/9 [executing] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/6 [idle] active: Primary
+  mongodb/7 [idle] active: 
+  mongodb/8 [idle] active: 
+  mongodb/9 [idle] active: 
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:725 Validating replica set has primary
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:704 Scaling up by 4 units
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:719 Waiting for idle
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/6 [idle] active: Primary
+  mongodb/7 [idle] active: 
+  mongodb/8 [idle] active: 
+  mongodb/9 [idle] active: 
+  mongodb/10 [allocating] waiting: waiting for machine
+  mongodb/11 [allocating] waiting: waiting for machine
+  mongodb/12 [allocating] waiting: waiting for machine
+  mongodb/13 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/10 [allocating] waiting: waiting for machine
+  mongodb/11 [allocating] waiting: waiting for machine
+  mongodb/12 [allocating] waiting: waiting for machine
+  mongodb/13 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/10 [allocating] waiting: waiting for machine
+  mongodb/11 [allocating] waiting: waiting for machine
+  mongodb/12 [allocating] waiting: waiting for machine
+  mongodb/13 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/10 [allocating] waiting: waiting for machine
+  mongodb/11 [allocating] waiting: waiting for machine
+  mongodb/12 [allocating] waiting: waiting for machine
+  mongodb/13 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/10 [allocating] waiting: agent initialising
+  mongodb/11 [allocating] waiting: agent initialising
+  mongodb/12 [allocating] waiting: agent initialising
+  mongodb/13 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/10 [executing] maintenance: installing MongoDB
+  mongodb/11 [executing] maintenance: installing MongoDB
+  mongodb/12 [executing] maintenance: installing MongoDB
+  mongodb/13 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/6 [executing] active: 
+  mongodb/7 [executing] active: 
+  mongodb/8 [executing] active: 
+  mongodb/9 [executing] active: 
+  mongodb/10 [executing] active: 
+  mongodb/11 [executing] active: 
+  mongodb/12 [executing] active: 
+  mongodb/13 [executing] maintenance: installing MongoDB
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/6 [executing] active: 
+  mongodb/10 [executing] active: 
+  mongodb/11 [idle] active: 
+  mongodb/12 [idle] active: 
+  mongodb/13 [executing] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/6 [idle] active: Primary
+  mongodb/7 [idle] active: 
+  mongodb/8 [idle] active: 
+  mongodb/9 [idle] active: 
+  mongodb/10 [idle] active: 
+  mongodb/11 [idle] active: 
+  mongodb/12 [idle] active: 
+  mongodb/13 [idle] active: 
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:725 Validating replica set has primary
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:707 Scaling down by 4 units
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:717 Units to remove ['mongodb/7', 'mongodb/8', 'mongodb/9', 'mongodb/10']
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:719 Waiting for idle
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/6 [executing] active: Primary
+  mongodb/7 [executing] active: 
+  mongodb/8 [executing] active: 
+  mongodb/9 [executing] active: 
+  mongodb/10 [executing] active: 
+  mongodb/11 [executing] active: 
+  mongodb/12 [executing] active: 
+  mongodb/13 [executing] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/6 [idle] active: Primary
+  mongodb/11 [idle] active: 
+  mongodb/12 [idle] active: 
+  mongodb/13 [idle] active: 
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:725 Validating replica set has primary
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:704 Scaling up by 5 units
+[32mINFO    [0m integration.ha_tests.helpers:helpers.py:719 Waiting for idle
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/6 [idle] active: Primary
+  mongodb/11 [idle] active: 
+  mongodb/12 [idle] active: 
+  mongodb/13 [idle] active: 
+  mongodb/14 [allocating] waiting: waiting for machine
+  mongodb/15 [allocating] waiting: waiting for machine
+  mongodb/16 [allocating] waiting: waiting for machine
+  mongodb/17 [allocating] waiting: waiting for machine
+  mongodb/18 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/14 [allocating] waiting: waiting for machine
+  mongodb/15 [allocating] waiting: waiting for machine
+  mongodb/16 [allocating] waiting: waiting for machine
+  mongodb/17 [allocating] waiting: waiting for machine
+  mongodb/18 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/14 [allocating] waiting: waiting for machine
+  mongodb/15 [allocating] waiting: waiting for machine
+  mongodb/16 [allocating] waiting: waiting for machine
+  mongodb/17 [allocating] waiting: waiting for machine
+  mongodb/18 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/14 [allocating] waiting: waiting for machine
+  mongodb/15 [allocating] waiting: waiting for machine
+  mongodb/16 [allocating] waiting: waiting for machine
+  mongodb/17 [allocating] waiting: waiting for machine
+  mongodb/18 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/14 [allocating] waiting: waiting for machine
+  mongodb/15 [allocating] waiting: waiting for machine
+  mongodb/16 [allocating] waiting: waiting for machine
+  mongodb/17 [allocating] waiting: waiting for machine
+  mongodb/18 [allocating] waiting: waiting for machine
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/14 [allocating] waiting: agent initialising
+  mongodb/15 [allocating] waiting: agent initialising
+  mongodb/16 [allocating] waiting: agent initialising
+  mongodb/17 [allocating] waiting: waiting for machine
+  mongodb/18 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/6 [executing] active: Primary
+  mongodb/11 [executing] active: 
+  mongodb/12 [executing] active: 
+  mongodb/13 [executing] active: 
+  mongodb/14 [executing] maintenance: installing MongoDB
+  mongodb/15 [executing] maintenance: installing MongoDB
+  mongodb/16 [executing] maintenance: installing MongoDB
+  mongodb/17 [allocating] waiting: agent initialising
+  mongodb/18 [executing] maintenance: installing MongoDB
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/6 [executing] active: 
+  mongodb/14 [executing] active: 
+  mongodb/15 [executing] active: 
+  mongodb/16 [executing] active: 
+  mongodb/17 [allocating] waiting: agent initialising
+  mongodb/18 [executing] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/6 [idle] active: 
+  mongodb/14 [idle] active: 
+  mongodb/15 [idle] active: 
+  mongodb/16 [idle] active: 
+  mongodb/17 [allocating] waiting: agent initialising
+  mongodb/18 [idle] active: 
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
+[32mINFO    [0m juju.model:model.py:2971 Waiting for model:
+  mongodb/17 [allocating] waiting: agent initialising
