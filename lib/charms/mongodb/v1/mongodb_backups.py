@@ -18,7 +18,7 @@ from typing import Dict, List, Optional, Union
 from charms.data_platform_libs.v0.s3 import CredentialsChangedEvent, S3Requirer
 from charms.mongodb.v1.helpers import current_pbm_op, process_pbm_status
 from charms.operator_libs_linux.v2 import snap
-from ops.charm import RelationJoinedEvent, RelationBrokenEvent
+from ops.charm import RelationBrokenEvent, RelationJoinedEvent
 from ops.framework import Object
 from ops.model import BlockedStatus, MaintenanceStatus, StatusBase, WaitingStatus
 from ops.pebble import ExecError
@@ -134,12 +134,8 @@ class MongoDBBackups(Object):
         self.framework.observe(
             self.s3_client.on.credentials_changed, self._on_s3_credential_changed
         )
-        self.framework.observe(
-            self.charm.on.create_backup_action, self._on_create_backup_action
-        )
-        self.framework.observe(
-            self.charm.on.list_backups_action, self._on_list_backups_action
-        )
+        self.framework.observe(self.charm.on.create_backup_action, self._on_create_backup_action)
+        self.framework.observe(self.charm.on.list_backups_action, self._on_list_backups_action)
         self.framework.observe(self.charm.on.restore_action, self._on_restore_action)
 
     def on_s3_relation_joined(self, event: RelationJoinedEvent) -> None:
@@ -281,9 +277,7 @@ class MongoDBBackups(Object):
 
         try:
             formatted_list = self._generate_backup_list_output()
-            self._success_action_with_info_log(
-                event, action, {"backups": formatted_list}
-            )
+            self._success_action_with_info_log(event, action, {"backups": formatted_list})
         except (subprocess.CalledProcessError, ExecError) as e:
             self._fail_action_with_error_log(event, action, str(e))
             return
@@ -322,9 +316,7 @@ class MongoDBBackups(Object):
         action = "restore"
         backup_id = event.params.get("backup-id")
         if not backup_id:
-            self._fail_action_with_error_log(
-                event, action, "Missing backup-id to restore"
-            )
+            self._fail_action_with_error_log(event, action, "Missing backup-id to restore")
             return False
 
         # only leader can restore backups. This prevents multiple restores from being attempted at
@@ -375,9 +367,7 @@ class MongoDBBackups(Object):
 
         Only replica sets and config servers can integrate to s3-integrator.
         """
-        if self.charm.is_role(Config.Role.SHARD) and self.model.get_relation(
-            S3_RELATION
-        ):
+        if self.charm.is_role(Config.Role.SHARD) and self.model.get_relation(S3_RELATION):
             return False
 
         return True
@@ -416,9 +406,7 @@ class MongoDBBackups(Object):
             )
             return
         except snap.SnapError as e:
-            logger.error(
-                "An exception occurred when starting pbm agent, error: %s.", str(e)
-            )
+            logger.error("An exception occurred when starting pbm agent, error: %s.", str(e))
             self.charm.status.set_and_share_status(BlockedStatus("couldn't start pbm"))
             return
         except ResyncError:
@@ -440,9 +428,7 @@ class MongoDBBackups(Object):
             ),
             return
         except ExecError as e:
-            self.charm.status.set_and_share_status(
-                BlockedStatus(self.process_pbm_error(e.stdout))
-            )
+            self.charm.status.set_and_share_status(BlockedStatus(self.process_pbm_error(e.stdout)))
             return
         except subprocess.CalledProcessError as e:
             logger.error("Syncing configurations failed: %s", str(e))
@@ -625,11 +611,7 @@ class MongoDBBackups(Object):
 
     def _format_backup_list(self, backup_list: List[str]) -> str:
         """Formats provided list of backups as a table."""
-        backups = [
-            "{:<21s} | {:<12s} | {:s}".format(
-                "backup-id", "backup-type", "backup-status"
-            )
-        ]
+        backups = ["{:<21s} | {:<12s} | {:s}".format("backup-id", "backup-type", "backup-status")]
 
         backups.append("-" * len(backups[0]))
         for backup_id, backup_type, backup_status in backup_list:
@@ -704,9 +686,7 @@ class MongoDBBackups(Object):
                         r"Starting backup '(?P<backup_id>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z)'",
                         output,
                     )
-                    return (
-                        backup_id_match.group("backup_id") if backup_id_match else "N/A"
-                    )
+                    return backup_id_match.group("backup_id") if backup_id_match else "N/A"
                 except (subprocess.CalledProcessError, ExecError) as e:
                     if isinstance(e, subprocess.CalledProcessError):
                         error_message = e.output.decode("utf-8")
@@ -755,15 +735,11 @@ class MongoDBBackups(Object):
         logger.info("Deferring %s: %s", action, message)
         event.defer()
 
-    def _success_action_with_info_log(
-        self, event, action: str, results: Dict[str, str]
-    ) -> None:
+    def _success_action_with_info_log(self, event, action: str, results: Dict[str, str]) -> None:
         logger.info("%s completed successfully", action.capitalize())
         event.set_results(results)
 
-    def _log_backup_restore_result(
-        self, current_pbm_status, previous_pbm_status
-    ) -> None:
+    def _log_backup_restore_result(self, current_pbm_status, previous_pbm_status) -> None:
         """Logs the result of the backup/restore operation.
 
         Expected to be called for not failed operations.
@@ -773,9 +749,7 @@ class MongoDBBackups(Object):
         )
         logger.info(operation_result)
 
-    def _get_backup_restore_operation_result(
-        self, current_pbm_status, previous_pbm_status
-    ) -> str:
+    def _get_backup_restore_operation_result(self, current_pbm_status, previous_pbm_status) -> str:
         """Returns a string with the result of the backup/restore operation.
 
         The function call is expected to be only for not failed operations.
@@ -814,7 +788,9 @@ class MongoDBBackups(Object):
                     break
 
             for host_info in cluster["nodes"]:
-                replica_info = f"mongodb/{self.charm.unit_host(self.charm.unit)}:{Config.MONGOS_PORT}"
+                replica_info = (
+                    f"mongodb/{self.charm.unit_host(self.charm.unit)}:{Config.MONGOS_PORT}"
+                )
                 if host_info["host"] == replica_info:
                     break
 
@@ -848,9 +824,9 @@ class MongoDBBackups(Object):
         backup_error_status = self.get_backup_error_status(backup_id)
 
         # When a charm is running as a Replica set it can generate its own remapping arguments
-        return self._is_backup_from_different_cluster(
-            backup_error_status
-        ) and self.charm.is_role(Config.Role.CONFIG_SERVER)
+        return self._is_backup_from_different_cluster(backup_error_status) and self.charm.is_role(
+            Config.Role.CONFIG_SERVER
+        )
 
     def get_backup_error_status(self, backup_id: str) -> str:
         """Get the error status for a provided backup."""
@@ -895,7 +871,6 @@ class MongoDBBackups(Object):
             ContainerExecError
                 In this case we should let the charm go into error state
         """
-
         self.charm.remove_file_from_unit(parent_dir=TRUST_STORE, file_name=PBM_CERT)
         self._update_ca_certificates()
         self.charm.restart_backup_service()
