@@ -41,7 +41,7 @@ LIBAPI = 1
 
 # Increment this PATCH version before using `charmcraft publish-lib` or reset
 # to 0 if you are raising the major API version
-LIBPATCH = 5
+LIBPATCH = 6
 
 logger = logging.getLogger(__name__)
 
@@ -224,7 +224,9 @@ class MongoDBBackups(Object):
                 MaintenanceStatus(f"backup started/running, backup id:'{backup_id}'")
             )
             self._success_action_with_info_log(
-                event, action, {"backup-status": f"backup started. backup id: {backup_id}"}
+                event,
+                action,
+                {"backup-status": f"backup started. backup id: {backup_id}"},
             )
         except (subprocess.CalledProcessError, ExecError, Exception) as e:
             self._fail_action_with_error_log(event, action, str(e))
@@ -519,6 +521,13 @@ class MongoDBBackups(Object):
         if not self.model.get_relation(S3_RELATION):
             logger.info("No configurations for backups, not relation to s3-charm.")
             return None
+
+        if not self.are_s3_configurations_provided():
+            logger.info(
+                "relation to s3-charm exists, but not all necessary configurations have been set."
+            )
+            return BlockedStatus("s3 configurations missing.")
+
         try:
             previous_pbm_status = self.charm.unit.status
             pbm_status = self.charm.run_pbm_command(PBM_STATUS_CMD)
@@ -570,7 +579,11 @@ class MongoDBBackups(Object):
             # pbm will occasionally report backups that are currently running as failed, so it is
             # necessary to correct the backup list in this case.
             if last_reported_backup[0] == running_backup["name"]:
-                backup_list[0] = (last_reported_backup[0], last_reported_backup[1], "in progress")
+                backup_list[0] = (
+                    last_reported_backup[0],
+                    last_reported_backup[1],
+                    "in progress",
+                )
             else:
                 backup_list.append((running_backup["name"], "logical", "in progress"))
 
@@ -806,3 +819,34 @@ class MongoDBBackups(Object):
                 return backup.get("error", "")
 
         return ""
+
+    def are_s3_configurations_provided(self) -> bool:
+        """Returns True if all necessary configurations for s3 are provided.
+
+        Minimum necessary s3 credentials can be found by reading the PBM page:
+        https://docs.percona.com/percona-backup-mongodb/reference/configuration-options.html#s3-type-storage-options
+        """
+        if not self.model.get_relation(S3_RELATION):
+            logger.info("No configurations for backups, not relation to s3-charm.")
+            return False
+
+        provided_configs = self._get_pbm_configs()
+        if not provided_configs.get(
+            "storage.s3.credentials.access-key-id"
+        ) or not provided_configs.get("storage.s3.credentials.secret-access-key"):
+            logger.info("Missing s3 credentials")
+            return False
+
+        if not provided_configs.get("storage.s3.bucket"):
+            logger.info("Missing bucket")
+            return False
+
+        # since we cannot determine whether the user has an AWS or GCP bucket or Minio bucket
+        # send them an info
+        if not provided_configs.get("storage.s3.region"):
+            logger.info("Missing region - this is required for AWS and GCP")
+
+        if not provided_configs.get("storage.s3.endpointUrl"):
+            logger.info("Missing endpointUrl - this is required for MinIO and GCP")
+
+        return True

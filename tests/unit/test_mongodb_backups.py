@@ -77,9 +77,10 @@ class TestMongoBackups(unittest.TestCase):
         pbm_command.side_effect = ModelError("service pbm-agent not found")
         self.assertTrue(isinstance(self.harness.charm.backups.get_pbm_status(), BlockedStatus))
 
+    @patch("charm.MongoDBBackups.are_s3_configurations_provided", return_value=True)
     @patch("charm.MongodbOperatorCharm.has_backup_service")
     @patch("charm.MongodbOperatorCharm.run_pbm_command")
-    def test_get_pbm_status_resync(self, pbm_command, service):
+    def test_get_pbm_status_resync(self, pbm_command, service, *unused):
         """Tests that when pbm is resyncing that pbm is in waiting state."""
         relation_id = self.harness.add_relation(RELATION_NAME, "s3-integrator")
         self.harness.add_relation_unit(relation_id, "s3-integrator/0")
@@ -90,9 +91,10 @@ class TestMongoBackups(unittest.TestCase):
         )
         self.assertTrue(isinstance(self.harness.charm.backups.get_pbm_status(), WaitingStatus))
 
+    @patch("charm.MongoDBBackups.are_s3_configurations_provided", return_value=True)
     @patch("charm.MongodbOperatorCharm.has_backup_service")
     @patch("charm.MongodbOperatorCharm.run_pbm_command")
-    def test_get_pbm_status_running(self, pbm_command, service):
+    def test_get_pbm_status_running(self, pbm_command, service, *unused):
         """Tests that when pbm not running an op that pbm is in active state."""
         relation_id = self.harness.add_relation(RELATION_NAME, "s3-integrator")
         self.harness.add_relation_unit(relation_id, "s3-integrator/0")
@@ -110,7 +112,10 @@ class TestMongoBackups(unittest.TestCase):
 
         service.return_value = True
         pbm_command.side_effect = ExecError(
-            command=["/usr/bin/pbm", "status"], exit_code=1, stdout="status code: 403", stderr=""
+            command=["/usr/bin/pbm", "status"],
+            exit_code=1,
+            stdout="status code: 403",
+            stderr="",
         )
         self.assertTrue(isinstance(self.harness.charm.backups.get_pbm_status(), BlockedStatus))
 
@@ -123,7 +128,10 @@ class TestMongoBackups(unittest.TestCase):
 
         service.return_value = True
         pbm_command.side_effect = ExecError(
-            command=["/usr/bin/pbm", "status"], exit_code=1, stdout="status code: 404", stderr=""
+            command=["/usr/bin/pbm", "status"],
+            exit_code=1,
+            stdout="status code: 404",
+            stderr="",
         )
         self.assertTrue(isinstance(self.harness.charm.backups.get_pbm_status(), BlockedStatus))
 
@@ -408,10 +416,16 @@ class TestMongoBackups(unittest.TestCase):
         service.return_value = True
         self.harness.charm.app_peer_data["db_initialised"] = "true"
         resync.side_effect = ExecError(
-            command=["/usr/bin/pbm status"], exit_code=1, stdout="status code: 403", stderr=""
+            command=["/usr/bin/pbm status"],
+            exit_code=1,
+            stdout="status code: 403",
+            stderr="",
         )
         pbm_command.side_effect = ExecError(
-            command=["/usr/bin/pbm status"], exit_code=1, stdout="status code: 403", stderr=""
+            command=["/usr/bin/pbm status"],
+            exit_code=1,
+            stdout="status code: 403",
+            stderr="",
         )
 
         # triggering s3 event with correct fields
@@ -437,7 +451,10 @@ class TestMongoBackups(unittest.TestCase):
         service.return_value = True
 
         pbm_command.side_effect = ExecError(
-            command=["/usr/bin/pbm", "status"], exit_code=1, stdout="status code: 42", stderr=""
+            command=["/usr/bin/pbm", "status"],
+            exit_code=1,
+            stdout="status code: 42",
+            stderr="",
         )
 
         action_event = mock.Mock()
@@ -484,7 +501,10 @@ class TestMongoBackups(unittest.TestCase):
 
         service.return_value = True
         pbm_command.side_effect = ExecError(
-            command=["/usr/bin/pbm", "status"], exit_code=1, stdout="status code: 403", stderr=""
+            command=["/usr/bin/pbm", "status"],
+            exit_code=1,
+            stdout="status code: 403",
+            stderr="",
         )
 
         self.harness.add_relation(RELATION_NAME, "s3-integrator")
@@ -504,7 +524,10 @@ class TestMongoBackups(unittest.TestCase):
         pbm_status.return_value = ActiveStatus("")
 
         pbm_command.side_effect = ExecError(
-            command=["/usr/bin/pbm", "list"], exit_code=1, stdout="status code: 403", stderr=""
+            command=["/usr/bin/pbm", "list"],
+            exit_code=1,
+            stdout="status code: 403",
+            stderr="",
         )
 
         self.harness.add_relation(RELATION_NAME, "s3-integrator")
@@ -616,7 +639,10 @@ class TestMongoBackups(unittest.TestCase):
         pbm_status.return_value = ActiveStatus("")
 
         pbm_command.side_effect = ExecError(
-            command=["/usr/bin/pbm", "list"], exit_code=1, stdout="status code: 403", stderr=""
+            command=["/usr/bin/pbm", "list"],
+            exit_code=1,
+            stdout="status code: 403",
+            stderr="",
         )
 
         self.harness.add_relation(RELATION_NAME, "s3-integrator")
@@ -689,9 +715,10 @@ class TestMongoBackups(unittest.TestCase):
         remap = self.harness.charm.backups._remap_replicaset("2002-02-14T13:59:14Z")
         self.assertEqual(remap, "current-app-name=old-cluster-name")
 
+    @patch("charm.MongoDBBackups.are_s3_configurations_provided", return_value=True)
     @patch("charm.MongodbOperatorCharm.has_backup_service")
     @patch("charm.MongodbOperatorCharm.run_pbm_command")
-    def test_get_pbm_status_backup(self, run_pbm_command, service):
+    def test_get_pbm_status_backup(self, run_pbm_command, service, *unused):
         """Tests that when pbm running a backup that pbm is in maintenance state."""
         relation_id = self.harness.add_relation(RELATION_NAME, "s3-integrator")
         self.harness.add_relation_unit(relation_id, "s3-integrator/0")
