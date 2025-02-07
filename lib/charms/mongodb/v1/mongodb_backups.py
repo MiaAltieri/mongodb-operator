@@ -438,9 +438,7 @@ class MongoDBBackups(Object):
     def _set_config_options(self):
         """Applying given configurations with pbm."""
         # handle TLS configuration by adding it to the trust
-        tls_ca_chain = self.s3_client.get_s3_connection_info().get("tls-ca-chain", None)
-        tls_ca_chain = "\n".join(tls_ca_chain) if tls_ca_chain else None
-        self._save_ca_cert_to_trust_store(tls_ca_chain)
+        self._save_ca_cert_to_trust_store()
 
         # clearing out configurations options before resetting them leads to a quicker reysnc
         # process
@@ -839,11 +837,9 @@ class MongoDBBackups(Object):
 
         return ""
 
-    def _save_ca_cert_to_trust_store(self, ca_cert: str) -> None:
+    def _save_ca_cert_to_trust_store(self) -> None:
         """Save CA certificate for backups.
 
-        Args:
-            ca_cert: CA certificate.
 
         Raises:
             CalledProcessError
@@ -851,13 +847,16 @@ class MongoDBBackups(Object):
             ContainerExecError
                 In this case we should let the charm go into error state
         """
-        if not ca_cert:
+        tls_ca_chain = self.s3_client.get_s3_connection_info().get("tls-ca-chain", None)
+        tls_ca_chain = "\n".join(tls_ca_chain) if tls_ca_chain else None
+
+        if not tls_ca_chain:
             return
 
         self.charm.push_file_to_unit(
             parent_dir=TRUST_STORE,
             file_name=PBM_CERT,
-            file_contents=ca_cert,
+            file_contents=tls_ca_chain,
         )
         self._update_ca_certificates()
         self.charm.restart_backup_service()
