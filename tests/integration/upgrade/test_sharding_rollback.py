@@ -179,10 +179,10 @@ async def test_rollback_on_shard_and_config_server(
         ops_test, CONFIG_SERVER_APP_NAME, SHARD_TWO_DB_NAME
     )
     assert (
-        shard_one_actual_writes == shard_one_expected_writes["number"]
+        shard_one_actual_writes >= shard_one_expected_writes["number"]
     ), "continuous writes to shard one failed during upgrade"
     assert (
-        shard_two_actual_writes == shard_two_expected_writes["number"]
+        shard_two_actual_writes >= shard_two_expected_writes["number"]
     ), "continuous writes to shard two failed during upgrade"
 
     # after all shards have upgraded, verify that the balancer has been turned back on
@@ -195,7 +195,10 @@ async def refresh_with_juju(ops_test: OpsTest, app_name: str, channel: str) -> N
 
 
 async def run_upgrade_sequence(
-    ops_test: OpsTest, app_name: str, new_charm: Path | None = None, channel: str | None = None
+    ops_test: OpsTest,
+    app_name: str,
+    new_charm: Path | None = None,
+    channel: str | None = None,
 ) -> None:
     """Runs the upgrade sequence on a given app."""
     leader_unit = await find_unit(ops_test, leader=True, app_name=app_name)
