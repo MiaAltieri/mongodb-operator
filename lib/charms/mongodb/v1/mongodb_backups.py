@@ -18,7 +18,7 @@ from typing import Dict, List, Optional, Union
 from charms.data_platform_libs.v0.s3 import CredentialsChangedEvent, S3Requirer
 from charms.mongodb.v1.helpers import current_pbm_op, process_pbm_status
 from charms.operator_libs_linux.v2 import snap
-from ops.charm import RelationJoinedEvent
+from ops.charm import RelationBrokenEvent, RelationJoinedEvent
 from ops.framework import Object
 from ops.model import BlockedStatus, MaintenanceStatus, StatusBase, WaitingStatus
 from ops.pebble import ExecError
@@ -41,7 +41,7 @@ LIBAPI = 1
 
 # Increment this PATCH version before using `charmcraft publish-lib` or reset
 # to 0 if you are raising the major API version
-LIBPATCH = 6
+LIBPATCH = 7
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +58,8 @@ S3_RELATION = "s3-credentials"
 REMAPPING_PATTERN = r"\ABackup doesn't match current cluster topology - it has different replica set names. Extra shards in the backup will cause this, for a simple example. The extra/unknown replica set names found in the backup are: ([\w\d\-,\s]+)([.] Backup has no data for the config server or sole replicaset)?\Z"
 PBM_STATUS_CMD = ["status", "-o", "json"]
 MONGODB_SNAP_DATA_DIR = "/var/snap/charmed-mongodb/current"
+TRUST_STORE = "/usr/local/share/ca-certificates"
+PBM_CERT = "pbm.crt"
 BACKUP_RESTORE_MAX_ATTEMPTS = 10
 BACKUP_RESTORE_ATTEMPT_COOLDOWN = 15
 
@@ -110,15 +112,24 @@ def _restore_retry_stop_condition(retry_state) -> bool:
 class MongoDBBackups(Object):
     """Manages MongoDB backups."""
 
-    def __init__(self, charm):
+    def __init__(self, charm, substrate=Config.Substrate.VM):
         """Manager of MongoDB client relations."""
         super().__init__(charm, "client-relations")
         self.charm = charm
+        self.substrate = substrate
 
         # s3 relation handles the config options for s3 backups
         self.s3_client = S3Requirer(self.charm, S3_RELATION)
         self.framework.observe(
             self.charm.on[S3_RELATION].relation_joined, self.on_s3_relation_joined
+        )
+        self.framework.observe(
+            charm.on[S3_RELATION].relation_departed,
+            self.charm.check_relation_broken_or_scale_down,
+        )
+
+        self.framework.observe(
+            self.charm.on[S3_RELATION].relation_broken, self.on_s3_relation_broken
         )
         self.framework.observe(
             self.s3_client.on.credentials_changed, self._on_s3_credential_changed
@@ -141,6 +152,16 @@ class MongoDBBackups(Object):
                 "Shard does not support s3 relations, please relate s3-integrator to config-server only."
             )
             self.charm.status.set_and_share_status(INVALID_INTEGRATION_STATUS)
+
+    def on_s3_relation_broken(self, event: RelationBrokenEvent) -> None:
+        """Handles broken event."""
+        departed_relation_id = event.relation.id
+        # check if were scaling down and add a log message
+        if self.charm.is_scaling_down(departed_relation_id):
+            logger.info("Relation broken event occurring due to scale down,.")
+            return
+
+        self._remove_ca_cert_from_trust_store()
 
     def _on_s3_credential_changed(self, event: CredentialsChangedEvent):
         """Sets pbm credentials, resyncs if necessary and reports config errors."""
@@ -416,6 +437,9 @@ class MongoDBBackups(Object):
 
     def _set_config_options(self):
         """Applying given configurations with pbm."""
+        # handle TLS configuration by adding it to the trust
+        self._save_ca_cert_to_trust_store()
+
         # clearing out configurations options before resetting them leads to a quicker reysnc
         # process
         self.charm.clear_pbm_config_file()
@@ -819,6 +843,59 @@ class MongoDBBackups(Object):
                 return backup.get("error", "")
 
         return ""
+
+    def _save_ca_cert_to_trust_store(self, restart_service=True) -> None:
+        """Save CA certificate for backups.
+
+        Raises:
+            CalledProcessError
+                In this case we should let the charm go into error state
+            ContainerExecError
+                In this case we should let the charm go into error state
+        """
+        tls_ca_chain = self.s3_client.get_s3_connection_info().get("tls-ca-chain", None)
+        tls_ca_chain = "\n".join(tls_ca_chain) if tls_ca_chain else None
+
+        if not tls_ca_chain:
+            return
+
+        self.charm.push_file_to_unit(
+            parent_dir=TRUST_STORE,
+            file_name=PBM_CERT,
+            file_contents=tls_ca_chain,
+        )
+        self._update_ca_certificates()
+        if not restart_service:
+            return
+
+        self.charm.restart_backup_service()
+
+    def _remove_ca_cert_from_trust_store(self) -> None:
+        """Removes CA certificate.
+
+        Raises:
+            CalledProcessError
+                In this case we should let the charm go into error state
+            ContainerExecError
+                In this case we should let the charm go into error state
+        """
+        self.charm.remove_file_from_unit(parent_dir=TRUST_STORE, file_name=PBM_CERT)
+        self._update_ca_certificates()
+        self.charm.restart_backup_service()
+
+    def _update_ca_certificates(self) -> None:
+        """Updates the ca-certificates."""
+        if self.substrate == Config.Substrate.VM:
+            subprocess.run(
+                ["update-ca-certificates"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.PIPE,
+                check=True,
+                text=True,
+            )
+        else:
+            container = self.charm.unit.get_container(Config.CONTAINER_NAME)
+            container.exec(["update-ca-certificates"])
 
     def are_s3_configurations_provided(self) -> bool:
         """Returns True if all necessary configurations for s3 are provided.
