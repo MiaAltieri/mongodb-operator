@@ -68,6 +68,23 @@ async def test_build_and_deploy(ops_test: OpsTest) -> None:
 @pytest.mark.runner(["self-hosted", "linux", "X64", "jammy", "large"])
 @pytest.mark.group(1)
 @pytest.mark.abort_on_fail
+async def test_blocked_missing_config(ops_test: OpsTest) -> None:
+    """Test that when charm is missing pbm information that it reports that."""
+    db_app_name = await get_app_name(ops_test)
+    await ops_test.model.integrate(S3_APP_NAME, db_app_name)
+    await ops_test.model.block_until(
+        lambda: is_relation_joined(ops_test, ENDPOINT, ENDPOINT) is True,
+        timeout=TIMEOUT,
+    )
+
+    await wait_for_mongodb_units_blocked(
+        ops_test, db_app_name, status="s3 configurations missing.", timeout=300
+    )
+
+
+@pytest.mark.runner(["self-hosted", "linux", "X64", "jammy", "large"])
+@pytest.mark.group(1)
+@pytest.mark.abort_on_fail
 async def test_blocked_incorrect_creds(ops_test: OpsTest) -> None:
     """Verifies that the charm goes into blocked status when s3 creds are incorrect."""
     db_app_name = await get_app_name(ops_test)
@@ -78,13 +95,8 @@ async def test_blocked_incorrect_creds(ops_test: OpsTest) -> None:
     action = await s3_integrator_unit.run_action(action_name="sync-s3-credentials", **parameters)
     await action.wait()
 
-    # relate after s3 becomes active add and wait for relation
-    await ops_test.model.wait_for_idle(apps=[S3_APP_NAME], status="active")
-    await ops_test.model.integrate(S3_APP_NAME, db_app_name)
-    await ops_test.model.block_until(
-        lambda: is_relation_joined(ops_test, ENDPOINT, ENDPOINT) is True,
-        timeout=TIMEOUT,
-    )
+    # apply new configuration options
+    await ops_test.model.applications[S3_APP_NAME].set_config({"bucket": "doesnt-exist"})
 
     # verify that Charmed MongoDB is blocked and reports incorrect credentials
     await ops_test.model.wait_for_idle(apps=[S3_APP_NAME], status="active")

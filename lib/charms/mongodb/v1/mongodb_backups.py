@@ -41,7 +41,7 @@ LIBAPI = 1
 
 # Increment this PATCH version before using `charmcraft publish-lib` or reset
 # to 0 if you are raising the major API version
-LIBPATCH = 5
+LIBPATCH = 6
 
 logger = logging.getLogger(__name__)
 
@@ -545,6 +545,13 @@ class MongoDBBackups(Object):
         if not self.model.get_relation(S3_RELATION):
             logger.info("No configurations for backups, not relation to s3-charm.")
             return None
+
+        if not self.are_s3_configurations_provided():
+            logger.info(
+                "relation to s3-charm exists, but not all necessary configurations have been set."
+            )
+            return BlockedStatus("s3 configurations missing.")
+
         try:
             previous_pbm_status = self.charm.unit.status
             pbm_status = self.charm.run_pbm_command(PBM_STATUS_CMD)
@@ -840,7 +847,6 @@ class MongoDBBackups(Object):
     def _save_ca_cert_to_trust_store(self, restart_service=True) -> None:
         """Save CA certificate for backups.
 
-
         Raises:
             CalledProcessError
                 In this case we should let the charm go into error state
@@ -890,3 +896,34 @@ class MongoDBBackups(Object):
         else:
             container = self.charm.unit.get_container(Config.CONTAINER_NAME)
             container.exec(["update-ca-certificates"])
+
+    def are_s3_configurations_provided(self) -> bool:
+        """Returns True if all necessary configurations for s3 are provided.
+
+        Minimum necessary s3 credentials can be found by reading the PBM page:
+        https://docs.percona.com/percona-backup-mongodb/reference/configuration-options.html#s3-type-storage-options
+        """
+        if not self.model.get_relation(S3_RELATION):
+            logger.info("No configurations for backups, not relation to s3-charm.")
+            return False
+
+        provided_configs = self._get_pbm_configs()
+        if not provided_configs.get(
+            "storage.s3.credentials.access-key-id"
+        ) or not provided_configs.get("storage.s3.credentials.secret-access-key"):
+            logger.info("Missing s3 credentials")
+            return False
+
+        if not provided_configs.get("storage.s3.bucket"):
+            logger.info("Missing bucket")
+            return False
+
+        # since we cannot determine whether the user has an AWS or GCP bucket or Minio bucket
+        # send them an info
+        if not provided_configs.get("storage.s3.region"):
+            logger.info("Missing region - this is required for AWS and GCP")
+
+        if not provided_configs.get("storage.s3.endpointUrl"):
+            logger.info("Missing endpointUrl - this is required for MinIO and GCP")
+
+        return True
