@@ -837,7 +837,7 @@ class MongoDBBackups(Object):
 
         return ""
 
-    def _save_ca_cert_to_trust_store(self) -> None:
+    def _save_ca_cert_to_trust_store(self, restart_service=True) -> None:
         """Save CA certificate for backups.
 
 
@@ -859,6 +859,9 @@ class MongoDBBackups(Object):
             file_contents=tls_ca_chain,
         )
         self._update_ca_certificates()
+        if not restart_service:
+            return
+
         self.charm.restart_backup_service()
 
     def _remove_ca_cert_from_trust_store(self) -> None:
