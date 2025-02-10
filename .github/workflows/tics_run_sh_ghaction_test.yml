@@ -12,25 +12,18 @@ jobs:
       - name: Checkout the project
         uses: actions/checkout@v4
 
-      - name: Install system dependencies
-        run: sudo apt-get update && sudo apt-get install -y python3.10-venv
-
-      - name: Install pipx
-        run: python3 -m pip install --user pipx && python3 -m pipx ensurepath
-
-      - name: Add pipx to PATH
-        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
-
-      - name: Install tox and poetry using pipx
+      - name: Install dependencies
         run: |
+          sudo apt-get update && sudo apt-get install -y python3.10-venv
+          python3 -m pip install --user pipx && python3 -m pipx ensurepath
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
           pipx install tox
           pipx install poetry
 
-      - name: Run tox tests to create coverage.xml
-        run: tox run -e unit
-
-      - name: move results to necessary folder for TICS
+      - name: Generate coverage.xml for TICS
         run: |
+          tox run -e unit
+          # move results to folder for TICS
           mkdir .cover
           mv coverage.xml .cover/coverage.xml
 
