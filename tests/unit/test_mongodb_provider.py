@@ -9,7 +9,7 @@ from ops.testing import Harness
 from parameterized import parameterized
 from pymongo.errors import ConfigurationError, ConnectionFailure, OperationFailure
 
-from charm import MongodbOperatorCharm
+from charm import MongoDBVMCharm
 
 from .helpers import patch_network_get
 
@@ -30,7 +30,7 @@ class TestMongoProvider(unittest.TestCase):
     )
     @patch_network_get(private_address="1.1.1.1")
     def setUp(self, *unused):
-        self.harness = Harness(MongodbOperatorCharm)
+        self.harness = Harness(MongoDBVMCharm)
         self.harness.begin()
         self.harness.add_relation("database-peers", "mongodb-peers")
         self.harness.set_leader(True)

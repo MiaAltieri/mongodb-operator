@@ -16,7 +16,7 @@ from single_kernel_mongo.exceptions import (
     WorkloadExecError,
 )
 
-from charm import MongodbOperatorCharm
+from charm import MongoDBVMCharm
 
 from .helpers import patch_network_get
 
@@ -30,7 +30,7 @@ class TestMongoBackups(unittest.TestCase):
     )
     @patch_network_get(private_address="1.1.1.1")
     def setUp(self, *unused):
-        self.harness = Harness(MongodbOperatorCharm)
+        self.harness = Harness(MongoDBVMCharm)
         self.harness.begin()
         self.harness.add_relation("database-peers", "database-peers")
         self.harness.set_leader(True)

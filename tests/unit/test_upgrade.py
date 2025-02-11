@@ -7,7 +7,7 @@ from unittest.mock import patch
 from ops.model import ActiveStatus, BlockedStatus
 from ops.testing import Harness
 
-from charm import MongodbOperatorCharm
+from charm import MongoDBVMCharm
 
 from .helpers import patch_network_get
 
@@ -19,7 +19,7 @@ class TestCharm(unittest.TestCase):
     )
     @patch_network_get(private_address="1.1.1.1")
     def setUp(self, *unused):
-        self.harness = Harness(MongodbOperatorCharm)
+        self.harness = Harness(MongoDBVMCharm)
         self.addCleanup(self.harness.cleanup)
         self.harness.begin()
         self.peer_rel_id = self.harness.add_relation("database-peers", "database-peers")

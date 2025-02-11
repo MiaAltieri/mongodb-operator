@@ -8,7 +8,7 @@ from ops.testing import Harness
 from parameterized import parameterized
 from single_kernel_mongo.config.literals import Scope
 
-from charm import MongodbOperatorCharm
+from charm import MongoDBVMCharm
 
 from .helpers import patch_network_get
 
@@ -22,7 +22,7 @@ class TestMongoTLS(unittest.TestCase):
         return_value="1",
     )
     def setUp(self, *unused):
-        self.harness = Harness(MongodbOperatorCharm)
+        self.harness = Harness(MongoDBVMCharm)
         self.harness.begin()
         self.harness.add_relation("database-peers", "database-peers")
         self.harness.charm.operator.state.db_initialised = True

@@ -10,7 +10,7 @@ from data_platform_helpers.version_check import (
 )
 from ops.testing import Harness
 
-from charm import MongodbOperatorCharm
+from charm import MongoDBVMCharm
 
 from .helpers import patch_network_get
 
@@ -30,7 +30,7 @@ class TestCharm(unittest.TestCase):
     @patch_network_get(private_address="1.1.1.1")
     def setUp(self, get_charm_revision):
         get_charm_revision.return_value = CHARM_VERSION
-        self.harness = Harness(MongodbOperatorCharm)
+        self.harness = Harness(MongoDBVMCharm)
         self.addCleanup(self.harness.cleanup)
         self.harness.begin()
 

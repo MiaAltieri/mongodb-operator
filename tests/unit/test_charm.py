@@ -22,7 +22,7 @@ from single_kernel_mongo.utils.mongodb_users import (
     OperatorUser,
 )
 
-from charm import MongodbOperatorCharm
+from charm import MongoDBVMCharm
 
 from .helpers import patch_network_get
 
@@ -58,7 +58,7 @@ class TestCharm(unittest.TestCase):
         return_value="1",
     )
     def setUp(self, *unused):
-        self.harness = Harness(MongodbOperatorCharm)
+        self.harness = Harness(MongoDBVMCharm)
         self.addCleanup(self.harness.cleanup)
         self.harness.begin()
         with self.harness.hooks_disabled():
