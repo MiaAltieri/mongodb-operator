@@ -11,7 +11,7 @@ from single_kernel_mongo.core.structured_config import MongoDBCharmConfig
 from single_kernel_mongo.managers.mongodb_operator import MongoDBOperator
 
 
-class MongodbOperatorCharm(AbstractMongoCharm[MongoDBCharmConfig, MongoDBOperator]):
+class MongoDBVMCharm(AbstractMongoCharm[MongoDBCharmConfig, MongoDBOperator]):
     """Charm the service."""
 
     config_type = MongoDBCharmConfig
@@ -22,4 +22,4 @@ class MongodbOperatorCharm(AbstractMongoCharm[MongoDBCharmConfig, MongoDBOperato
 
 
 if __name__ == "__main__":
-    main(MongodbOperatorCharm)
+    main(MongoDBVMCharm)
