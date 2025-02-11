@@ -5,7 +5,7 @@
 
 import sys
 
-from pymongo import MongoClient
+from pymongo import ASCENDING, MongoClient
 from pymongo.errors import PyMongoError
 from pymongo.write_concern import WriteConcern
 
@@ -20,6 +20,14 @@ def continous_writes(
     coll_name: str,
 ):
     write_value = starting_number
+    client = MongoClient(
+        connection_string,
+        socketTimeoutMS=5000,
+    )
+    db = client[db_name]
+    test_collection = db[coll_name]
+    test_collection.create_index([("number", ASCENDING)], unique=True)
+    client.close()
 
     while True:
         client = MongoClient(
