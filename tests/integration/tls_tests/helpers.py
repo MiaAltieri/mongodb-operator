@@ -6,11 +6,11 @@ import logging
 from datetime import datetime
 
 import ops
-from charms.mongodb.v1.helpers import MONGO_SHELL
 from pytest_operator.plugin import OpsTest
 from tenacity import RetryError, Retrying, stop_after_attempt, wait_exponential
 
 from ..helpers import (
+    MONGO_SHELL,
     get_app_name,
     get_application_relation_data,
     get_password,
@@ -78,7 +78,8 @@ async def check_tls(
     """
     try:
         for attempt in Retrying(
-            stop=stop_after_attempt(10), wait=wait_exponential(multiplier=1, min=2, max=30)
+            stop=stop_after_attempt(10),
+            wait=wait_exponential(multiplier=1, min=2, max=30),
         ):
             with attempt:
                 mongod_tls_check = await mongo_tls_command(
@@ -104,7 +105,9 @@ async def time_file_created(ops_test: OpsTest, unit_name: str, path: str) -> dat
 
     if return_code != 0:
         raise ProcessError(
-            "Expected time command %s to succeed instead it failed: %s", time_cmd, return_code
+            "Expected time command %s to succeed instead it failed: %s",
+            time_cmd,
+            return_code,
         )
 
     return process_ls_time(ls_output)
@@ -117,7 +120,9 @@ async def time_process_started(ops_test: OpsTest, unit_name: str, process_name: 
 
     if return_code != 0:
         raise ProcessError(
-            "Expected time command %s to succeed instead it failed: %s", time_cmd, return_code
+            "Expected time command %s to succeed instead it failed: %s",
+            time_cmd,
+            return_code,
         )
 
     return process_systemctl_time(systemctl_output)
@@ -168,7 +173,10 @@ async def check_certs_correctly_distributed(
     certificates_data = json.loads(certificates_raw_data)
 
     # compare the TLS resources stored on the disk of the unit with the ones from the TLS relation
-    for cert_type, cert_path in [("int", INTERNAL_CERT_PATH), ("ext", EXTERNAL_CERT_PATH)]:
+    for cert_type, cert_path in [
+        ("int", INTERNAL_CERT_PATH),
+        ("ext", EXTERNAL_CERT_PATH),
+    ]:
         unit_csr = unit_secret_content[f"{cert_type}-csr-secret"]
         tls_item = [
             data

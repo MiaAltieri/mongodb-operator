@@ -22,6 +22,7 @@ from tenacity import (
     wait_fixed,
 )
 
+MONGO_SHELL = "charmed-mongodb.mongosh"
 METADATA = yaml.safe_load(Path("./metadata.yaml").read_text())
 APP_NAME = METADATA["name"]
 PORT = 27017
@@ -104,7 +105,7 @@ def unit_uri(ip_address: str, password, app=APP_NAME) -> str:
         password: password of database.
         app: name of application which has the cluster.
     """
-    return f"mongodb://operator:" f"{password}@" f"{ip_address}:{PORT}/admin?replicaSet={app}"
+    return f"mongodb://operator:{password}@{ip_address}:{PORT}/admin?replicaSet={app}"
 
 
 async def get_password(ops_test: OpsTest, username="operator", app_name=None) -> str:
@@ -180,7 +181,10 @@ async def get_leader_id(ops_test: OpsTest, app_name=None) -> int:
 
 
 async def set_password(
-    ops_test: OpsTest, unit_id: int, username: str = "operator", password: str = "secret"
+    ops_test: OpsTest,
+    unit_id: int,
+    username: str = "operator",
+    password: str = "secret",
 ) -> dict[str, any]:
     """Use the charm action to retrieve the password from provided unit.
 

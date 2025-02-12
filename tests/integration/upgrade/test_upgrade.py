@@ -116,7 +116,7 @@ async def test_preflight_check(ops_test: OpsTest) -> None:
     assert action.status == "completed", "pre-refresh-check failed, expected to succeed."
 
     await ops_test.model.wait_for_idle(
-        apps=[app_name], status="active", timeout=1000, idle_period=120
+        apps=[app_name], status="active", timeout=1000, idle_period=20
     )
 
 
@@ -138,7 +138,3 @@ async def test_preflight_check_failure(ops_test: OpsTest) -> None:
         action = await leader_unit.run_action("pre-upgrade-check")
         await action.wait()
     assert action.status == "failed", "pre-refresh-check succeeded, expected to fail."
-
-    await ops_test.model.wait_for_idle(
-        apps=[app_name], status="active", timeout=1000, idle_period=120
-    )

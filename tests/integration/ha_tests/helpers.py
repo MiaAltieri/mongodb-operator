@@ -63,7 +63,7 @@ def replica_set_client(replica_ips: List[str], password: str, app_name: str) -> 
     hosts = ["{}:{}".format(replica_ip, PORT) for replica_ip in replica_ips]
     hosts = ",".join(hosts)
 
-    replica_set_uri = f"mongodb://operator:" f"{password}@" f"{hosts}/admin?replicaSet={app_name}"
+    replica_set_uri = f"mongodb://operator:{password}@{hosts}/admin?replicaSet={app_name}"
     return MongoClient(replica_set_uri)
 
 
@@ -100,7 +100,7 @@ def unit_uri(ip_address: str, password, app_name=APP_NAME) -> str:
         password: password of database.
         app_name: name of application which has the cluster.
     """
-    return f"mongodb://operator:" f"{password}@" f"{ip_address}:{PORT}/admin?replicaSet={app_name}"
+    return f"mongodb://operator:{password}@{ip_address}:{PORT}/admin?replicaSet={app_name}"
 
 
 # TODO remove this duplicate with helpers.py
@@ -406,7 +406,7 @@ async def reused_storage(ops_test: OpsTest, unit_name: str, removal_time: float)
     MongoDB startup message indicates storage reuse:
         If member transitions to STARTUP2 from STARTUP then it is syncing/getting data from
         primary.
-        If member transitions to STARTUP2 from REMOVED then it is re-using the storage we
+        If member transitions to STARTUP2 from REMOVED then it is reusing the storage we
         provided.
     """
     cat_cmd = f"exec --unit {unit_name} -- cat {MONGODB_LOG_PATH}"

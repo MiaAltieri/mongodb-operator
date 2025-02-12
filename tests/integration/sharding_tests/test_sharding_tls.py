@@ -22,6 +22,14 @@ SHARD_ONE_APP_NAME = "shard-one"
 SHARD_TWO_APP_NAME = "shard-two"
 CONFIG_SERVER_APP_NAME = "config-server"
 CLUSTER_COMPONENTS = [SHARD_ONE_APP_NAME, SHARD_TWO_APP_NAME, CONFIG_SERVER_APP_NAME]
+SHARD_THREE_APP_NAME = "shard-three"
+SHARD_FOUR_APP_NAME = "shard-four"
+CONFIG_SERVER_BIS_APP_NAME = "config-server-bis"
+CLUSTER_COMPONENTS_BIS = [
+    SHARD_THREE_APP_NAME,
+    SHARD_FOUR_APP_NAME,
+    CONFIG_SERVER_BIS_APP_NAME,
+]
 SHARD_REL_NAME = "sharding"
 CONFIG_SERVER_REL_NAME = "config-server"
 CERT_REL_NAME = "certificates"
@@ -39,7 +47,12 @@ async def test_build_and_deploy(ops_test: OpsTest) -> None:
     await ops_test.model.deploy(CERTS_APP_NAME, channel="stable")
 
     await ops_test.model.wait_for_idle(
-        apps=[CERTS_APP_NAME, CONFIG_SERVER_APP_NAME, SHARD_ONE_APP_NAME, SHARD_TWO_APP_NAME],
+        apps=[
+            CERTS_APP_NAME,
+            CONFIG_SERVER_APP_NAME,
+            SHARD_ONE_APP_NAME,
+            SHARD_TWO_APP_NAME,
+        ],
         idle_period=20,
         raise_on_blocked=False,
         timeout=DEPLOYMENT_TIMEOUT,
@@ -94,24 +107,46 @@ async def test_disable_cluster_with_tls(ops_test: OpsTest) -> None:
 async def test_tls_then_build_cluster(ops_test: OpsTest) -> None:
     """Tests that the cluster can be integrated with TLS."""
     await destroy_cluster(ops_test, applications=CLUSTER_COMPONENTS)
-    await deploy_cluster_components(ops_test)
+    num_units_cluster_config = {
+        CONFIG_SERVER_BIS_APP_NAME: 2,
+        SHARD_THREE_APP_NAME: 3,
+        SHARD_FOUR_APP_NAME: 1,
+    }
+    await deploy_cluster_components(
+        ops_test,
+        num_units_cluster_config=num_units_cluster_config,
+        config_server_name=CONFIG_SERVER_BIS_APP_NAME,
+        shard_one_name=SHARD_THREE_APP_NAME,
+        shard_two_name=SHARD_FOUR_APP_NAME,
+    )
 
-    await integrate_with_tls(ops_test)
+    await integrate_with_tls(ops_test, applications=CLUSTER_COMPONENTS_BIS)
     await ops_test.model.wait_for_idle(
-        apps=CLUSTER_COMPONENTS,
+        apps=CLUSTER_COMPONENTS_BIS,
         idle_period=20,
         timeout=TIMEOUT,
     )
 
-    await integrate_cluster(ops_test)
+    await ops_test.model.integrate(
+        f"{SHARD_THREE_APP_NAME}:{SHARD_REL_NAME}",
+        f"{CONFIG_SERVER_BIS_APP_NAME}:{CONFIG_SERVER_REL_NAME}",
+    )
+    await ops_test.model.integrate(
+        f"{SHARD_FOUR_APP_NAME}:{SHARD_REL_NAME}",
+        f"{CONFIG_SERVER_BIS_APP_NAME}:{CONFIG_SERVER_REL_NAME}",
+    )
 
     await ops_test.model.wait_for_idle(
-        apps=CLUSTER_COMPONENTS,
+        apps=CLUSTER_COMPONENTS_BIS,
         idle_period=20,
         timeout=TIMEOUT,
     )
 
-    await check_cluster_tls_enabled(ops_test)
+    await check_cluster_tls_enabled(
+        ops_test,
+        components=CLUSTER_COMPONENTS_BIS,
+        config_server=CONFIG_SERVER_BIS_APP_NAME,
+    )
 
 
 @pytest.mark.runner(["self-hosted", "linux", "X64", "jammy", "large"])
@@ -123,30 +158,33 @@ async def test_tls_inconsistent_rels(ops_test: OpsTest) -> None:
     )
 
     # CASE 1: Config-server has TLS enabled - but shard does not
-    await ops_test.model.applications[SHARD_ONE_APP_NAME].remove_relation(
-        f"{SHARD_ONE_APP_NAME}:{CERT_REL_NAME}",
+    await ops_test.model.applications[SHARD_THREE_APP_NAME].remove_relation(
+        f"{SHARD_THREE_APP_NAME}:{CERT_REL_NAME}",
         f"{CERTS_APP_NAME}:{CERT_REL_NAME}",
     )
 
     await ops_test.model.wait_for_idle(
-        apps=CLUSTER_COMPONENTS,
+        apps=CLUSTER_COMPONENTS_BIS,
         idle_period=20,
         timeout=TIMEOUT,
         raise_on_blocked=False,
     )
 
     await wait_for_mongodb_units_blocked(
-        ops_test, SHARD_ONE_APP_NAME, status="Shard requires TLS to be enabled.", timeout=450
+        ops_test,
+        SHARD_THREE_APP_NAME,
+        status="Shard requires TLS to be enabled",
+        timeout=450,
     )
 
     # Re-integrate to bring cluster back to steady state
     await ops_test.model.integrate(
-        f"{SHARD_ONE_APP_NAME}:{CERT_REL_NAME}",
+        f"{SHARD_THREE_APP_NAME}:{CERT_REL_NAME}",
         f"{CERTS_APP_NAME}:{CERT_REL_NAME}",
     )
 
     await ops_test.model.wait_for_idle(
-        apps=CLUSTER_COMPONENTS,
+        apps=CLUSTER_COMPONENTS_BIS,
         idle_period=20,
         timeout=TIMEOUT,
         raise_on_blocked=False,
@@ -154,20 +192,20 @@ async def test_tls_inconsistent_rels(ops_test: OpsTest) -> None:
     )
 
     # CASE 2: Config-server does not have TLS enabled - but shard does
-    await ops_test.model.applications[CONFIG_SERVER_APP_NAME].remove_relation(
-        f"{CONFIG_SERVER_APP_NAME}:{CERT_REL_NAME}",
+    await ops_test.model.applications[CONFIG_SERVER_BIS_APP_NAME].remove_relation(
+        f"{CONFIG_SERVER_BIS_APP_NAME}:{CERT_REL_NAME}",
         f"{CERTS_APP_NAME}:{CERT_REL_NAME}",
     )
 
     await ops_test.model.wait_for_idle(
-        apps=CLUSTER_COMPONENTS,
+        apps=CLUSTER_COMPONENTS_BIS,
         idle_period=20,
         timeout=TIMEOUT,
         raise_on_blocked=False,
     )
     await wait_for_mongodb_units_blocked(
         ops_test,
-        SHARD_ONE_APP_NAME,
+        SHARD_THREE_APP_NAME,
         status="Shard has TLS enabled, but config-server does not.",
         timeout=450,
     )
@@ -176,19 +214,19 @@ async def test_tls_inconsistent_rels(ops_test: OpsTest) -> None:
 
     # Re-integrate to bring cluster back to steady state
     await ops_test.model.integrate(
-        f"{CONFIG_SERVER_APP_NAME}:{CERT_REL_NAME}",
+        f"{CONFIG_SERVER_BIS_APP_NAME}:{CERT_REL_NAME}",
         f"{DIFFERENT_CERTS_APP_NAME}:{CERT_REL_NAME}",
     )
 
     await ops_test.model.wait_for_idle(
-        apps=CLUSTER_COMPONENTS,
+        apps=CLUSTER_COMPONENTS_BIS,
         idle_period=20,
         timeout=TIMEOUT,
         raise_on_blocked=False,
     )
     await wait_for_mongodb_units_blocked(
         ops_test,
-        SHARD_ONE_APP_NAME,
+        SHARD_THREE_APP_NAME,
         status="Shard CA and Config-Server CA don't match.",
         timeout=450,
     )
@@ -209,18 +247,22 @@ async def check_cluster_tls_disabled(ops_test: OpsTest) -> None:
         ), f"Mongos TLS not disabled in unit {unit.name}"
 
 
-async def check_cluster_tls_enabled(ops_test: OpsTest) -> None:
+async def check_cluster_tls_enabled(
+    ops_test: OpsTest,
+    components: list[str] = CLUSTER_COMPONENTS,
+    config_server: str = CONFIG_SERVER_APP_NAME,
+) -> None:
     # check each replica set is running with TLS enabled
-    for cluster_component in CLUSTER_COMPONENTS:
+    for cluster_component in components:
         for unit in ops_test.model.applications[cluster_component].units:
             assert await tls_helpers.check_tls(
                 ops_test, unit, enabled=True, app_name=cluster_component, mongos=False
             ), f"MongoDB TLS not enabled in unit {unit.name}"
 
     # check mongos is running with TLS enabled
-    for unit in ops_test.model.applications[CONFIG_SERVER_APP_NAME].units:
+    for unit in ops_test.model.applications[config_server].units:
         assert await tls_helpers.check_tls(
-            ops_test, unit, enabled=True, app_name=CONFIG_SERVER_APP_NAME, mongos=True
+            ops_test, unit, enabled=True, app_name=config_server, mongos=True
         ), f"Mongos TLS not enabled in unit {unit.name}"
 
 
@@ -233,9 +275,11 @@ async def remove_tls_integrations(ops_test: OpsTest) -> None:
         )
 
 
-async def integrate_with_tls(ops_test: OpsTest) -> None:
+async def integrate_with_tls(
+    ops_test: OpsTest, applications: list[str] = CLUSTER_COMPONENTS
+) -> None:
     """Integrates cluster components with self-signed certs operator."""
-    for app in CLUSTER_COMPONENTS:
+    for app in applications:
         await ops_test.model.integrate(
             f"{CERTS_APP_NAME}:{CERT_REL_NAME}",
             f"{app}:{CERT_REL_NAME}",

@@ -1,26 +1,28 @@
 # Copyright 2024 Canonical Ltd.
 # See LICENSE file for licensing details.
 import unittest
+from dataclasses import asdict
 from unittest import mock
 from unittest.mock import patch
 
 from ops.model import ActiveStatus, BlockedStatus, StatusBase, WaitingStatus
 from ops.testing import Harness
 from parameterized import parameterized
+from single_kernel_mongo.status import Statuses
 
-from charm import MongodbOperatorCharm
+from charm import MongoDBVMCharm
 
 from .helpers import patch_network_get
 
-CHARM_VERSION = 123
+CHARM_VERSION = "127"
 
 
 class TestCharm(unittest.TestCase):
-    @patch("charm.get_charm_revision")
+    @patch("single_kernel_mongo.managers.mongodb_operator.get_charm_revision")
     @patch_network_get(private_address="1.1.1.1")
     def setUp(self, get_charm_revision):
         get_charm_revision.return_value = CHARM_VERSION
-        self.harness = Harness(MongodbOperatorCharm)
+        self.harness = Harness(MongoDBVMCharm)
         self.addCleanup(self.harness.cleanup)
         self.harness.begin()
 
@@ -33,9 +35,11 @@ class TestCharm(unittest.TestCase):
         run_mock = mock.Mock()
         run_mock._run.return_value = goal_state
         self.harness.charm.model._backend = run_mock
-        self.harness.charm.status.get_cluster_mismatched_revision_status = get_mismatched_revsion
+        self.harness.charm.operator.cluster_version_checker.get_cluster_mismatched_revision_status = (
+            get_mismatched_revsion
+        )
 
-        assert self.harness.charm.status.are_all_units_ready_for_upgrade()
+        assert self.harness.charm.operator.upgrade_manager.are_all_units_ready_for_upgrade()
 
         # case 2: not all juju units are ready for upgrade
         goal_state = {"units": {"unit_0": {"status": "active"}, "unit_1": {"status": "blocked"}}}
@@ -43,34 +47,56 @@ class TestCharm(unittest.TestCase):
         run_mock._run.return_value = goal_state
         self.harness.charm.model._backend = run_mock
 
-        assert not self.harness.charm.status.are_all_units_ready_for_upgrade()
+        assert not self.harness.charm.operator.upgrade_manager.are_all_units_ready_for_upgrade()
 
     @parameterized.expand(
         [
-            [ActiveStatus(), True],
-            [BlockedStatus("is not up-to date with config-server"), True],
-            [BlockedStatus("Wrong status"), False],
-            [WaitingStatus("tests status"), False],
-        ],
-    )
-    def test_is_unit_status_ready_for_upgrade(self, status: StatusBase, expected: bool) -> None:
-        """Tests different cases of statuses for is_unit_status_ready_for_upgrade."""
-        self.harness.charm.unit.status = status
-
-        assert self.harness.charm.status.is_unit_status_ready_for_upgrade() == expected
-
-    @parameterized.expand(
-        [
-            [BlockedStatus("Invalid"), ActiveStatus(), ActiveStatus(), ActiveStatus(), 0],
-            [WaitingStatus("Waiting"), ActiveStatus(), ActiveStatus(), ActiveStatus(), 0],
-            [ActiveStatus(), BlockedStatus("Invalid"), ActiveStatus(), ActiveStatus(), 1],
-            [ActiveStatus(), WaitingStatus("Waiting"), ActiveStatus(), ActiveStatus(), 1],
-            [ActiveStatus(), None, BlockedStatus("Invalid"), ActiveStatus(), 2],
-            [ActiveStatus(), None, WaitingStatus("Waiting"), ActiveStatus(), 2],
-            [ActiveStatus(), None, None, BlockedStatus("Invalid"), 3],
-            [ActiveStatus(), None, None, WaitingStatus("Waiting"), 3],
-            [ActiveStatus(), None, None, None, 0],
-            [ActiveStatus(), ActiveStatus(), ActiveStatus(), ActiveStatus(), 0],
+            [
+                BlockedStatus("Invalid"),
+                ActiveStatus(),
+                ActiveStatus(),
+                ActiveStatus(),
+                "mongodb",
+            ],
+            [
+                WaitingStatus("Waiting"),
+                ActiveStatus(),
+                ActiveStatus(),
+                ActiveStatus(),
+                "mongodb",
+            ],
+            [
+                ActiveStatus(),
+                BlockedStatus("Invalid"),
+                ActiveStatus(),
+                ActiveStatus(),
+                "shard",
+            ],
+            [
+                ActiveStatus(),
+                WaitingStatus("Waiting"),
+                ActiveStatus(),
+                ActiveStatus(),
+                "shard",
+            ],
+            [
+                ActiveStatus(),
+                None,
+                BlockedStatus("Invalid"),
+                ActiveStatus(),
+                "config_server",
+            ],
+            [
+                ActiveStatus(),
+                None,
+                WaitingStatus("Waiting"),
+                ActiveStatus(),
+                "config_server",
+            ],
+            [ActiveStatus(), None, None, BlockedStatus("Invalid"), "pbm"],
+            [ActiveStatus(), None, None, WaitingStatus("Waiting"), "pbm"],
+            [ActiveStatus(), None, None, None, "mongodb"],
+            [ActiveStatus(), ActiveStatus(), ActiveStatus(), ActiveStatus(), "mongodb"],
         ]
     )
     def test_prioritize_status(
@@ -82,15 +108,18 @@ class TestCharm(unittest.TestCase):
         expected_index: int,
     ):
         """Tests different cases of statuses for prioritize_status."""
-        statuses = (mongodb_status, shard_status, config_server_status, pbm_status)
-        assert self.harness.charm.status.prioritize_statuses(statuses) == statuses[expected_index]
+        statuses = Statuses(mongodb_status, shard_status, config_server_status, pbm_status)
+        assert (
+            self.harness.charm.status_manager.prioritize_statuses(statuses)
+            == asdict(statuses)[expected_index]
+        )
 
     @parameterized.expand(
         [
             [
                 False,
                 True,
-                ActiveStatus(),
+                None,
                 BlockedStatus(
                     "Relation to mongos not supported, config role must be config-server"
                 ),
@@ -98,7 +127,7 @@ class TestCharm(unittest.TestCase):
             [
                 False,
                 False,
-                ActiveStatus(),
+                None,
                 BlockedStatus(
                     "Relation to mongos not supported, config role must be config-server"
                 ),
@@ -106,7 +135,7 @@ class TestCharm(unittest.TestCase):
             [
                 True,
                 False,
-                ActiveStatus(),
+                None,
                 BlockedStatus(
                     "Relation to s3-integrator is not supported, config role must be config-server"
                 ),
@@ -134,10 +163,16 @@ class TestCharm(unittest.TestCase):
         valid_s3_integration_mock = mock.Mock()
         valid_s3_integration_mock.return_value = valid_s3_integration
 
-        self.harness.charm.status.get_cluster_mismatched_revision_status = (
+        self.harness.charm.operator.cluster_version_checker.get_cluster_mismatched_revision_status = (
             get_mismatched_revision_mock
         )
-        self.harness.charm.cluster.is_valid_mongos_integration = mongos_integration_mock
-        self.harness.charm.backups.is_valid_s3_integration = valid_s3_integration_mock
+        self.harness.charm.operator.cluster_manager.is_valid_mongos_integration = (
+            mongos_integration_mock
+        )
+        self.harness.charm.operator.backup_manager.is_valid_s3_integration = (
+            valid_s3_integration_mock
+        )
 
-        assert self.harness.charm.status.get_invalid_integration_status() == expected_status
+        self.harness.charm.operator.pass_status_basic_checks()
+
+        assert self.harness.charm.unit.status == expected_status or ActiveStatus("")

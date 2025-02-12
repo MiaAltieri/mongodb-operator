@@ -12,7 +12,6 @@ from subprocess import check_output
 from uuid import uuid4
 
 import pytest
-from charms.mongodb.v1.helpers import MONGO_SHELL
 from pymongo import MongoClient
 from pymongo.errors import PyMongoError, ServerSelectionTimeoutError
 from pytest_operator.plugin import OpsTest
@@ -26,6 +25,7 @@ from .ha_tests.helpers import (
 )
 from .helpers import (
     DEPLOYMENT_TIMEOUT,
+    MONGO_SHELL,
     PORT,
     UNIT_IDS,
     audit_log_line_sanity_check,
@@ -206,7 +206,8 @@ async def test_set_password_action(ops_test: OpsTest) -> None:
     # verify that the password is updated in mongod by inserting into the collection.
     try:
         client = MongoClient(
-            unit_uri(unit.public_address, new_password, user_app_name), directConnection=True
+            unit_uri(unit.public_address, new_password, user_app_name),
+            directConnection=True,
         )
         client["new-db"].list_collection_names()
     except PyMongoError as e:
@@ -226,7 +227,8 @@ async def test_set_password_action(ops_test: OpsTest) -> None:
     # verify that the password is updated in mongod by inserting into the collection.
     try:
         client = MongoClient(
-            unit_uri(unit.public_address, "safe_pass", user_app_name), directConnection=True
+            unit_uri(unit.public_address, "safe_pass", user_app_name),
+            directConnection=True,
         )
         client["new-db"].list_collection_names()
     except PyMongoError as e:
@@ -256,7 +258,9 @@ async def test_monitor_user(ops_test: OpsTest) -> None:
 
 @pytest.mark.runner(["self-hosted", "linux", "X64", "jammy", "large"])
 @pytest.mark.group(1)
-async def test_only_leader_can_set_while_all_can_read_password_secret(ops_test: OpsTest) -> None:
+async def test_only_leader_can_set_while_all_can_read_password_secret(
+    ops_test: OpsTest,
+) -> None:
     """Test verifies that only the leader can set a password, while all units can read it."""
     # Setting existing password
     leader_id = await get_leader_id(ops_test)
@@ -367,7 +371,7 @@ async def test_log_rotate(ops_test: OpsTest) -> None:
     # Note: this timeout out depends on max log size
     # which is defined in "src/config.py::Config.MAX_LOG_SIZE"
     time_to_write_50m_of_data = 60 * 10
-    logrotate_timeout = 60
+    logrotate_timeout = 61
     audit_log_snap_path = "/var/snap/charmed-mongodb/common/var/log/mongodb/"
 
     app_name = await get_app_name(ops_test)
@@ -379,13 +383,13 @@ async def test_log_rotate(ops_test: OpsTest) -> None:
         universal_newlines=True,
     )
 
-    log_not_rotated = "audit.log.1.gz" not in log_files
+    log_not_rotated = "audit.log.1" not in log_files
     assert log_not_rotated, f"Found rotated log in {log_files}"
 
     await start_continous_writes(ops_test, 1)
     time.sleep(time_to_write_50m_of_data)
     await stop_continous_writes(ops_test, app_name=app_name)
-    time.sleep(logrotate_timeout)  # Just to make sure that logroate will run
+    time.sleep(logrotate_timeout)  # Just to make sure that logrotate will run
     await clear_db_writes(ops_test)
 
     log_files = check_output(
@@ -395,7 +399,7 @@ async def test_log_rotate(ops_test: OpsTest) -> None:
         universal_newlines=True,
     )
 
-    log_rotated = "audit.log.1.gz" in log_files
+    log_rotated = "audit.log.1" in log_files
     assert log_rotated, f"Could not find rotated log in {log_files}"
 
     audit_log_exists = "audit.log" in log_files
