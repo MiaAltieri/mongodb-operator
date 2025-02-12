@@ -9,7 +9,13 @@ import time
 
 import pytest
 from pytest_operator.plugin import OpsTest
-from tenacity import RetryError, Retrying, stop_after_delay, wait_fixed
+from tenacity import (
+    RetryError,
+    Retrying,
+    stop_after_attempt,
+    stop_after_delay,
+    wait_fixed,
+)
 
 from ..ha_tests import helpers as ha_helpers
 from ..helpers import (
@@ -234,7 +240,7 @@ async def test_multi_backup(ops_test: OpsTest, continuous_writes_to_db, github_s
 
     # verify that backups was made in GCP bucket
     try:
-        for attempt in Retrying(stop=stop_after_delay(4), wait=wait_fixed(5)):
+        for attempt in Retrying(stop=stop_after_attempt(10), wait=wait_fixed(5)):
             with attempt:
                 backups = await helpers.count_logical_backups(db_unit)
                 assert backups == 1, "Backup not created in bucket on GCP."
@@ -255,7 +261,7 @@ async def test_multi_backup(ops_test: OpsTest, continuous_writes_to_db, github_s
 
     # verify that backups was made on the AWS bucket
     try:
-        for attempt in Retrying(stop=stop_after_delay(4), wait=wait_fixed(5)):
+        for attempt in Retrying(stop=stop_after_attempt(10), wait=wait_fixed(5)):
             with attempt:
                 backups = await helpers.count_logical_backups(db_unit)
                 assert backups == 2, "Backup not created in bucket on AWS."
@@ -282,7 +288,7 @@ async def test_restore(ops_test: OpsTest, add_writes_to_db) -> None:
 
     # verify that backup was made on the bucket
     try:
-        for attempt in Retrying(stop=stop_after_delay(4), wait=wait_fixed(5)):
+        for attempt in Retrying(stop=stop_after_attempt(10), wait=wait_fixed(5)):
             with attempt:
                 backups = await helpers.count_logical_backups(db_unit)
                 assert backups == prev_backups + 1, "Backup not created."
@@ -311,7 +317,7 @@ async def test_restore(ops_test: OpsTest, add_writes_to_db) -> None:
 
     # verify all writes are present
     try:
-        for attempt in Retrying(stop=stop_after_delay(4), wait=wait_fixed(20)):
+        for attempt in Retrying(stop=stop_after_attempt(5), wait=wait_fixed(20)):
             with attempt:
                 number_writes_restored = await ha_helpers.count_writes(ops_test)
                 assert number_writes == number_writes_restored, "writes not correctly restored"
@@ -402,7 +408,7 @@ async def test_restore_new_cluster(
 
     # verify all writes are present
     try:
-        for attempt in Retrying(stop=stop_after_delay(4), wait=wait_fixed(20)):
+        for attempt in Retrying(stop=stop_after_attempt(5), wait=wait_fixed(20)):
             with attempt:
                 writes_in_new_cluster = await ha_helpers.count_writes(
                     ops_test, new_cluster_app_name
