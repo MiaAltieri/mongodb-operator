@@ -118,13 +118,18 @@ def count_users(mongos_client: MongoClient) -> int:
 
 
 async def deploy_cluster_components(
-    ops_test: OpsTest, num_units_cluster_config: dict | None = None, channel: str | None = None
+    ops_test: OpsTest,
+    num_units_cluster_config: dict | None = None,
+    config_server_name: str = CONFIG_SERVER_APP_NAME,
+    shard_one_name: str = SHARD_ONE_APP_NAME,
+    shard_two_name: str = SHARD_TWO_APP_NAME,
+    channel: str | None = None,
 ) -> None:
     if not num_units_cluster_config:
         num_units_cluster_config = {
-            CONFIG_SERVER_APP_NAME: 2,
-            SHARD_ONE_APP_NAME: 3,
-            SHARD_TWO_APP_NAME: 1,
+            config_server_name: 2,
+            shard_one_name: 3,
+            shard_two_name: 1,
         }
 
     if channel is None:
@@ -133,28 +138,28 @@ async def deploy_cluster_components(
         my_charm = MONGODB_CHARM_NAME
     await ops_test.model.deploy(
         my_charm,
-        num_units=num_units_cluster_config[CONFIG_SERVER_APP_NAME],
+        num_units=num_units_cluster_config[config_server_name],
         config={"role": "config-server"},
-        application_name=CONFIG_SERVER_APP_NAME,
+        application_name=config_server_name,
         channel=channel,
     )
     await ops_test.model.deploy(
         my_charm,
-        num_units=num_units_cluster_config[SHARD_ONE_APP_NAME],
+        num_units=num_units_cluster_config[shard_one_name],
         config={"role": "shard"},
-        application_name=SHARD_ONE_APP_NAME,
+        application_name=shard_one_name,
         channel=channel,
     )
     await ops_test.model.deploy(
         my_charm,
-        num_units=num_units_cluster_config[SHARD_TWO_APP_NAME],
+        num_units=num_units_cluster_config[shard_two_name],
         config={"role": "shard"},
-        application_name=SHARD_TWO_APP_NAME,
+        application_name=shard_two_name,
         channel=channel,
     )
 
     await ops_test.model.wait_for_idle(
-        apps=CLUSTER_COMPONENTS,
+        apps=[config_server_name, shard_one_name, shard_two_name],
         idle_period=20,
         timeout=TIMEOUT,
     )
