@@ -26,7 +26,7 @@ def continous_writes(
     )
     db = client[db_name]
     test_collection = db[coll_name]
-    test_collection.create_index([("number", ASCENDING)], unique=True)
+    test_collection.create_index([("number", ASCENDING)], unique=True, sparse=True)
     client.close()
 
     while True:
