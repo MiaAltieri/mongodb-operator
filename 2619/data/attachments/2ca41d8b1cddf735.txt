@@ -1,0 +1,130 @@
+[32mINFO    [0m juju.model:__init__.py:3254 Waiting for model:
+  config-server-one/0 [idle] active: 
+  mongos/0 [executing] active: 
+[32mINFO    [0m juju.model:__init__.py:3254 Waiting for model:
+  config-server-one/0 [idle] error: hook failed: "cluster-relation-broken"
+  mongos/0 [idle] active:
+[32mINFO    [0m pytest_operator.plugin:plugin.py:903 Model status:
+
+Model  Controller           Cloud/Region         Version  SLA          Timestamp
+test   localhost-localhost  localhost/localhost  3.6.1    unsupported  01:38:50Z
+
+App                Version  Status  Scale  Charm        Channel  Rev  Exposed  Message
+application                 active      1  application             0  no       
+config-server-one  6.0.6    active      1  mongodb                 0  no       
+mongos                      active      1  mongos       6/edge     3  no       
+shard-one          6.0.6    active      1  mongodb                 1  no       
+
+Unit                  Workload     Agent      Machine  Public address  Ports            Message
+application/0*        active       idle       2        10.138.113.39                    
+  mongos/0*           active       idle                10.138.113.39                    
+config-server-one/0*  active       executing  0        10.138.113.236  27017-27018/tcp  
+shard-one/0*          maintenance  idle       1        10.138.113.13   27017/tcp        Adding shard to config-server
+
+Machine  State    Address         Inst id        Base          AZ  Message
+0        started  10.138.113.236  juju-ee0a65-0  ubuntu@22.04      Running
+1        started  10.138.113.13   juju-ee0a65-1  ubuntu@22.04      Running
+2        started  10.138.113.39   juju-ee0a65-2  ubuntu@22.04      Running
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:909 Juju error logs:
+
+machine-0: 01:34:51 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-0: 01:34:51 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-config-server-one-0: 01:34:51 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-1: 01:34:59 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-1: 01:34:59 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-shard-one-0: 01:35:00 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+machine-2: 01:35:11 ERROR juju.worker.dependency "kvm-container-provisioner" manifold worker returned unexpected error: container types not yet available
+machine-2: 01:35:11 ERROR juju.worker.dependency "lxd-container-provisioner" manifold worker returned unexpected error: container types not yet available
+unit-application-0: 01:35:11 ERROR juju.worker.meterstatus error running "meter-status-changed": charm missing from disk
+unit-config-server-one-0: 01:35:25 ERROR unit.config-server-one/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-config-server-one-0: 01:35:25 ERROR unit.config-server-one/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-shard-one-0: 01:35:32 ERROR unit.shard-one/0.juju-log Unable to set params: ['vm.max_map_count']
+unit-shard-one-0: 01:35:32 ERROR unit.shard-one/0.juju-log Error setting values on sysctl: Unable to set params: ['vm.max_map_count']
+unit-mongos-0: 01:36:24 ERROR juju.worker.meterstatus error running "meter-status-changed": exit status 127
+unit-config-server-one-0: 01:38:07 ERROR unit.config-server-one/0.juju-log cluster:7: Uncaught exception while in charm code:
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/src/charm.py", line 25, in <module>
+    main(MongoDBVMCharm)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/main.py", line 551, in main
+    manager.run()
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/main.py", line 530, in run
+    self._emit()
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/main.py", line 519, in _emit
+    _emit_charm_event(self.charm, self.dispatcher.event_name)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/main.py", line 147, in _emit_charm_event
+    event_to_emit.emit(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 348, in emit
+    framework._emit(event)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 860, in _emit
+    self._reemit(event_path)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 950, in _reemit
+    custom_handler(event)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/single_kernel_mongo/events/cluster.py", line 89, in _on_relation_broken_event
+    self.manager.cleanup_users(event.relation)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/single_kernel_mongo/managers/cluster.py", line 139, in cleanup_users
+    self.dependent.mongo_manager.reconcile_mongo_users_and_dbs(
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/single_kernel_mongo/managers/mongo.py", line 183, in reconcile_mongo_users_and_dbs
+    self.remove_user(relation)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/single_kernel_mongo/managers/mongo.py", line 308, in remove_user
+    managed_users.remove(username)
+KeyError: 'relation-7'
+unit-config-server-one-0: 01:38:08 ERROR juju.worker.uniter.operation hook "cluster-relation-broken" (via hook dispatching script: dispatch) failed: exit status 1
+unit-config-server-one-0: 01:38:16 ERROR unit.config-server-one/0.juju-log cluster:7: Uncaught exception while in charm code:
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/src/charm.py", line 25, in <module>
+    main(MongoDBVMCharm)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/main.py", line 551, in main
+    manager.run()
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/main.py", line 530, in run
+    self._emit()
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/main.py", line 519, in _emit
+    _emit_charm_event(self.charm, self.dispatcher.event_name)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/main.py", line 147, in _emit_charm_event
+    event_to_emit.emit(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 348, in emit
+    framework._emit(event)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 860, in _emit
+    self._reemit(event_path)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 950, in _reemit
+    custom_handler(event)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/single_kernel_mongo/events/cluster.py", line 89, in _on_relation_broken_event
+    self.manager.cleanup_users(event.relation)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/single_kernel_mongo/managers/cluster.py", line 139, in cleanup_users
+    self.dependent.mongo_manager.reconcile_mongo_users_and_dbs(
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/single_kernel_mongo/managers/mongo.py", line 183, in reconcile_mongo_users_and_dbs
+    self.remove_user(relation)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/single_kernel_mongo/managers/mongo.py", line 308, in remove_user
+    managed_users.remove(username)
+KeyError: 'relation-7'
+unit-config-server-one-0: 01:38:16 ERROR juju.worker.uniter.operation hook "cluster-relation-broken" (via hook dispatching script: dispatch) failed: exit status 1
+unit-config-server-one-0: 01:38:29 ERROR unit.config-server-one/0.juju-log cluster:7: Uncaught exception while in charm code:
+Traceback (most recent call last):
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/src/charm.py", line 25, in <module>
+    main(MongoDBVMCharm)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/main.py", line 551, in main
+    manager.run()
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/main.py", line 530, in run
+    self._emit()
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/main.py", line 519, in _emit
+    _emit_charm_event(self.charm, self.dispatcher.event_name)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/main.py", line 147, in _emit_charm_event
+    event_to_emit.emit(*args, **kwargs)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 348, in emit
+    framework._emit(event)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 860, in _emit
+    self._reemit(event_path)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/ops/framework.py", line 950, in _reemit
+    custom_handler(event)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/single_kernel_mongo/events/cluster.py", line 89, in _on_relation_broken_event
+    self.manager.cleanup_users(event.relation)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/single_kernel_mongo/managers/cluster.py", line 139, in cleanup_users
+    self.dependent.mongo_manager.reconcile_mongo_users_and_dbs(
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/single_kernel_mongo/managers/mongo.py", line 183, in reconcile_mongo_users_and_dbs
+    self.remove_user(relation)
+  File "/var/lib/juju/agents/unit-config-server-one-0/charm/venv/lib/python3.10/site-packages/single_kernel_mongo/managers/mongo.py", line 308, in remove_user
+    managed_users.remove(username)
+KeyError: 'relation-7'
+unit-config-server-one-0: 01:38:30 ERROR juju.worker.uniter.operation hook "cluster-relation-broken" (via hook dispatching script: dispatch) failed: exit status 1
+
+[32mINFO    [0m pytest_operator.plugin:plugin.py:991 Forgetting model main...
