@@ -18,8 +18,6 @@ from single_kernel_mongo.exceptions import (
 
 from charm import MongoDBVMCharm
 
-from .helpers import patch_network_get
-
 RELATION_NAME = "s3-credentials"
 
 
@@ -28,7 +26,6 @@ class TestMongoBackups(unittest.TestCase):
         "single_kernel_mongo.managers.mongodb_operator.get_charm_revision",
         return_value="1",
     )
-    @patch_network_get(private_address="1.1.1.1")
     def setUp(self, *unused):
         self.harness = Harness(MongoDBVMCharm)
         self.harness.begin()
@@ -282,7 +279,6 @@ class TestMongoBackups(unittest.TestCase):
 
         defer.assert_called()
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.core.vm_workload.VMWorkload.active", return_value=True)
     @patch("single_kernel_mongo.managers.backups.BackupManager.set_config_options")
     def test_s3_credentials_set_pbm_failure(self, _set_config_options, service):
@@ -304,7 +300,6 @@ class TestMongoBackups(unittest.TestCase):
 
         self.assertTrue(isinstance(self.harness.charm.unit.status, BlockedStatus))
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.managers.backups.BackupManager.set_config_options")
     @patch("single_kernel_mongo.managers.backups.BackupManager.resync_config_options")
     @patch("ops.framework.EventBase.defer")
@@ -333,7 +328,6 @@ class TestMongoBackups(unittest.TestCase):
         )
         self.assertTrue(isinstance(self.harness.charm.unit.status, BlockedStatus))
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.managers.backups.BackupManager.set_config_options")
     @patch("single_kernel_mongo.managers.backups.BackupManager.resync_config_options")
     @patch("ops.framework.EventBase.defer")
@@ -360,7 +354,6 @@ class TestMongoBackups(unittest.TestCase):
         defer.assert_called()
         self.assertTrue(isinstance(self.harness.charm.unit.status, WaitingStatus))
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.managers.backups.BackupManager.set_config_options")
     @patch("single_kernel_mongo.managers.backups.BackupManager.resync_config_options")
     @patch("ops.framework.EventBase.defer")
@@ -389,7 +382,6 @@ class TestMongoBackups(unittest.TestCase):
         defer.assert_called()
         self.assertTrue(isinstance(self.harness.charm.unit.status, WaitingStatus))
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.managers.backups.BackupManager.set_config_options")
     @patch("single_kernel_mongo.managers.backups.BackupManager.resync_config_options")
     @patch("ops.framework.EventBase.defer")

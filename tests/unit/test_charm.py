@@ -24,8 +24,6 @@ from single_kernel_mongo.utils.mongodb_users import (
 
 from charm import MongoDBVMCharm
 
-from .helpers import patch_network_get
-
 logger = logging.getLogger()
 
 PEER_ADDR = {"private-address": "127.4.5.6"}
@@ -74,7 +72,6 @@ class TestCharm(unittest.TestCase):
         self.harness.set_leader(True)
         self.harness.set_leader(False)
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     def test_on_start_not_leader_doesnt_initialise_replica_set(self):
         """Tests that a non leader unit does not initialise the replica set."""
@@ -90,7 +87,6 @@ class TestCharm(unittest.TestCase):
             patched_start.assert_called()
             patched_mongo_initialise.assert_not_called()
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     def test_on_start_snap_failure_leads_to_blocked_status(
         self,
@@ -104,7 +100,6 @@ class TestCharm(unittest.TestCase):
             self.harness.charm.on.start.emit()
             self.assertTrue(isinstance(self.harness.charm.unit.status, BlockedStatus))
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     def test_on_start_mongod_not_ready_defer(
         self,
@@ -119,7 +114,6 @@ class TestCharm(unittest.TestCase):
             self.harness.charm.on.start.emit()
             self.assertTrue(isinstance(self.harness.charm.unit.status, WaitingStatus))
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     def test_start_unable_to_open_tcp_moves_to_blocked(
         self,
@@ -140,7 +134,6 @@ class TestCharm(unittest.TestCase):
             BlockedStatus("failed to open TCP port for MongoDB"),
         )
 
-    @patch_network_get(private_address="1.1.1.1")
     def test_install_snap_packages_failure(
         self,
     ):
@@ -152,7 +145,6 @@ class TestCharm(unittest.TestCase):
             self.harness.charm.on.install.emit()
             self.assertTrue(isinstance(self.harness.charm.unit.status, BlockedStatus))
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.lib.charms.operator_libs_linux.v0.sysctl.Config.configure")
     @patch("single_kernel_mongo.core.vm_workload.VMWorkload.install", return_value=True)
     @pytest.mark.usefixtures("mock_fs_interactions")
@@ -161,7 +153,6 @@ class TestCharm(unittest.TestCase):
         self.harness.charm.on.install.emit()
         patched_os_config.assert_called_once_with(OS_REQUIREMENTS)
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.status.StatusManager.process_and_share_statuses")
     def test_app_hosts(self, *unused):
         rel_id = self.harness.charm.model.get_relation("database-peers").id
@@ -169,7 +160,7 @@ class TestCharm(unittest.TestCase):
         self.harness.update_relation_data(rel_id, "mongodb/1", PEER_ADDR)
 
         resulting_ips = self.harness.charm.operator.state.app_hosts
-        expected_ips = {"127.4.5.6", "1.1.1.1"}
+        expected_ips = {"127.4.5.6", "10.0.0.10"}
         self.assertEqual(resulting_ips, expected_ips)
 
     @patch("single_kernel_mongo.utils.mongo_connection.MongoConnection")
@@ -180,7 +171,6 @@ class TestCharm(unittest.TestCase):
         self.harness.charm.on.database_peers_relation_joined.emit(relation=rel)
         connection.return_value.__enter__.assert_not_called()
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch(
         "single_kernel_mongo.utils.mongo_connection.MongoConnection.is_ready",
@@ -188,7 +178,7 @@ class TestCharm(unittest.TestCase):
     )
     @patch(
         "single_kernel_mongo.utils.mongo_connection.MongoConnection.get_replset_members",
-        return_value={"1.1.1.1"},
+        return_value={"10.0.0.10"},
     )
     @patch("single_kernel_mongo.utils.mongo_connection.MongoConnection.add_replset_member")
     @patch("ops.framework.EventBase.defer")
@@ -214,7 +204,6 @@ class TestCharm(unittest.TestCase):
         add_replset_member.assert_not_called()
         defer.assert_called()
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch(
         "single_kernel_mongo.utils.mongo_connection.MongoConnection.add_replset_member",
@@ -260,7 +249,6 @@ class TestCharm(unittest.TestCase):
                     rm_replset_member.assert_not_called()
             defer.assert_called()
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch(
         "single_kernel_mongo.utils.mongo_connection.MongoConnection.add_replset_member",
@@ -278,7 +266,7 @@ class TestCharm(unittest.TestCase):
         # presets
         self.harness.set_leader(True)
         self.harness.charm.operator.state.db_initialised = True
-        get_members.return_value = {"1.1.1.1"}
+        get_members.return_value = {"10.0.0.10"}
         rel = self.harness.charm.model.get_relation("database-peers")
 
         exceptions = PYMONGO_EXCEPTIONS
@@ -293,7 +281,6 @@ class TestCharm(unittest.TestCase):
             add_member.assert_called()
             defer.assert_called()
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch(
         "single_kernel_mongo.utils.mongo_connection.MongoConnection.init_replset",
@@ -318,7 +305,6 @@ class TestCharm(unittest.TestCase):
             assert isinstance(self.harness.charm.unit.status, WaitingStatus)
             self.assertTrue(isinstance(self.harness.charm.unit.status, WaitingStatus))
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch("single_kernel_mongo.managers.backups.BackupManager.get_status")
     @patch("single_kernel_mongo.managers.mongo.MongoManager.get_status")
@@ -352,7 +338,6 @@ class TestCharm(unittest.TestCase):
                 self.harness.charm.status_manager.process_and_share_statuses()
                 self.assertEqual(self.harness.charm.unit.status, mongodb_status)
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch("single_kernel_mongo.managers.backups.BackupManager.get_status")
     @patch("single_kernel_mongo.managers.mongo.MongoManager.get_status")
@@ -381,7 +366,6 @@ class TestCharm(unittest.TestCase):
                 self.harness.charm.status_manager.process_and_share_statuses()
                 self.assertEqual(self.harness.charm.unit.status, pbm_status)
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch("single_kernel_mongo.managers.backups.BackupManager.get_status")
     @patch("single_kernel_mongo.managers.mongo.MongoManager.get_status")
@@ -402,7 +386,6 @@ class TestCharm(unittest.TestCase):
         self.harness.charm.status_manager.process_and_share_statuses()
         self.assertEqual(self.harness.charm.unit.status, ActiveStatus("mongodb"))
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch("single_kernel_mongo.managers.mongo.MongoManager.get_status")
     def test_update_status_no_s3(
@@ -418,7 +401,6 @@ class TestCharm(unittest.TestCase):
         self.harness.charm.status_manager.process_and_share_statuses()
         self.assertEqual(self.harness.charm.unit.status, ActiveStatus("mongodb"))
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch("single_kernel_mongo.utils.mongo_connection.MongoConnection.get_replset_status")
     @patch("single_kernel_mongo.managers.backups.BackupManager.get_status")
@@ -435,11 +417,10 @@ class TestCharm(unittest.TestCase):
         get_pbm_status.return_value = ActiveStatus("")
 
         self.harness.set_leader(False)
-        get_replset_status.return_value = {"1.1.1.1": "PRIMARY"}
+        get_replset_status.return_value = {"10.0.0.10": "PRIMARY"}
         self.harness.charm.status_manager.process_and_share_statuses()
         self.assertEqual(self.harness.charm.unit.status, ActiveStatus("Primary"))
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch("single_kernel_mongo.utils.mongo_connection.MongoConnection.get_replset_status")
     @patch("single_kernel_mongo.managers.backups.BackupManager.get_status")
@@ -455,11 +436,10 @@ class TestCharm(unittest.TestCase):
         get_pbm_status.return_value = ActiveStatus("")
 
         self.harness.set_leader(False)
-        get_replset_status.return_value = {"1.1.1.1": "SECONDARY"}
+        get_replset_status.return_value = {"10.0.0.10": "SECONDARY"}
         self.harness.charm.status_manager.process_and_share_statuses()
         self.assertEqual(self.harness.charm.unit.status, ActiveStatus(""))
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch("single_kernel_mongo.utils.mongo_connection.MongoConnection.get_replset_status")
     @patch("single_kernel_mongo.managers.backups.BackupManager.get_status")
@@ -481,22 +461,21 @@ class TestCharm(unittest.TestCase):
         self.assertEqual(self.harness.charm.unit.status, WaitingStatus("Member being added."))
 
         # Case 2: Unit is being removed from replica set
-        get_replset_status.return_value = {"1.1.1.1": "REMOVED"}
+        get_replset_status.return_value = {"10.0.0.10": "REMOVED"}
         self.harness.charm.status_manager.process_and_share_statuses()
         self.assertEqual(self.harness.charm.unit.status, WaitingStatus("Member is removing..."))
 
         # Case 3: Member is syncing to replica set
         for syncing_status in ["STARTUP", "STARTUP2", "ROLLBACK", "RECOVERING"]:
-            get_replset_status.return_value = {"1.1.1.1": syncing_status}
+            get_replset_status.return_value = {"10.0.0.10": syncing_status}
             self.harness.charm.status_manager.process_and_share_statuses()
             self.assertEqual(self.harness.charm.unit.status, WaitingStatus("Member is syncing..."))
 
         # Case 4: Unknown status
-        get_replset_status.return_value = {"1.1.1.1": "unknown"}
+        get_replset_status.return_value = {"10.0.0.10": "unknown"}
         self.harness.charm.status_manager.process_and_share_statuses()
         self.assertEqual(self.harness.charm.unit.status, BlockedStatus("unknown"))
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch(
         "single_kernel_mongo.utils.mongo_connection.MongoConnection.is_ready",
@@ -513,7 +492,6 @@ class TestCharm(unittest.TestCase):
             WaitingStatus("Waiting for MongoDB to start"),
         )
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch(
         "single_kernel_mongo.utils.mongo_connection.MongoConnection.primary",
@@ -522,11 +500,10 @@ class TestCharm(unittest.TestCase):
         """Tests get primary outputs correct primary when called on a primary replica."""
         self.harness.set_leader(True)
         self.harness.charm.operator.state.db_initialised = True
-        mock_primary.return_value = "1.1.1.1"
+        mock_primary.return_value = "10.0.0.10"
         output = self.harness.run_action("get-primary")
         assert output.results["replica-set-primary"] == "mongodb/0"
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch(
         "single_kernel_mongo.utils.mongo_connection.MongoConnection.primary",
@@ -546,7 +523,6 @@ class TestCharm(unittest.TestCase):
         output = self.harness.run_action("get-primary")
         assert output.results["replica-set-primary"] == "mongodb/1"
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch(
         "single_kernel_mongo.utils.mongo_connection.MongoConnection.primary",
@@ -570,7 +546,6 @@ class TestCharm(unittest.TestCase):
         primary = self.harness.charm.operator.primary_unit_name
         self.assertEqual(primary, None)
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch(
         "single_kernel_mongo.utils.mongo_connection.MongoConnection.primary",
@@ -584,7 +559,6 @@ class TestCharm(unittest.TestCase):
             mock_primary.side_effect = exception
             self.assertEqual(self.harness.charm.operator.primary_unit_name, None)
 
-    @patch_network_get(private_address="1.1.1.1")
     @pytest.mark.usefixtures("mock_fs_interactions")
     @patch(
         "single_kernel_mongo.utils.mongo_connection.MongoConnection.remove_replset_member",
@@ -604,7 +578,6 @@ class TestCharm(unittest.TestCase):
             self.harness.charm.on.mongodb_storage_detaching.emit(mock.Mock())
             event.defer.assert_not_called()
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.core.vm_workload.VMWorkload.run_bin_command")
     def test_start_init_user_after_second_call(self, run):
         """Tests that the creation of the admin user is only performed once.
@@ -624,7 +597,6 @@ class TestCharm(unittest.TestCase):
         self.harness.charm.operator.mongo_manager.initialise_operator_user()
         run.assert_called_once()
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.utils.mongo_connection.MongoConnection.set_user_password")
     @patch("single_kernel_mongo.managers.backups.BackupManager.get_status")
     def test_set_password(self, pbm_status, *unused):
@@ -642,7 +614,6 @@ class TestCharm(unittest.TestCase):
         # verify app data is updated and results are reported to user
         self.assertNotEqual(original_password, new_password)
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.utils.mongo_connection.MongoConnection.set_user_password")
     @patch("single_kernel_mongo.managers.backups.BackupManager.get_status")
     def test_set_password_provided(self, pbm_status, *unused):
@@ -659,7 +630,6 @@ class TestCharm(unittest.TestCase):
         assert output.results["password"] == "canonical123"
         assert output.results["secret-id"]
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.utils.mongo_connection.MongoConnection.set_user_password")
     @patch("single_kernel_mongo.managers.backups.BackupManager.get_status")
     def test_set_password_failure(self, pbm_status, set_user_password):
@@ -787,7 +757,6 @@ class TestCharm(unittest.TestCase):
 
         connect_exporter.assert_not_called()
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.utils.mongo_connection.MongoConnection.set_user_password")
     @patch(
         "single_kernel_mongo.managers.config.MongoDBExporterConfigManager.configure_and_restart"
@@ -801,7 +770,6 @@ class TestCharm(unittest.TestCase):
         self.harness.run_action("set-password", {"username": "monitor"})
         connect_exporter.assert_called()
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.utils.mongo_connection.MongoConnection.set_user_password")
     @patch(
         "single_kernel_mongo.managers.config.MongoDBExporterConfigManager.configure_and_restart"
@@ -832,7 +800,6 @@ class TestCharm(unittest.TestCase):
         # a new password was created
         assert pw1 != pw2
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.utils.mongo_connection.MongoConnection.set_user_password")
     @patch(
         "single_kernel_mongo.managers.config.MongoDBExporterConfigManager.configure_and_restart"
@@ -845,7 +812,6 @@ class TestCharm(unittest.TestCase):
         output = self.harness.run_action("get-password", {"username": "monitor"})
         assert output.results["password"]
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.managers.backups.BackupManager.get_status")
     def test_set_backup_password_pbm_busy(self, pbm_status):
         """Tests changes to passwords fail when pbm is restoring/backing up."""
@@ -859,7 +825,6 @@ class TestCharm(unittest.TestCase):
             current_password = self.harness.charm.operator.state.get_user_password(user)
             self.assertEqual(current_password, original_password)
 
-    @patch_network_get(private_address="1.1.1.1")
     def test_unit_host(self):
         """Tests that get hosts returns the current unit hosts."""
-        assert self.harness.charm.operator.state.unit_peer_data.internal_address == "1.1.1.1"
+        assert self.harness.charm.operator.state.unit_peer_data.internal_address == "10.0.0.10"

@@ -12,8 +12,6 @@ from ops.testing import Harness
 
 from charm import MongoDBVMCharm
 
-from .helpers import patch_network_get
-
 CHARMHUB_DEPLOYMENT = "ch"
 LOCAL_DEPLOYMENT = "local"
 RELATION_TO_CHECK_VERSION = "sharding"
@@ -27,7 +25,6 @@ APP_2 = "APP_2"
 
 class TestCharm(unittest.TestCase):
     @patch("single_kernel_mongo.managers.mongodb_operator.get_charm_revision")
-    @patch_network_get(private_address="1.1.1.1")
     def setUp(self, get_charm_revision):
         get_charm_revision.return_value = CHARM_VERSION
         self.harness = Harness(MongoDBVMCharm)

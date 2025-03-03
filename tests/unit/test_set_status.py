@@ -12,14 +12,11 @@ from single_kernel_mongo.status import Statuses
 
 from charm import MongoDBVMCharm
 
-from .helpers import patch_network_get
-
 CHARM_VERSION = "127"
 
 
 class TestCharm(unittest.TestCase):
     @patch("single_kernel_mongo.managers.mongodb_operator.get_charm_revision")
-    @patch_network_get(private_address="1.1.1.1")
     def setUp(self, get_charm_revision):
         get_charm_revision.return_value = CHARM_VERSION
         self.harness = Harness(MongoDBVMCharm)
