@@ -86,6 +86,12 @@ async def test_rollback_on_config_server(
     # )
     await refresh_with_juju(ops_test, CONFIG_SERVER_APP_NAME, "6/edge")
 
+    await ops_test.model.wait_for_idle(
+        apps=[CONFIG_SERVER_APP_NAME, SHARD_ONE_APP_NAME, SHARD_TWO_APP_NAME],
+        timeout=1000,
+        idle_period=30,
+    )
+
     # verify no writes were skipped during upgrade/rollback process
     shard_one_expected_writes = await stop_continous_writes(
         ops_test,
