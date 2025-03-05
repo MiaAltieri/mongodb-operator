@@ -10,13 +10,10 @@ from single_kernel_mongo.config.literals import Scope
 
 from charm import MongoDBVMCharm
 
-from .helpers import patch_network_get
-
 RELATION_NAME = "certificates"
 
 
 class TestMongoTLS(unittest.TestCase):
-    @patch_network_get(private_address="1.1.1.1")
     @patch(
         "single_kernel_mongo.managers.mongodb_operator.get_charm_revision",
         return_value="1",
@@ -36,7 +33,6 @@ class TestMongoTLS(unittest.TestCase):
         "single_kernel_mongo.managers.mongodb_operator.get_charm_revision",
         return_value="1",
     )
-    @patch_network_get(private_address="1.1.1.1")
     def test_set_tls_private_keys(self, leader, get_new_sans, *unused):
         """Tests setting of TLS private key via the leader, ie both internal and external.
 
@@ -66,7 +62,6 @@ class TestMongoTLS(unittest.TestCase):
         self.verify_external_rsa_csr()
 
     @parameterized.expand([True, False])
-    @patch_network_get(private_address="1.1.1.1")
     @patch(
         "single_kernel_mongo.managers.mongodb_operator.get_charm_revision",
         return_value="1",
@@ -84,7 +79,6 @@ class TestMongoTLS(unittest.TestCase):
         return_value="1",
     )
     @patch("single_kernel_mongo.managers.mongodb_operator.MongoDBOperator.restart_charm_services")
-    @patch_network_get(private_address="1.1.1.1")
     def test_tls_relation_broken(self, leader, restart_charm_services, *unused):
         """Test removes both external and internal certificates."""
         self.harness.charm.operator.state.db_initialised = True
@@ -110,7 +104,6 @@ class TestMongoTLS(unittest.TestCase):
         # units should be restarted after updating TLS settings
         restart_charm_services.assert_called()
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch(
         "single_kernel_mongo.managers.mongodb_operator.get_charm_revision",
         return_value="1",
@@ -138,7 +131,6 @@ class TestMongoTLS(unittest.TestCase):
         )
         self.assertNotEqual(old_csr, new_csr)
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch(
         "single_kernel_mongo.managers.mongodb_operator.get_charm_revision",
         return_value="1",
@@ -162,7 +154,6 @@ class TestMongoTLS(unittest.TestCase):
         )
         self.assertNotEqual(old_csr, new_csr)
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch(
         "single_kernel_mongo.managers.mongodb_operator.get_charm_revision",
         return_value="1",
@@ -196,7 +187,6 @@ class TestMongoTLS(unittest.TestCase):
         self.assertEqual(old_app_csr, new_app_csr)
         self.assertEqual(old_unit_csr, new_unit_csr)
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch(
         "single_kernel_mongo.managers.mongodb_operator.get_charm_revision",
         return_value="1",
@@ -238,7 +228,6 @@ class TestMongoTLS(unittest.TestCase):
 
         restart_charm_services.assert_called()
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch(
         "single_kernel_mongo.managers.mongodb_operator.get_charm_revision",
         return_value="1",
@@ -282,7 +271,6 @@ class TestMongoTLS(unittest.TestCase):
 
         restart_charm_services.assert_called()
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch(
         "single_kernel_mongo.managers.mongodb_operator.get_charm_revision",
         return_value="1",
@@ -326,7 +314,6 @@ class TestMongoTLS(unittest.TestCase):
 
         restart_charm_services.assert_not_called()
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch(
         "single_kernel_mongo.managers.mongodb_operator.get_charm_revision",
         return_value="1",
@@ -354,7 +341,6 @@ class TestMongoTLS(unittest.TestCase):
         )
         defer.assert_called()
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch(
         "single_kernel_mongo.managers.mongodb_operator.get_charm_revision",
         return_value="1",

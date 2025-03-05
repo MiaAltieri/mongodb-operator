@@ -14,8 +14,6 @@ from single_kernel_mongo.exceptions import (
 
 from charm import MongoDBVMCharm
 
-from .helpers import patch_network_get
-
 RELATION_NAME = "s3-credentials"
 
 
@@ -24,7 +22,6 @@ class TestConfigServerInterface(unittest.TestCase):
         "single_kernel_mongo.managers.mongodb_operator.get_charm_revision",
         return_value="1",
     )
-    @patch_network_get(private_address="1.1.1.1")
     def setUp(self, *unused):
         self.harness = Harness(MongoDBVMCharm)
         self.harness.begin()

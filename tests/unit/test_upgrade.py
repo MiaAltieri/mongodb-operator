@@ -9,15 +9,12 @@ from ops.testing import Harness
 
 from charm import MongoDBVMCharm
 
-from .helpers import patch_network_get
-
 
 class TestCharm(unittest.TestCase):
     @patch(
         "single_kernel_mongo.managers.mongodb_operator.get_charm_revision",
         return_value="1",
     )
-    @patch_network_get(private_address="1.1.1.1")
     def setUp(self, *unused):
         self.harness = Harness(MongoDBVMCharm)
         self.addCleanup(self.harness.cleanup)
@@ -25,7 +22,6 @@ class TestCharm(unittest.TestCase):
         self.peer_rel_id = self.harness.add_relation("database-peers", "database-peers")
         self.peer_rel_id = self.harness.add_relation("upgrade-version-a", "upgrade-version-a")
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch(
         "single_kernel_mongo.utils.mongo_connection.MongoConnection.get_replset_status",
     )
@@ -98,7 +94,6 @@ class TestCharm(unittest.TestCase):
         )
         assert not self.harness.charm.operator.upgrade_manager.is_cluster_healthy()
 
-    @patch_network_get(private_address="1.1.1.1")
     @patch("single_kernel_mongo.utils.mongo_connection.MongoConnection")
     @patch("single_kernel_mongo.utils.mongo_connection.MongoClient")
     @patch(
